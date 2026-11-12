@@ -982,3 +982,6 @@ body[data-bg] #maincontent .dev-card .dev-back .dev-top span { float: none !impo
 body[data-bg] #maincontent .dev-card .dev-back .dev-top { width: 100% !important; align-self: stretch !important; box-sizing: border-box; }
 /* Cabo: porta física mostrada no card (frente) */
 body[data-bg] #maincontent .dev-card .dev-port { font-size: .8rem; opacity: .85; margin: 2px 0 4px; }
+
+/* Devices page: the Save / Apply footer of LuCI does not apply to this read-only page */
+body[data-page="admin-status-aurora-devices"] .cbi-page-actions { display: none !important; }

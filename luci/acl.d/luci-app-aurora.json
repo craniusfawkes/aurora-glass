@@ -1,6 +1,10 @@
 {
 	"luci-app-aurora": {
 		"description": "Grant access to the AuroraGlass devices page",
-		"read": {}
+		"read": {
+			"ubus": {
+				"luci-rpc": [ "getHostHints", "getDHCPLeases" ]
+			}
+		}
 	}
 }

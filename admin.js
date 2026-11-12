@@ -842,6 +842,8 @@
 	function devRender() {
 		var page = document.body.getAttribute('data-page') || '';
 		var t = document.getElementById('wifi_assoclist_table');
+		// Devices page: only the wired grid (there is no Wi-Fi table here)
+		if (page === 'admin-status-aurora-devices') { devLoadOui(); devRenderWired(); return; }
 		if ((page !== 'admin-network-wireless' && page !== 'admin-status-overview') || !t) return;
 		devLoadOui();
 		if (!document.documentElement.dataset.devWired) { document.documentElement.dataset.devWired = '1'; devWire(); }
