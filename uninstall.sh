@@ -41,7 +41,6 @@ uci -q delete luci.themes.Aurora_Glass || true
 
 # 4. Removes only the entries the installer added to the system backup list (sysupgrade)
 sed -i '\|/etc/aurora-custom|d; \|/www/cgi-bin/aurora-|d; \|/aurora/patches/admin\.|d; \|/etc/config/aurora$|d' /etc/sysupgrade.conf
-[ -f "$MARK" ] || true
 
 # 5. Switches LuCI to the default theme (bootstrap, if installed)
 if [ -d /www/luci-static/bootstrap ]; then
