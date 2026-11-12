@@ -1005,3 +1005,12 @@ body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi
 body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-value:has(textarea.cbi-input-text) { display: block !important; }
 body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-value:has(textarea.cbi-input-text) > output,
 body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-value:has(textarea.cbi-input-text) > .cbi-section-node { display: block !important; width: 100% !important; max-width: 100% !important; }
+
+/* Repo Public Keys: each key stacks as name -> key box -> Delete (bottom right), on the same column as the add-key box.
+   The column header (NAME / KEY) is hidden, because the name now sits above its box. */
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-titles { display: none !important; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row { display: flex !important; flex-wrap: wrap; padding: 14px 104px 14px 243px !important; gap: 8px 0; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row > td { flex: 0 0 100% !important; max-width: 100% !important; width: 100% !important; padding: 0 !important; border: 0 !important; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row > td.cbi-value-field { padding: 0 !important; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row > td:first-child { font-weight: 600; font-size: 14px; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row > td.cbi-section-actions { display: flex !important; justify-content: flex-end; }
