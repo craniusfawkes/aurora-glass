@@ -1045,3 +1045,12 @@ body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section
 body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-node:has(> textarea.cbi-input-text) { padding: 0 16px !important; }
 body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table textarea.cbi-input-textarea,
 body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-text { width: 100% !important; max-width: 100% !important; }
+
+/* Repo Public Keys: a key line is never broken while the box is wide enough (white-space: pre).
+   Only on narrow screens, where the line does not fit, does the text wrap inside the box. */
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-textarea,
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-text { white-space: pre !important; word-break: normal !important; overflow-wrap: normal !important; overflow-x: auto !important; overflow-y: auto !important; }
+@media (max-width: 700px) {
+	body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-textarea,
+	body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-text { white-space: pre-wrap !important; word-break: break-all !important; overflow-x: hidden !important; }
+}
