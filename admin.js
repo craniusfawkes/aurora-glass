@@ -1210,3 +1210,17 @@ function keepFitted(fn) {
 	keepFitted(fit);
 	window.addEventListener('resize', fit);   // refaz quando a janela muda de tamanho
 })();
+
+// Status > Overview: a porta WAN aparece antes das LAN (WAN, LAN2, LAN3, LAN4)
+(function wanFirst() {
+	function order() {
+		if ((document.body.getAttribute('data-page') || '') !== 'admin-status-overview') return;
+		var cards = [].slice.call(document.querySelectorAll('.ifacebox[data-flip]'));
+		var nameOf = function (c) { var h = c.querySelector('.ifacebox-head'); return h ? h.textContent.trim().split('\n')[0].trim() : ''; };
+		var wan = cards.filter(function (c) { return nameOf(c) === 'wan'; })[0];
+		if (!wan || !cards.length || cards[0] === wan) return;
+		// os cards ficam na mesma linha: move só o card da WAN para o começo
+		if (wan.parentElement === cards[0].parentElement) wan.parentElement.insertBefore(wan, cards[0]);
+	}
+	keepFitted(order);
+})();
