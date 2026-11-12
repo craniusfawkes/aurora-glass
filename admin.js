@@ -734,6 +734,8 @@
 	function bandwidthify() {
 		var mc = document.getElementById('maincontent');
 		var page = document.body.getAttribute('data-page') || '';
+		// Status: só monta a seção de dispositivos depois que a LuCI parar de montar a página (ou após 6 s)
+		if (page === 'admin-status-overview' && Date.now() - pageStart < 6000 && Date.now() - quietAt < 450) { setTimeout(bandwidthify, 470); return; }
 		if (!mc) return;
 		if (page === 'admin-network-wireless') {       // página Wi-Fi: só a coluna e a leitura (sem cartão próprio)
 			bwInject();
@@ -1108,6 +1110,7 @@
 	var deb;
 	function schedule() { clearTimeout(deb); deb = setTimeout(function () { sync(); tabsify(); hintify(); flipify(); equalize(); sairToolbar(); }, 120); }
 	var devLastY = 0;            // última posição de rolagem do usuário
+	var quietAt = 0, pageStart = Date.now();   // último momento em que a LuCI mudou a página (para esperar ela terminar)
 	var mo = new MutationObserver(schedule);
 	function start() {
 		var top = document.getElementById('topmenu');
@@ -1118,6 +1121,7 @@
 		// abas são convertidas logo após cada troca de página (antes de pintar), sem o atraso do schedule
 		// se a atualização do LuCI empurrar a página para cima, volta para a posição em que o usuário estava
 		if (main) new MutationObserver(function () {
+			quietAt = Date.now();
 			if (Math.abs(window.scrollY - devLastY) > 40) window.scrollTo(0, devLastY);
 			tabsify(); hintify(); wireTabPanes(); bandwidthify(); flipify(); equalize(); portLabels(); zoneColors(); iconifyWifiButtons(); sysCard();
 		}).observe(main, { childList: true, subtree: true });
