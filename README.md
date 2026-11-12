@@ -53,7 +53,7 @@ One command, on your computer:
 ssh root@ROUTER_IP "uclient-fetch -q -T 60 -O - https://codeload.github.com/craniusfawkes/aurora-glass/tar.gz/refs/tags/v1.0 | tar -xz -C /tmp && sh /tmp/aurora-glass-1.0/uninstall.sh"
 ```
 
-Confirm with `y`. It removes aurora-glass and Aurora, and switches the router back to the default theme (Bootstrap). Then refresh the page with Ctrl+F5.
+Confirm with `y`. It removes AuroraGlass and switches the router back to the default theme (Bootstrap). Then refresh the page with Ctrl+F5.
 
 ## Router image
 
