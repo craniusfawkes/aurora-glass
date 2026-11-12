@@ -1,5 +1,5 @@
 #!/bin/sh
-# aurora-glass: uninstalls the glass theme and restores the original Aurora theme.
+# aurora-glass: uninstalls the glass theme and switches back to the default LuCI theme (bootstrap).
 # Run on the router: sh uninstall.sh    (asks for confirmation; use "sh uninstall.sh -y" to skip it)
 # Downloads the original Aurora before changing any file: without internet, nothing is changed.
 set -e
@@ -12,7 +12,7 @@ ASSETS_DIR=""   # project folder (optional): if set, removes the images the inst
 
 # 0. Confirmation
 if [ "$1" != "-y" ]; then
-  printf 'Remove aurora-glass and go back to the original Aurora? (y/N) '
+  printf 'Remove aurora-glass and switch back to the default theme? (y/N) '
   read ans
   case "$ans" in y|Y|s|S) ;; *) echo "Cancelled."; exit 0 ;; esac
 fi
@@ -62,7 +62,7 @@ for k in icon_cache_version struct_main_bg struct_login_bg struct_main_bg_scrim 
 done
 uci commit aurora 2>/dev/null || true
 
-# 7. Restores the theme name in the LuCI list and the default theme (bootstrap, if installed)
+# 7. Restores the theme name in the LuCI list and switches to the default theme (bootstrap, if installed)
 if uci -q get luci.themes.Aurora_Glass >/dev/null; then uci set luci.themes.Aurora='/luci-static/aurora'; uci -q delete luci.themes.Aurora_Glass; fi
 if [ -d /www/luci-static/bootstrap ]; then
   uci set luci.main.mediaurlbase=/luci-static/bootstrap
