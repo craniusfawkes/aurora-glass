@@ -1255,3 +1255,20 @@ function keepFitted(fn) {
 	keepFitted(check);
 	setTimeout(check, 2100);
 })();
+
+// Diagnóstico (só quando ativado no navegador: localStorage.setItem('aurora-debug','1')): mostra no console os tempos de carregamento
+(function debugTimeline() {
+	var on = false;
+	try { on = localStorage.getItem('aurora-debug') === '1'; } catch (e) {}
+	if (!on) return;
+	var t0 = performance.now();
+	var log = function (m) { console.log('[aurora]', Math.round(performance.now() - t0) + ' ms', m); };
+	var seenCards = false, seenReady = false;
+	log('script carregado (' + location.pathname + ')');
+	keepFitted(function () {
+		var c = document.querySelectorAll('.dev-card').length;
+		if (c && !seenCards) { seenCards = true; log('cards de dispositivos na tela: ' + c); }
+		if (document.querySelector('.dev-wrap.ready') && !seenReady) { seenReady = true; log('seção de dispositivos liberada'); }
+	});
+	window.addEventListener('load', function () { log('página carregada (load)'); });
+})();
