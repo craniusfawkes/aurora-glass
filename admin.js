@@ -734,6 +734,8 @@
 	function bandwidthify() {
 		var mc = document.getElementById('maincontent');
 		var page = document.body.getAttribute('data-page') || '';
+		// Status: só monta a seção de dispositivos depois que a LuCI parar de montar a página (ou após 6 s)
+		if (page === 'admin-status-overview' && Date.now() - pageStart < 6000 && (Date.now() - quietAt < 1500 || document.querySelectorAll('#maincontent .cbi-section').length < 2)) { setTimeout(bandwidthify, 500); return; }
 		if (!mc) return;
 		if (page === 'admin-network-wireless') {       // página Wi-Fi: só a coluna e a leitura (sem cartão próprio)
 			bwInject();
@@ -741,21 +743,18 @@
 			devRender();
 			return;
 		}
-		if (page === 'admin-status-aurora-devices') {
-			var host = document.getElementById('aurora-devices');
-			if (!host || host.querySelector('.bw-section')) return;   // page container missing, or section already built
-			// on first load, wait for LuCI to stop building the page (at most 6 s)
-			if (Date.now() - pageStart < 6000 && Date.now() - quietAt < 1500) { setTimeout(bandwidthify, 500); return; }
-			var sec = document.createElement('div');
-			sec.className = 'cbi-section bw-section';
-			sec.innerHTML = '<h3>' + L('Dispositivos Cabeados') + '</h3><div class="dev-wrap"><ul class="cbi-tabmenu dev-sort">' +
-				[['name', 'Nome'], ['ip', 'IP'], ['mac', 'MAC'], ['usage', 'Consumo'], ['total', 'Total'], ['type', 'Tipo']].map(function (s) {
-					return '<li class="' + (s[0] === devSort ? 'cbi-tab' : 'cbi-tab-disabled') + '" data-sort="' + s[0] + '"><a href="#">' + L(s[1]) + '</a></li>';
-				}).join('') + '</ul><div class="dev-grid"></div></div>';
-			host.appendChild(sec);
-			devRenderWired();
-			if (!bwTimer) { bwPoll(); bwTimer = setInterval(bwPoll, 1000); }
-		}
+		if (page !== 'admin-status-overview') return;
+		bwInject();
+		devRender();
+		if (mc.querySelector('.bw-section')) return;
+		var sec = document.createElement('div');
+		sec.className = 'cbi-section bw-section';
+		sec.innerHTML = '<h3>' + L('Dispositivos Cabeados') + '</h3><div class="dev-wrap"><ul class="cbi-tabmenu dev-sort">' +
+			[['name', 'Nome'], ['ip', 'IP'], ['mac', 'MAC'], ['usage', 'Consumo'], ['total', 'Total'], ['type', 'Tipo']].map(function (s) {
+				return '<li class="' + (s[0] === devSort ? 'cbi-tab' : 'cbi-tab-disabled') + '" data-sort="' + s[0] + '"><a href="#">' + L(s[1]) + '</a></li>';
+			}).join('') + '</ul><div class="dev-grid"></div></div>';
+		mc.insertBefore(sec, mc.querySelector('footer'));
+		if (!bwTimer) { bwPoll(); bwTimer = setInterval(bwPoll, 1000); }
 	}
 	// ---- Dispositivos Wi-Fi em cards (substituem a tabela "Estações associadas" na página Wi-Fi) ----
 	var devSort = 'name';        // ordenação das abas da lista Wi-Fi
@@ -842,8 +841,6 @@
 	function devRender() {
 		var page = document.body.getAttribute('data-page') || '';
 		var t = document.getElementById('wifi_assoclist_table');
-		// Devices page: only the wired grid (there is no Wi-Fi table here)
-		if (page === 'admin-status-aurora-devices') { devLoadOui(); devRenderWired(); return; }
 		if ((page !== 'admin-network-wireless' && page !== 'admin-status-overview') || !t) return;
 		devLoadOui();
 		if (!document.documentElement.dataset.devWired) { document.documentElement.dataset.devWired = '1'; devWire(); }
@@ -955,7 +952,7 @@
 	function devRenderWired() {
 		var page = document.body.getAttribute('data-page') || '';
 		var grid = document.querySelector('#maincontent .bw-section .dev-grid');
-		if (page !== 'admin-status-aurora-devices' || !grid) return;
+		if (page !== 'admin-status-overview' || !grid) return;
 		// ordenação: as abas de sinal e taxa não se aplicam a cabo
 		var key = (devSortC === 'signal' || devSortC === 'rate' || devSortC === 'net') ? 'name' : devSortC;
 		var items = Object.keys(bwHist).filter(function (m) { return bwHist[m].via === 'lan'; }).map(function (m) {
@@ -963,7 +960,9 @@
 			return {
 				mac: m, name: h.name, ip: h.ip, type: devType(h.name || ''), hist: h, active: h.active, vendor: devVendor(m),
 				down: bwAvg(h.down), up: bwAvg(h.up), rx: h.rx, tx: h.tx,
-				sig: '—', rate: '—', net: 'Cabo', port: bwHist[m].port || '', signalNum: -200, btn: null
+				sig: '—', rate: '—', port: bwHist[m].port || '', signalNum: -200, btn: null,
+				// network line on the card back: "LAN2 · Cabo" (the port first, when known)
+				net: (bwHist[m].port ? bwHist[m].port.toUpperCase() + ' · ' : '') + L('Cabo')
 			};
 		});
 		items.sort(devCmp[key]);

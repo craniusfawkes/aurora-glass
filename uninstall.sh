@@ -21,10 +21,6 @@ sed -i '/aurora-bw-loop/d' /etc/rc.local
 rm -f /www/cgi-bin/aurora-bw /www/cgi-bin/aurora-oui
 rm -f /tmp/aurora-bw.json /tmp/aurora-bw.* /tmp/aurora-names.tsv /tmp/aurora-ports.tsv
 rm -f "$P/patches/admin.css" "$P/patches/admin.js" "$P/data/oui.tsv"
-rm -f /www/luci-static/resources/view/aurora/devices.js /usr/share/luci/menu.d/luci-app-aurora.json /usr/share/rpcd/acl.d/luci-app-aurora.json
-rmdir /www/luci-static/resources/view/aurora 2>/dev/null || true
-rm -f /tmp/luci-indexcache /tmp/luci-indexcache.* 2>/dev/null || true
-/etc/init.d/rpcd reload 2>/dev/null || true
 rm -f "$P/images/modelo.png" "$P/images/modelo.svg"
 rm -rf "$C"
 
@@ -39,7 +35,7 @@ uci commit aurora 2>/dev/null || true
 uci -q delete luci.themes.AuroraGlass || true
 
 # 5. Removes the entries the installer added to the system backup list (sysupgrade)
-sed -i '\|/etc/aurora-custom|d; \|/www/cgi-bin/aurora-|d; \|/aurora/patches/admin\.|d; \|/resources/view/aurora/devices\.js|d; \|luci-app-aurora\.json|d' /etc/sysupgrade.conf
+sed -i '\|/etc/aurora-custom|d; \|/www/cgi-bin/aurora-|d; \|/aurora/patches/admin\.|d' /etc/sysupgrade.conf
 
 # 6. Switches LuCI to the default theme (bootstrap, if installed)
 if [ -d /www/luci-static/bootstrap ]; then
