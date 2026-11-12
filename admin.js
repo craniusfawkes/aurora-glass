@@ -1236,3 +1236,21 @@ function keepFitted(fn) {
 	keepFitted(check);
 	setTimeout(check, 2100);
 })();
+
+// Rodapé "Powered by ..." aparece junto com o resto da página (depois que os dispositivos carregam)
+(function footerTogether() {
+	var t0 = Date.now();
+	function check() {
+		var ready = !document.querySelector('#maincontent .cbi-section:has(.dev-wrap:not(.ready))') || Date.now() - t0 > 2000;
+		var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT), n;
+		while ((n = w.nextNode())) {
+			if (/^\s*Powered by/.test(n.nodeValue) && n.parentElement) {
+				var el = n.parentElement.closest('footer, .footer, .main-footer, div, p') || n.parentElement;
+				el.classList.toggle('pb-hide', !ready);
+				break;
+			}
+		}
+	}
+	keepFitted(check);
+	setTimeout(check, 2100);
+})();

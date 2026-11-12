@@ -982,3 +982,5 @@ body[data-bg] #maincontent .dev-card .dev-back .dev-top span { float: none !impo
 body[data-bg] #maincontent .dev-card .dev-back .dev-top { width: 100% !important; align-self: stretch !important; box-sizing: border-box; }
 /* Dispositivos: a seção inteira aparece junta, quando a lista estiver pronta */
 body[data-bg] #maincontent .cbi-section:has(.dev-wrap:not(.ready)) { visibility: hidden; }
+/* Rodapé só aparece junto com o resto da página */
+.pb-hide { visibility: hidden !important; }
