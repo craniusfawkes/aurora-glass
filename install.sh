@@ -79,6 +79,16 @@ else
   cp "$D/assets/roteador-generico.svg" "$P/images/modelo.svg"
 fi
 
+# 4b-2. Logo (home/sidebar) and favicon per model: use the model photo and favicon when they exist
+if [ -n "$MODEL_ID" ] && [ -f "$D/modelos/$MODEL_ID.png" ]; then
+  cp "$D/modelos/$MODEL_ID.png" "$P/images/logo-$MODEL_ID.png"
+  uci set aurora.theme.logo_svg="logo-$MODEL_ID.png"
+  if [ -f "$D/modelos/$MODEL_ID-favicon.png" ]; then
+    cp "$D/modelos/$MODEL_ID-favicon.png" "$P/images/favicon-$MODEL_ID.png"
+    uci set aurora.theme.favicon_png="favicon-$MODEL_ID.png"
+  fi
+fi
+
 # 4c. IEEE vendor list converted to MAC -> vendor
 if [ ! -s "$P/data/oui.tsv" ]; then
   echo "Downloading the IEEE vendor list..."
