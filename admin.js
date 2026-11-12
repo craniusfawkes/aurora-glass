@@ -1,10 +1,10 @@
-// Patch do tema Aurora (carrega em todas as paginas /admin): marca no menu de cima
-// qual categoria esta aberta, ja que o tema nao destaca o item ativo sozinho.
+// AuroraGlass theme patch (loads on all /admin pages): marks the active category in the top menu,
+// since the theme does not highlight the active item by itself.
 (function () {
 	function sync() {
 		var top = document.getElementById('topmenu');
 		if (!top) return;
-		// rotulo da categoria ativa = mesmo texto usado no item do menu de cima
+		// label of the active category = same text used in the top-menu item
 		var g = document.querySelector('.is-active-group .nav-category-label');
 		var active = g ? g.textContent.trim() : '';
 		var items = top.querySelectorAll('a.menu');
@@ -16,12 +16,12 @@
 			if (li) li.classList.toggle('is-current', !!on);
 		}
 	}
-	// Transforma cada card de porta (.ifacebox) num cartao que "vira" (hover no desktop,
-	// toque no celular) e mostra TODAS as infos no verso, no lugar do tooltip. Idempotente.
-	// Lê "Rótulo: valor" de um texto, em {rótulo: [valores]} (sem repetir), ignorando portas-membro.
+	// Turns each port card (.ifacebox) into a card that flips (hover on desktop,
+	// tap on mobile) and shows ALL the info on the back, instead of the tooltip. Idempotent.
+	// Reads "Label: value" from a text into {label: [values]} (no repeats), ignoring member ports.
 	function parseFields(text) {
 		text = (text || '').replace(/\s+/g, ' ').split(/\(\s*Tipo:/)[0];
-		// rótulos das estatísticas da porta (tooltip) entram aqui; "Pacotes transmitidos e perdidos" antes de "Pacotes transmitidos"
+		// port statistics labels (tooltip) go here; the longer label must come before the shorter one
 		var labels = ['Protocolo', 'Protocol', 'Carrier', 'Uptime', 'Operator', 'Tipo da conex[^:]*', 'Tipo', 'Dispositivo', 'Conectado', 'Operadora', 'Tempo de atividade', 'Endere[^:]*MAC', 'MAC', 'IPv4', 'IPv6', 'Gateway', 'DNS', 'Expira[^:]*', 'RX', 'TX', 'Parte das? redes?',
 			'Bytes recebidos', 'Pacotes recebidos', 'Multicast recebido', 'Erros de recebimento', 'Receber descartado', 'Bytes transmitidos', 'Pacotes transmitidos e perdidos', 'Pacotes transmitidos', 'Pacotes com erro de envio', 'Colisões registradas'];
 		var re = new RegExp('(' + labels.join('|') + ')\\s*:', 'g');
@@ -37,26 +37,26 @@
 	}
 	var ORDER = ['Protocolo', 'Tipo', 'Dispositivo', 'Conectado', 'Operadora', 'Tempo de atividade', 'MAC', 'IPv4', 'IPv6', 'Gateway', 'DNS', 'Rede', 'RX', 'TX',
 		'Bytes recebidos', 'Pacotes recebidos', 'Multicast recebido', 'Erros de recebimento', 'Receber descartado', 'Bytes transmitidos', 'Pacotes transmitidos', 'Pacotes transmitidos e perdidos', 'Pacotes com erro de envio', 'Colisões registradas'];
-	// junta o texto de TODOS os tooltips do card (a porta tem um com a rede e outro com as estatísticas)
+	// joins the text of ALL the card's tooltips (the port has one with the network and another with the statistics)
 	function allTipText(box) {
 		return Array.prototype.map.call(box.querySelectorAll('.cbi-tooltip'), function (t) { return t.textContent; }).join(' ');
 	}
-	// traduz uma palavra pelo LuCI (_), ou usa a propria palavra se a funcao nao existir
+	// translates a word through LuCI (_), or uses the word itself if that function does not exist
 	function lx(s) { return (typeof _ === 'function') ? _(s) : s; }
-	// escapa caracteres especiais para usar o texto dentro de uma regex
+	// escapes special characters so the text can be used inside a regex
 	function reEsc(s) { return String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
-	// le "Conectado: sí" / "Connected: yes" (qualquer idioma) e devolve true/false
+	// reads "Connected: yes" / "Conectado: sí" (any language) and returns true/false
 	function connectedState(box) {
 		var txt = allTipText(box);
 		var label = reEsc(lx('Connected'));
 		if (new RegExp(label + '\\s*:?\\s*' + reEsc(lx('yes')), 'i').test(txt)) return true;
 		if (new RegExp(label + '\\s*:?\\s*' + reEsc(lx('no')), 'i').test(txt)) return false;
-		// sem tooltip de rede: usa o icone de porta do proprio LuCI (port_up / port_down)
+		// no network tooltip: uses LuCI's own port icon (port_up / port_down)
 		if (box.querySelector('img[src*="port_down"], img[src*="port_pse_down"]')) return false;
 		if (box.querySelector('img[src*="port_up"], img[src*="port_pse_up"]')) return true;
-		return /\d+\s*h\s*\d+\s*m|\d+\s*m\s*\d+\s*s/.test(txt);   // ultimo recurso: tempo de atividade
+		return /\d+\s*h\s*\d+\s*m|\d+\s*m\s*\d+\s*s/.test(txt);   // last resort: uptime
 	}
-	// tipo de cada membro da ponte, na mesma ordem dos ícones (ex.: Bridge, Switch port); null se não der para ler
+	// type of each bridge member, in the same order as the icons (e.g. Bridge, Switch port); null if it cannot be read
 	function memberTypes(text) {
 		var t = (text || '').replace(/\s+/g, ' ');
 		var parts = t.split(/(?=(?:Tipo|Type)\s*:)/).filter(function (x) { return /^(Tipo|Type)\s*:/.test(x.trim()); });
@@ -66,8 +66,8 @@
 			return m ? m[1].trim() : '';
 		});
 	}
-	// separa o texto de uma ponte (vários membros, cada um começa com "Tipo:") em blocos e monta um HTML por membro
-	// verso da ponte: junta o que é igual em todos os membros (MAC, conexão) num cabeçalho e lista só o que muda por membro
+	// splits a bridge's text (several members, each starting with "Type:") into blocks and builds one HTML per member
+	// bridge back: puts what is the same in all members (MAC, connection) in a header and lists only what changes per member
 	function memberGroups(text) {
 		var t = (text || '').replace(/\s+/g, ' ');
 		var parts = t.split(/(?=(?:Tipo|Type)\s*:)/).filter(function (x) { return /^(Tipo|Type)\s*:/.test(x.trim()); });
@@ -91,18 +91,18 @@
 		});
 		return { head: head, blocks: blocks };
 	}
-	// prisma horizontal: gira o container para a face k ficar de frente (cada clique = 360° / N)
-	// distância uniforme entre a parte de baixo do prisma (faces, já inclinadas) e os botões abaixo
+	// horizontal prism: rotates the container so face k faces front (each click = 360° / N)
+	// even distance between the bottom of the prism (faces, already tilted) and the buttons below
 	function prismSpace(box) {
-		// botões e espaço embaixo ficam iguais em todos os cartões (CSS): sem ajuste por cartão
+		// buttons and the space below are the same on all cards (CSS): no per-card adjustment
 		box.style.marginBottom = '';
 		var row = box.closest('tr');
 		if (row) [].forEach.call(row.querySelectorAll('button, .cbi-button, a.cbi-button'), function (b) { b.style.position = ''; b.style.top = ''; });
 	}
-	var PRISM_TILT = -13;   // inclinação (graus) do prisma para ver a base
+	var PRISM_TILT = -13;   // tilt (degrees) of the prism, to see the base
 	function sideDir(el, e) { var r = el.getBoundingClientRect(); return (e.clientX - r.left) / r.width < 0.33 ? 1 : -1; }
-	// gira o card de frente/verso em 180° por passo (contínuo: não volta para trás por conta própria)
-	var boxTurn = {};   // giro dos cards na página atual (guardado na memória; zera ao trocar de página)
+	// turns the front/back card 180° per step (continuous: it does not turn back on its own)
+	var boxTurn = {};   // turn state of the cards on the current page (kept in memory; reset when the page changes)
 	function flipSpin(box, dir) {
 		var t = (+box.getAttribute('data-turn') || 0) + dir;
 		boxTurn[box.getAttribute('data-flipkey')] = t;
@@ -111,7 +111,7 @@
 		box.querySelector('.flip-inner').style.transform = 'rotateY(' + (-t * 180) + 'deg)';
 	}
 	function sideOf(el, e) { var r = el.getBoundingClientRect(); return (e.clientX - r.left) < r.width / 2 ? 'L' : 'R'; }
-	// contorno do prisma desenhado em SVG (uma linha só): calcula a silhueta de cada face visível no giro atual
+	// prism outline drawn in SVG (a single line): computes the silhouette of each face visible in the current turn
 	function drawPrismOutline(box, t, n, r, dx, dy, vs) {
 		var inner = box.querySelector('.flip-inner');
 		var svg = box.querySelector('svg.prism-outline');
@@ -122,26 +122,26 @@
 		}
 		var faces = [].slice.call(inner.querySelectorAll(':scope > div:not(.prism-cap)'));
 		var P = 700, step = 360 / n, rad = Math.PI / 180;
-		var cx = inner.offsetWidth / 2, cy = 144;   // centro do cartão (origem da perspectiva)
+		var cx = inner.offsetWidth / 2, cy = 144;   // card center (perspective origin)
 		var tilt = PRISM_TILT * rad, spin = -t * step * rad;
 		var rotX = function (v) { var c = Math.cos(tilt), s = Math.sin(tilt); return [v[0], v[1] * c - v[2] * s, v[1] * s + v[2] * c]; };
 		var rotY = function (v, a) { var c = Math.cos(a), s = Math.sin(a); return [v[0] * c + v[2] * s, v[1], -v[0] * s + v[2] * c]; };
 		var d = '', k = 0;
 		faces.forEach(function (f, i) {
 			var a = i * step * rad;
-			var n0 = rotX(rotY(rotY([0, 0, 1], a), spin));   // direção da face após a rotação do prisma
-			if (n0[2] <= 0) return;                          // face de trás: não aparece
+			var n0 = rotX(rotY(rotY([0, 0, 1], a), spin));   // direction of the face after the prism rotation
+			if (n0[2] <= 0) return;                          // back face: not shown
 			var w = parseFloat(f.style.width) || 0, pts = [[-w / 2, -144], [w / 2, -144], [w / 2, 144], [-w / 2, 144]];
 			var seg = pts.map(function (p) {
-				var q = rotY([p[0], p[1], r], a);            // face no seu lugar
-				q = rotY(q, spin); q = rotX(q);              // giro do prisma e inclinação
-				q[2] -= r; q[1] *= vs;                       // mesma transformação do CSS
+				var q = rotY([p[0], p[1], r], a);            // face in its place
+				q = rotY(q, spin); q = rotX(q);              // prism turn and tilt
+				q[2] -= r; q[1] *= vs;                       // same transform as the CSS
 				var f2 = P / (P - q[2]);
 				return [cx + (q[0] + dx) * f2, cy + (q[1] + dy) * f2];
 			});
 			d += 'M' + seg.map(function (p) { return p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join(' L') + ' Z ';
 		});
-		svg.style.left = inner.offsetLeft + 'px';   // alinha o SVG com o mesmo quadro do cartão (sem a margem interna)
+		svg.style.left = inner.offsetLeft + 'px';   // aligns the SVG with the card frame (without the inner margin)
 		svg.style.top = inner.offsetTop + 'px';
 		svg.setAttribute('width', inner.offsetWidth);
 		svg.setAttribute('height', 288);
@@ -149,9 +149,9 @@
 		svg.innerHTML = '<path d="' + d + '"></path>';
 	}
 	function prismSet(box, inner, t, n, r) {
-		// t = número de giros acumulado (pode passar de N): a rotação segue sempre no mesmo sentido
+		// t = accumulated number of turns (may exceed N): the rotation always goes in the same direction
 		var k = ((t % n) + n) % n;
-		// primeira vez: monta direto na posição certa, sem a animação de entrada (que fazia os ícones descerem)
+		// first time: mounts directly in the right position, without the entry animation (which made the icons drop)
 		var first = !box.hasAttribute('data-faces');
 		if (first) inner.style.transition = 'none';
 		box.setAttribute('data-faces', n);
@@ -159,10 +159,10 @@
 		box.setAttribute('data-face', k);
 		box.setAttribute('data-turn', t);
 		var dx = box._prismDx ? box._prismDx[k] : 0;
-		var dy = box._prismDy ? box._prismDy[k] : 0, vs = box._prismV ? box._prismV[k] : 1;   // alinha topo e base com o cartão   // centraliza o prisma neste giro
+		var dy = box._prismDy ? box._prismDy[k] : 0, vs = box._prismV ? box._prismV[k] : 1;   // aligns top and bottom with the card   // centers the prism on this turn
 		inner.style.transform = 'translateX(' + dx.toFixed(1) + 'px) translateY(' + dy.toFixed(1) + 'px) scaleY(' + vs.toFixed(3) + ') translateZ(-' + r + 'px) rotateX(' + PRISM_TILT + 'deg) rotateY(' + (-t * 360 / n) + 'deg)';
-		if (first) { void inner.offsetWidth; inner.style.transition = ''; }   // libera a animação depois de montar
-		// o contorno gira junto com as faces (mesma duração da animação do CSS)
+		if (first) { void inner.offsetWidth; inner.style.transition = ''; }   // releases the animation after mounting
+		// the outline turns together with the faces (same duration as the CSS animation)
 		var fromT = (box._outT !== undefined) ? box._outT : t;
 		var fromDx = (box._outDx !== undefined) ? box._outDx : dx, fromDy = (box._outDy !== undefined) ? box._outDy : dy, fromV = (box._outV !== undefined) ? box._outV : vs;
 		box._outT = t; box._outDx = dx; box._outDy = dy; box._outV = vs;
@@ -171,20 +171,20 @@
 		else {
 			var t0 = performance.now();
 			var stepOut = function (now) {
-				var p = Math.min(1, (now - t0) / 900), e = p;   // linear: igual à transição do CSS do prisma (giro, deslocamento e escala)
+				var p = Math.min(1, (now - t0) / 900), e = p;   // linear: same as the CSS transition of the prism (turn, shift and scale)
 				drawPrismOutline(box, fromT + (t - fromT) * e, n, r, fromDx + (dx - fromDx) * e, fromDy + (dy - fromDy) * e, fromV + (vs - fromV) * e);
 				if (p < 1) box._outRaf = requestAnimationFrame(stepOut);
 			};
 			box._outRaf = requestAnimationFrame(stepOut);
 		}
 	}
-	// encolhe o prisma até que, em todos os giros, as faces fiquem a no máximo 10px de cada borda do cartão
+	// shrinks the prism until, in every turn, the faces are at most 10px from each edge of the card
 	function prismFit(box, inner, faces, geo, n, step, r) {
 		var card = box.getBoundingClientRect();
-		if (!card.width) return 1;                     // cartão escondido: não dá para medir
+		if (!card.width) return 1;                     // card hidden: cannot measure
 		var oldT = inner.style.transition;
-		inner.style.transition = 'none';               // mede a posição final, não a animação
-		var s = 1, avail = card.width - 20;            // escala: cresce até encostar na folga de 10px em cada lado
+		inner.style.transition = 'none';               // measures the final position, not the animation
+		var s = 1, avail = card.width - 20;            // scale: grows until it reaches the 10px margin on each side
 		for (var it = 0; it < 10; it++) {
 			geo(s);
 			var worst = 0;
@@ -194,8 +194,8 @@
 				faces.forEach(function (fc) { var q = fc.getBoundingClientRect(); if (q.left < lo) lo = q.left; if (q.right > hi) hi = q.right; });
 				if (hi - lo > worst) worst = hi - lo;
 			}
-			if (worst > avail) s *= avail / worst * 0.99;          // passou da folga: encolhe
-			else if (worst < avail * 0.97) s *= avail * 0.985 / worst;   // sobrou espaço: cresce até encostar na folga
+			if (worst > avail) s *= avail / worst * 0.99;          // over the margin: shrinks
+			else if (worst < avail * 0.97) s *= avail * 0.985 / worst;   // space left: grows until it reaches the margin
 			else break;
 		}
 		var dxs = [];
@@ -206,7 +206,7 @@
 			dxs.push(card.left + card.width / 2 - (lo2 + hi2) / 2);
 		}
 		box._prismDx = dxs;
-		// altura: a silhueta inclinada pode passar do cartão; reduz a escala vertical e centraliza na altura do cartão
+		// height: the tilted silhouette may go past the card; reduces the vertical scale and centers it on the card height
 		var setT = function (k, dyy, vv) { inner.style.transform = 'translateX(' + (box._prismDx ? box._prismDx[k] : 0) + 'px) translateY(' + dyy + 'px) scaleY(' + vv + ') translateZ(' + (-r * s) + 'px) rotateX(' + PRISM_TILT + 'deg) rotateY(' + (-k * step) + 'deg)'; };
 		var hs = [], k3;
 		for (k3 = 0; k3 < n; k3++) {
@@ -215,9 +215,9 @@
 			Array.prototype.forEach.call(faces, function (fc) { var q = fc.getBoundingClientRect(); if (q.top < t1) t1 = q.top; if (q.bottom > b1) b1 = q.bottom; });
 			hs.push(b1 - t1);
 		}
-		var dys = [], vss = [];   // altura de cada giro: escala vertical própria (cresce ou encolhe)
+		var dys = [], vss = [];   // height of each turn: its own vertical scale (grows or shrinks)
 		for (k3 = 0; k3 < n; k3++) {
-			// acerta a escala por medição direta (repete algumas vezes, pois a inclinação muda a altura projetada)
+			// sets the scale by direct measurement (repeats a few times, since the tilt changes the projected height)
 			var vs = card.height / hs[k3];
 			for (var itv = 0; itv < 4; itv++) {
 				setT(k3, 0, vs);
@@ -225,12 +225,12 @@
 				Array.prototype.forEach.call(faces, function (fc) { var q = fc.getBoundingClientRect(); if (q.top < tt) tt = q.top; if (q.bottom > bb) bb = q.bottom; });
 				if (bb - tt > 0) vs *= card.height / (bb - tt);
 			}
-			vs *= 1.023;   // correção medida: a inclinação encurta a silhueta cerca de 2%
+			vs *= 1.023;   // measured correction: the tilt shortens the silhouette by about 2%
 			vss.push(vs);
 			setT(k3, 0, vs);
 			var t2 = Infinity, b2 = -Infinity;
 			Array.prototype.forEach.call(faces, function (fc) { var q = fc.getBoundingClientRect(); if (q.top < t2) t2 = q.top; if (q.bottom > b2) b2 = q.bottom; });
-			dys.push(card.top + card.height / 2 - 5 - (t2 + b2) / 2);   // sobe 5px
+			dys.push(card.top + card.height / 2 - 5 - (t2 + b2) / 2);   // moves up 5px
 		}
 		box._prismDy = dys; box._prismV = vss;
 		inner.style.transition = oldT;
@@ -243,19 +243,19 @@
 			if (box.getAttribute('data-flip')) continue;
 			let body = box.querySelector('.ifacebox-body');
 			let tip = box.querySelector('.cbi-tooltip');
-			// precisa ter grafico (corpo) + info no hover (tooltip)
+			// needs a chart (body) + info on hover (tooltip)
 			if (!body || !tip || !(tip.textContent || '').trim()) continue;
-			// so cards "de verdade": pagina de Interfaces OU cards de porta (Status das portas).
-			// Exclui badges pequenos inline (ex.: status de upstream IPv4/IPv6), que bagunçam o layout.
+			// only real cards: the Interfaces page OR port cards (Status ports).
+			// Excludes small inline badges (e.g. IPv4/IPv6 upstream status), which mess up the layout.
 			let onInterfaces = (document.body.getAttribute('data-page') || '') === 'admin-network-network';
 			let isPortCard = !!body.querySelector('img[src*="port"]');
 			if (!onInterfaces && !isPortCard) continue;
-			let nameHead = box.querySelector('.ifacebox-head');       // 1o head = nome
+			let nameHead = box.querySelector('.ifacebox-head');       // 1st head = name
 			let name = nameHead ? (nameHead.textContent || '').trim().split('\n')[0].trim() : '';
 			let status = (body.textContent || '').trim().replace(/\s+/g, ' ');
-			// Campos do verso. Na pagina de Interfaces, UNE tooltip (Tipo/Dispositivo/Conectado)
-			// + o bloco de detalhes (Protocolo, Operadora, Tempo, MAC, RX, TX, IPv4, IPv6), sem repetir,
-			// e ESCONDE o bloco de detalhes (fica so o grafico no card e os botoes abaixo).
+			// Back fields. On the Interfaces page, MERGES the tooltip (Type/Device/Connected)
+			// + the details block (Protocol, Carrier, Uptime, MAC, RX, TX, IPv4, IPv6), without repeats,
+			// and HIDES the details block (only the chart stays on the card, plus the buttons below).
 			let m;
 			if (onInterfaces) {
 				let row = box.closest('tr');
@@ -275,21 +275,21 @@
 			let lines = [];
 			ORDER.forEach(function (lab) { (m[lab] || []).forEach(function (v) { lines.push(lab + ': ' + v); }); });
 			for (let mk in m) { if (ORDER.indexOf(mk) < 0) m[mk].forEach(function (v) { lines.push(mk + ': ' + v); }); }
-			// FRENTE = grafico; VERSO = texto (define a altura, sem rolagem)
-			let tipAllText = allTipText(box);   // guarda os tooltips antes de mover o conteúdo para a frente
+			// FRONT = chart; BACK = text (sets the height, no scrolling)
+			let tipAllText = allTipText(box);   // keeps the tooltips before moving the content to the front
 			let front = document.createElement('div');
 			front.className = 'flip-front';
 			while (box.firstChild) front.appendChild(box.firstChild);
-			// cards com varios icones de membros (ex.: ponte "lan"): monta uma figura propria,
-			// com tamanho dos icones calculado pela quantidade e formacao centralizada.
+			// cards with several member icons (e.g. bridge "lan"): builds its own figure,
+			// with the icon size calculated from the count, in a centered layout.
 			let visImgs = Array.prototype.filter.call(front.querySelectorAll('.ifacebox-body img'), function (im) { return !im.closest('.cbi-tooltip'); });
-			let memberSrcs = null;   // ícones de cada membro (guardados para as faces)
+			let memberSrcs = null;   // icons of each member (kept for the faces)
 			if (visImgs.length > 1 && !front.querySelector('.flip-figure')) {
 				front.classList.add('front-multi');
 				let srcs = visImgs.map(function (im) { return (im.getAttribute('src') || '').replace(/"/g, ''); });
 				memberSrcs = srcs;
 				let n = srcs.length;
-				// pirâmide: uma linha por tipo de membro; o tipo com menos itens fica em cima
+				// pyramid: one row per member type; the type with fewer items goes on top
 				let mtypes = memberTypes(tipAllText);
 				let layers = [srcs];
 				if (mtypes && mtypes.length === n) {
@@ -298,7 +298,7 @@
 					layers = order.map(function (t) { return groups[t]; }).sort(function (a, b) { return a.length - b.length; });
 				}
 				let widest = Math.max.apply(null, layers.map(function (l) { return l.length; }));
-				// quanto mais ícones na linha mais larga, menores (entre 26 e 54 px)
+				// the more icons in a row, the smaller they are (between 26 and 54 px)
 				let iso = Math.max(26, Math.min(54, Math.round(170 / Math.max(widest, layers.length))));
 				let fig = document.createElement('div');
 				fig.className = 'flip-figure flip-pyramid';
@@ -306,27 +306,27 @@
 				fig.innerHTML = layers.map(function (l) {
 					return '<div class="fig-row">' + l.map(function (s) { return '<img src="' + s + '" alt="">'; }).join('') + '</div>';
 				}).join('');
-				front.appendChild(fig);   // a figura original (.ifacebox-body) é escondida por CSS
-				// nome do dispositivo (ex.: br-lan) abaixo dos ícones
+				front.appendChild(fig);   // the original figure (.ifacebox-body) is hidden by CSS
+				// device name (e.g. br-lan) below the icons
 				let dev = (((tip.textContent || '').match(/Dispositivo:\s*([a-z0-9._+-]+)/)) || [])[1] || '';
 				if (dev) { let lbl = document.createElement('div'); lbl.className = 'fig-label'; lbl.textContent = dev; front.appendChild(lbl); }
 			}
-			// nome do dispositivo sempre embaixo, em todos os cards (alinhados entre si)
+			// device name always at the bottom, on all cards (aligned with each other)
 			if (!front.querySelector('.fig-label')) {
 				let devName = (((tip.textContent || '').match(/Dispositivo:\s*([a-z0-9._+-]+)/)) || [])[1] || name;
 				let lbl2 = document.createElement('div');
 				lbl2.className = 'fig-label';
 				lbl2.textContent = devName;
-				if (devName !== name) front.appendChild(lbl2);   // sem repetir o nome que já está no topo do cartão
-				// tira o texto original do nome (ao lado do ícone), para não duplicar
+				if (devName !== name) front.appendChild(lbl2);   // without repeating the name already at the top of the card
+				// removes the original name text (next to the icon), to avoid duplication
 				Array.prototype.forEach.call(front.querySelectorAll('.ifacebox-body'), function (b) {
 					Array.prototype.forEach.call(b.childNodes, function (c) { if (c.nodeType === 3) c.nodeValue = ''; });
 				});
 			}
 			let back = document.createElement('div');
 			back.className = 'flip-back';
-			// detalhes sem repetir: tira os campos de cada membro (tipo, dispositivo, conexão, RX, TX) e linhas iguais
-			// detalhes sem repetir campos de membros; a rede (IPs, gateway, DNS) vai para uma face própria
+			// details without repeats: removes the per-member fields (type, device, connection, RX, TX) and identical lines
+			// details without member-field repeats; the network (IPs, gateway, DNS) goes to its own face
 			let firstMac = true;
 			let detLines = lines.filter(function (p) { return !/^(Tipo|Dispositivo|Conectado|RX|TX|Type|Device|Connected)\s*:/i.test(p); })
 				.filter(function (p) { if (/^MAC\s*:/i.test(p)) { if (!firstMac) return false; firstMac = false; } return true; })
@@ -343,17 +343,17 @@
 			let detailsHtml = toHtml(detLines.filter(function (p) { return !isNet(p); }));
 			let netHtml = toHtml(detLines.filter(isNet));
 			let sub = (status && status.length <= 24) ? '<div class="ib-back-status">' + status + '</div>' : '';
-				// ponte com vários membros: prisma horizontal. Faces: gráfico (frente), um membro por face e o verso (detalhes + rede)
+				// bridge with several members: horizontal prism. Faces: chart (front), one member per face, and the back (details + network)
 				let parts = memberGroups(tipAllText);
-				// ponte: o título acima do gráfico é o nome do dispositivo (br-lan), não o nome da interface (lan)
+				// bridge: the title above the chart is the device name (br-lan), not the interface name (lan)
 				if (parts) {
 					let hd = front.querySelector('.ifacebox-head');
 					let bm = (tip.textContent || '').match(/Bridge[^]{0,120}?(?:Dispositivo|Device):\s*([a-z0-9._+-]+)/) || (tip.textContent || '').match(/(?:Dispositivo|Device):\s*([a-z0-9._+-]+)/);
 					if (hd && bm) hd.textContent = bm[1];
 				}
 				let faces = [front];
-				// prisma: cartões de ponte (um membro por face) e cartões de interface (gráfico, detalhes, rede)
-				let prismMode = !!parts;   // só cartões de ponte com membros; os demais são frente + verso
+				// prism: bridge cards (one member per face) and interface cards (chart, details, network)
+				let prismMode = !!parts;   // only bridge cards with members; the others are front + back
 				if (prismMode) box.classList.add('prism');
 				if (parts) {
 					parts.blocks.forEach(function (blk, bi) {
@@ -364,9 +364,9 @@
 						faces.push(mf);
 					});
 				}
-				let backNet = netHtml ? '<div class="ib-back-title">Rede</div>' + netHtml : '';   // todos os detalhes (inclusive rede) ficam juntos no verso
+				let backNet = netHtml ? '<div class="ib-back-title">Rede</div>' + netHtml : '';   // all the details (including the network) stay together on the back
 				let redeFace = null;
-				if (!parts && prismMode) {   // cartão sem membros: a rede vai para uma face própria
+				if (!parts && prismMode) {   // card without members: the network goes to its own face
 					redeFace = document.createElement('div');
 					redeFace.className = 'flip-mem';
 					redeFace.innerHTML = '<div class="ib-back-title">' + name + '</div><div class="ib-back-title">Rede</div>' + netHtml;
@@ -374,16 +374,16 @@
 				back.innerHTML = '<div class="ib-back-title">' + name + '</div>' + sub + detailsHtml + backNet;
 				faces.push(back);
 				if (redeFace) faces.push(redeFace);
-				// N faces (lados do prisma); lado = 320px, então o raio até o centro de cada face = 160 / tan(180° / N)
-				// raio limitado (prisma não cresce demais); a face fica estreita para o anel fechar com N lados
+				// N faces (prism sides); side = 320px, so the radius to the center of each face = 160 / tan(180° / N)
+				// radius capped (the prism does not grow too much); the face is narrow so the ring closes with N sides
 				let N = faces.length, R = Math.min(150, 160 / Math.tan(Math.PI / N)), W = 2 * R * Math.tan(Math.PI / N), STEP = 360 / N;
-				let FW = W;   // a frente tem a mesma largura das outras faces
-				let capTop = null, capBot = null;   // tampas (criadas depois, em setas)
+				let FW = W;   // the front has the same width as the other faces
+				let capTop = null, capBot = null;   // caps (created later, in the arrows section)
 				let geo = function (s) {
 					if (typeof capGeo === 'function') capGeo(s);
 					faces.forEach(function (fc, i) {
 						let w = (fc === front ? FW : W) * s;
-						// ícones da pirâmide cabem na largura da face: menos ícones por linha = ícones maiores
+						// pyramid icons fit the face width: fewer icons per row = bigger icons
 						let fg = fc.querySelector('.flip-pyramid');
 						if (fg) {
 							let wide = Math.max.apply(null, [1].concat([].map.call(fg.querySelectorAll('.fig-row'), function (rw) { return rw.children.length; })));
@@ -393,7 +393,7 @@
 						fc.style.transform = 'rotateY(' + (i * STEP) + 'deg) translateZ(' + (R * s) + 'px)';
 					});
 				};
-				// tampas: raio até os vértices = apótema / cos(180° / N); pontos do polígono em % da caixa
+				// caps: radius to the vertices = apothem / cos(180° / N); polygon points in % of the box
 				let capGeo = function (s) {
 					if (!capTop) return;
 					let rv = R * s / Math.cos(Math.PI / N), pts = [];
@@ -409,12 +409,12 @@
 					});
 				};
 				capGeo(1);
-				if (prismMode) geo(1);   // depois das tampas: geo também as atualiza
-				// camada interna que gira (o container .ifacebox fica parado -> hover estavel, sem tremor)
+				if (prismMode) geo(1);   // after the caps: geo also updates them
+				// inner layer that turns (the .ifacebox container stays still -> stable hover, no jitter)
 				let inner = document.createElement('div');
 				inner.className = 'flip-inner';
 				faces.forEach(function (fc) { inner.appendChild(fc); });
-				if (prismMode) {   // base e topo: polígono regular de N lados (mesmo número de lados das faces)
+				if (prismMode) {   // bottom and top: regular N-sided polygon (same number of sides as the faces)
 					capTop = document.createElement('div'); capBot = document.createElement('div');
 					capTop.className = capBot.className = 'prism-cap';
 					inner.appendChild(capTop); inner.appendChild(capBot);
@@ -427,51 +427,51 @@
 						geo(S);
 						prismSet(box, inner, 0, N, R * S);
 					}
-					// o cartão muda de largura (celular, zoom): refaz o encaixe e a centralização do prisma
-					if (prismMode) setTimeout(function () { box.classList.add('prism-ready'); }, 1500);   // segurança: mostra mesmo se a medição falhar
+					// the card changes width (phone, zoom): redoes the fit and centering of the prism
+					if (prismMode) setTimeout(function () { box.classList.add('prism-ready'); }, 1500);   // safety: shows even if the measurement fails
 				if (prismMode && window.ResizeObserver) {
 						new ResizeObserver(function () {
 							let cur = +box.getAttribute('data-face') || 0;
 							let sc = prismFit(box, inner, faces, geo, N, STEP, R);
 							geo(sc);
 							prismSet(box, inner, cur, N, R * sc);
-							setTimeout(function () { prismSpace(box); box.classList.add('prism-ready'); }, 700);   // espera a animação do giro terminar; só então mostra o cartão
+							setTimeout(function () { prismSpace(box); box.classList.add('prism-ready'); }, 700);   // waits for the turn animation to end; only then shows the card
 						}).observe(box);
 					}
-				else { var t0 = (boxTurn[name] !== undefined) ? boxTurn[name] : 0; box.setAttribute('data-turn', t0); if (t0) box.setAttribute('data-latched', '1'); box.querySelector('.flip-inner').style.transform = 'rotateY(' + (-t0 * 180) + 'deg)'; }   // volta virado se estava virado
-			// borda verde quando o dispositivo está conectado
-			// azul = conectado; vermelho = desconectado (porta "sem link" ou dispositivo/rede sem conexão)
-				// Estado do link em QUALQUER idioma: o LuCI traduz os rotulos com a funcao global _()
-				// (ex.: _('Connected') -> "Conectado", _('yes') -> "sí"). Montamos a busca com essas traducoes.
+				else { var t0 = (boxTurn[name] !== undefined) ? boxTurn[name] : 0; box.setAttribute('data-turn', t0); if (t0) box.setAttribute('data-latched', '1'); box.querySelector('.flip-inner').style.transform = 'rotateY(' + (-t0 * 180) + 'deg)'; }   // comes back flipped if it was flipped
+			// green border when the device is connected
+			// blue = connected; red = disconnected (port "no link" or device/network without connection)
+				// Link state in ANY language: LuCI translates the labels with the global _() function
+				// (e.g. _('Connected') -> "Conectado", _('yes') -> "sí"). We build the search with these translations.
 				let linked = connectedState(box);
 				box.classList.add(linked ? 'ifc-connected' : 'ifc-disconnected');
-			// toque/clique vira o card (no celular nao ha hover)
+			// tap/click flips the card (there is no hover on phones)
 			box.addEventListener('click', function (e) {
 				if (e.target.closest('a, button, input')) return;
-					if (this.classList.contains('prism')) {   // prisma: cada clique gira para a próxima face
+					if (this.classList.contains('prism')) {   // prism: each click turns to the next face
 						let pn = +this.getAttribute('data-faces') || 1;
 						let cur = +this.getAttribute('data-turn') || +this.getAttribute('data-face') || 0;
-						// clique na lateral esquerda gira para a esquerda; na direita (ou no meio) gira para a direita
+						// a click on the left side turns left; on the right (or in the middle) turns right
 						let rc = this.getBoundingClientRect(), px = (e.clientX - rc.left) / rc.width;
-						let pf = cur + (px < 0.33 ? 1 : -1);   // sem limite: do último volta a girar para o primeiro no mesmo sentido
+						let pf = cur + (px < 0.33 ? 1 : -1);   // no limit: from the last face it turns on to the first, in the same direction
 						prismSet(this, this.querySelector('.flip-inner'), pf, pn, +this.getAttribute('data-r') || 0);
 						var pbox = this;
-						setTimeout(function () { prismSpace(pbox); }, 650);   // espera a animação terminar
+						setTimeout(function () { prismSpace(pbox); }, 650);   // waits for the animation to end
 						flipFaceSet(location.pathname + '|' + this.getAttribute('data-flipkey'), ((pf % pn) + pn) % pn);
 					return;
 				}
 				var d = sideDir(this, e), hovered = this.hasAttribute('data-hover');
-				if (this.hasAttribute('data-latched')) this.removeAttribute('data-latched'); else this.setAttribute('data-latched', '1');   // clique alterna travado/destravado
-				if (!hovered) flipSpin(this, d);   // se já girou pelo mouse, só trava; senão gira no lado clicado
+				if (this.hasAttribute('data-latched')) this.removeAttribute('data-latched'); else this.setAttribute('data-latched', '1');   // click toggles locked/unlocked
+				if (!hovered) flipSpin(this, d);   // if it already turned with the mouse, it only locks; otherwise it turns on the clicked side
 				flipSet(location.pathname + '|' + this.getAttribute('data-flipkey'), this.hasAttribute('data-latched'));
 			});
 		}
 	}
-	// Deixa todos os cards do MESMO tamanho: largura = a do mais largo, altura = a do mais alto.
+	// Makes all cards the SAME size: width = the widest, height = the tallest.
 	function equalize() {
 		var boxes = Array.prototype.slice.call(document.querySelectorAll('.ifacebox[data-flip]'));
 		if (boxes.length < 2) return;
-		// volta ao tamanho natural (conteúdo) para medir
+		// returns to natural size (content) to measure
 		boxes.forEach(function (b) { b.style.minWidth = ''; b.style.minHeight = ''; });
 		var maxW = 0, maxH = 0;
 		boxes.forEach(function (b) {
@@ -484,9 +484,9 @@
 			b.style.minHeight = Math.ceil(maxH) + 'px';
 		});
 	}
-	// A descrição da página ("Aqui você pode...") vira dica do título da 1ª seção:
-	// some do corpo e aparece só quando o mouse passa pelo título.
-	// Páginas sem cartão (ex.: Reiniciar): envolve o conteúdo num cartão, para receber a barra de título
+	// The page description ("Aqui você pode...") becomes a hint on the title of the 1st section:
+	// leaves the body and appears only when the mouse passes over the title.
+	// Pages without a card (e.g. Restart): wraps the content in a card, to receive the title bar
 	function wrapPage(mc) {
 		var h2 = Array.prototype.filter.call(mc.querySelectorAll('h2'), function (e) {
 			return !e.closest('.cbi-tabmenu') && e.textContent.trim();
@@ -496,7 +496,7 @@
 		var sec = document.createElement('div');
 		sec.className = 'cbi-section page-card';
 		host.insertBefore(sec, h2);
-		// move o título e o conteúdo para dentro do cartão (os eventos dos botões continuam ligados)
+		// moves the title and content into the card (button events stay attached)
 		Array.prototype.slice.call(host.childNodes).forEach(function (n) {
 			if (n !== sec && n.nodeName !== 'SCRIPT' && n.nodeName !== 'NOSCRIPT') sec.appendChild(n);
 		});
@@ -505,35 +505,35 @@
 	function hintify() {
 		var mc = document.getElementById('maincontent');
 		var sec = mc && mc.querySelector('.cbi-section');
-		if (mc && !sec) sec = wrapPage(mc);               // sem cartão: cria um para a barra de título
-		if (!sec) return;                                  // página sem cartão: nada a fazer
-		// 1) título grande solto da página (h2 fora dos cartões) some: o nome vai para a barra do cartão
+		if (mc && !sec) sec = wrapPage(mc);               // no card: creates one for the title bar
+		if (!sec) return;                                  // page without a card: nothing to do
+		// 1) a large loose page title (h2 outside the cards) is removed: the name goes to the card bar
 		var big = Array.prototype.filter.call(mc.querySelectorAll('h2'), function (e) {
 			return !(e.closest('.cbi-section') && !e.closest('.page-card')) && !e.closest('.cbi-tabmenu') && e.textContent.trim();
 		});
 		var pageName = big.length ? big[0].textContent.trim() : '';
 		big.forEach(function (e) { e.style.display = 'none'; });
 		var d = mc.querySelector('.cbi-map-descr');
-		// bloco de texto solto da página (ex.: "A média de carga..." em Carga): sem título, tabela ou formulário dentro
+		// loose text block on the page (e.g. "The load average..." on Load): no title, table or form inside
 		if (!d) {
 			d = Array.prototype.find.call(mc.querySelectorAll('p, div'), function (e) {
 				var t = (e.textContent || '').trim();
-				// só texto com formatação simples: nunca um bloco que contenha abas, links ou controles
+				// only text with simple formatting: never a block that contains tabs, links or controls
 				var plain = Array.prototype.every.call(e.children, function (c) { return /^(SPAN|B|STRONG|EM|I|BR)$/.test(c.tagName); });
 				return plain && !e.closest('.cbi-section, .cbi-tabmenu, footer') && t.length > 20 && t.length < 300;
 			}) || null;
 		}
-		// sem a classe: o parágrafo logo abaixo do título da página também é a descrição (ex.: Roteamento)
+		// without the class: the paragraph right below the page title is also the description (e.g. Routing)
 		if (!d && big.length && big[0].nextElementSibling && big[0].nextElementSibling.tagName === 'P' && !big[0].nextElementSibling.querySelector('.cbi-section')) {
 			d = big[0].nextElementSibling;
 		}
-		// avisos do LuCI (ex.: "No password set!") não são descrição da página: não mexe neles
+		// LuCI warnings (e.g. "No password set!") are not the page description: leave them alone
 		if (d && d.closest('.alert-message')) return;
 		if (big.length && big[0].closest('.alert-message')) return;
-		// 2) título do cartão: o h3 que já existe, ou um novo com o nome da página no menu (ex.: "Administração")
+		// 2) card title: the existing h3, or a new one with the page name from the menu (e.g. "Administration")
 		var h = sec.querySelector(':scope > h3');
-		// só cria título se o cartão ainda não tem barra de título (ex.: Visão geral já tem "Sistema", "Memória"...)
-		// (cadeias do Firewall, classe nft-chain, têm título próprio e ficam como estão)
+		// only creates a title if the card has no title bar yet (e.g. Overview already has "System", "Memory"...)
+		// (Firewall chains, class nft-chain, have their own title and stay as they are)
 		if (!h && !sec.querySelector(':scope > .cbi-title, :scope > legend') && !sec.classList.contains('nft-chain')) {
 			var act = document.querySelector('.desktop-nav a.is-active-page, a.is-active-page');
 			var name = (act && act.textContent.trim()) || pageName;
@@ -541,10 +541,10 @@
 				h = sec.querySelector(':scope > h3.page-title') || document.createElement('h3');
 				h.className = 'page-title';
 				h.textContent = name;
-				if (!h.parentElement) sec.insertBefore(h, sec.firstChild);   // dentro do cartão, na faixa de vidro do topo
+				if (!h.parentElement) sec.insertBefore(h, sec.firstChild);   // inside the card, in the glass strip at the top
 			}
 		}
-		// 3) descrição da página vira dica do título
+		// 3) page description becomes a hint on the title
 		if (!h || !d) return;
 		var text = (d.textContent || '').trim();
 		if (text) {
@@ -556,10 +556,10 @@
 		}
 		d.remove();
 	}
-	// Abas antigas (ul.tabs, ex.: Registro do sistema/kernel) viram o padrão do tema (cbi-tabmenu):
-	// a aba aberta fica com fundo escuro, como nas outras páginas.
+	// Old tabs (ul.tabs, e.g. System/kernel log) become the theme's standard (cbi-tabmenu):
+	// the open tab gets a dark background, as on the other pages.
 	function tabsify() {
-		// barra de abas dentro de um cartão de primeiro nível (ex.: DNS) sobe para antes do cartão, como no resto
+		// tab bar inside a top-level card (e.g. DNS) moves up to before the card, like elsewhere
 		var inCards = document.querySelectorAll('#maincontent .cbi-section > ul.cbi-tabmenu');
 		for (var k = 0; k < inCards.length; k++) {
 			var card = inCards[k].parentElement;
@@ -577,9 +577,9 @@
 			}
 		}
 	}
-	// Quando a barra de abas foi movida para fora do cartão (ex.: DNS), o LuCI não acha os painéis.
-	// Esta função faz a troca de painel: a aba clicada mostra o painel com o mesmo data-tab.
-	// barras já ligadas. Usa WeakSet (e não data-*) porque o LuCI clona os elementos e o clone copiaria a marca sem os eventos
+	// When the tab bar was moved out of the card (e.g. DNS), LuCI cannot find the panels.
+	// This function switches panels: the clicked tab shows the panel with the same data-tab.
+	// bars already wired. Uses a WeakSet (not data-*) because LuCI clones the elements and the clone would copy the mark without the events
 	var wiredBars = new WeakSet();
 	function wireTabPanes() {
 		var box = document.querySelector('#maincontent .cbi-section-node-tabbed');
@@ -587,28 +587,28 @@
 		var bars = document.querySelectorAll('#maincontent ul.cbi-tabmenu');
 		for (var i = 0; i < bars.length; i++) {
 			var ul = bars[i];
-			if (wiredBars.has(ul) || ul.parentElement.querySelector(':scope > [data-tab]')) continue;   // já ligada, ou o LuCI acha os painéis
+			if (wiredBars.has(ul) || ul.parentElement.querySelector(':scope > [data-tab]')) continue;   // already wired, or LuCI finds the panels
 			var lis = Array.prototype.filter.call(ul.children, function (l) { return l.hasAttribute('data-tab'); });
 			if (!lis.length) continue;
 			wiredBars.add(ul);
-			var keys = lis.map(function (l) { return l.getAttribute('data-tab'); });   // chaves das abas de primeiro nível
+			var keys = lis.map(function (l) { return l.getAttribute('data-tab'); });   // keys of the top-level tabs
 			var show = function (key) {
-				// painéis de primeiro nível da página (os aninhados, de abas dentro de abas, ficam como estão)
+				// top-level panels of the page (nested ones, tabs inside tabs, stay as they are)
 				Array.prototype.forEach.call(document.querySelectorAll('#maincontent div[data-tab]'), function (p) {
-					if (keys.indexOf(p.getAttribute('data-tab')) < 0) return;   // sub-abas aninhadas ficam com o LuCI
+					if (keys.indexOf(p.getAttribute('data-tab')) < 0) return;   // nested sub-tabs stay with LuCI
 					if (p.hasAttribute('data-tab')) p.setAttribute('data-tab-active', p.getAttribute('data-tab') === key ? 'true' : 'false');
 				});
 			};
 			var first = lis.filter(function (l) { return l.classList.contains('cbi-tab'); })[0] || lis[0];
 			show(first.getAttribute('data-tab'));
-			// um único ouvinte no documento (sobrevive aos clones do LuCI); roda na captura, antes do LuCI
+			// a single listener on the document (survives LuCI's clones); runs in the capture phase, before LuCI
 			if (!document.documentElement.dataset.tabDelegated) {
 				document.documentElement.dataset.tabDelegated = '1';
 				document.addEventListener('click', function (e) {
 					var li = e.target.closest('#maincontent ul.cbi-tabmenu > li[data-tab]');
 					if (!li) return;
 					var bar = li.parentElement;
-					if (bar.parentElement.querySelector(':scope > [data-tab]')) return;   // o LuCI acha os painéis: deixa com ele
+					if (bar.parentElement.querySelector(':scope > [data-tab]')) return;   // LuCI finds the panels: leave it to LuCI
 					e.preventDefault();
 					e.stopImmediatePropagation();
 					Array.prototype.forEach.call(bar.children, function (l) { l.className = (l === li) ? 'cbi-tab' : 'cbi-tab-disabled'; });
@@ -621,23 +621,23 @@
 			}
 		}
 	}
-	// ---- Consumo por dispositivo (Visão geral) ----
-	// Lê /cgi-bin/aurora-bw a cada 5s e desenha, por dispositivo, a velocidade atual e uma linha do histórico.
+	// ---- Traffic per device (Overview) ----
+	// Reads /cgi-bin/aurora-bw every second and draws, per device, the current speed and a history line.
 	var bwHist = {};            // mac -> {name, ip, via, rx, tx, last, down[], up[], active}
-	var bwBusy = false;         // true enquanto a leitura do roteador não voltou (evita pedidos empilhados)
+	var bwBusy = false;         // true while the router read has not returned (avoids stacked requests)
 	var bwTimer = null;
 	function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
-	function bwFmt(bps) {       // velocidade legível
+	function bwFmt(bps) {       // readable speed
 		if (bps < 1024) return Math.round(bps) + ' B/s';
 		if (bps < 1048576) return (bps / 1024).toFixed(1) + ' KB/s';
 		return (bps / 1048576).toFixed(2) + ' MB/s';
 	}
-	function bwTotal(n) {       // total legível
+	function bwTotal(n) {       // readable total
 		if (n < 1048576) return (n / 1024).toFixed(1) + ' KB';
 		if (n < 1073741824) return (n / 1048576).toFixed(1) + ' MB';
 		return (n / 1073741824).toFixed(2) + ' GB';
 	}
-	function bwSpark(down, up) { // linha de velocidade (download azul, upload cinza)
+	function bwSpark(down, up) { // speed line (download blue, upload grey)
 		var W = 240, H = 52, n = Math.max(down.length, 2), max = Math.max.apply(null, down.concat(up).concat([1]));
 		function pts(arr) {
 			return arr.map(function (v, i) { return ((i / (n - 1)) * W).toFixed(1) + ',' + (H - (v / max) * (H - 4) - 2).toFixed(1); }).join(' ');
@@ -645,14 +645,14 @@
 		return '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" class="bw-svg">' +
 			'<polyline class="ln-up" points="' + pts(up) + '"/><polyline class="ln-down" points="' + pts(down) + '"/></svg>';
 	}
-	// média das últimas leituras (4 amostras): mostra um valor estável, perto da média recente
+	// average of the last readings (4 samples): shows a stable value, close to the recent average
 	function bwAvg(a) {
 		var n = Math.min(4, a.length), s = 0;
 		if (!n) return 0;
 		for (var i = a.length - n; i < a.length; i++) s += a[i];
 		return s / n;
 	}
-	// texto simples da velocidade (sem animação)
+	// plain speed text (no animation)
 		function bwSpan(cls, key, v) {
 			return '<span class="' + cls + '">' + (cls === 'bw-down' ? '↓ ' : '↑ ') + bwFmt(v) + '</span>';
 		}
@@ -669,12 +669,12 @@
 		}).join('');
 	}
 	function bwPoll() {
-		// para a leitura quando a seção não está na tela (ex.: o usuário trocou de página)
+		// stops reading when the section is not on screen (e.g. the user changed page)
 		if (!document.querySelector('.bw-section, #wifi_assoclist_table')) { clearInterval(bwTimer); bwTimer = null; return; }
-		// não empilha pedidos: enquanto um não volta, o próximo espera (evita atualização em solavancos)
+		// does not stack requests: while one has not returned, the next waits (avoids jerky updates)
 			if (bwBusy) return;
 			bwBusy = true;
-			// se o roteador demorar demais, cancela após 3 s para a página não ficar travada
+			// if the router takes too long, cancels after 3 s so the page does not freeze
 			var ctl = typeof AbortController === 'function' ? new AbortController() : null;
 			var to = ctl ? setTimeout(function () { ctl.abort(); }, 3000) : null;
 			fetch('/cgi-bin/aurora-bw', { cache: 'no-store', signal: ctl ? ctl.signal : undefined }).then(function (r) { return r.json(); }).then(function (list) {
@@ -684,11 +684,11 @@
 			list.forEach(function (d) {
 				seen[d.mac] = true;
 				var h = bwHist[d.mac] || (bwHist[d.mac] = { down: [], up: [], rx: 0, tx: 0, last: null });
-				h.name = d.name; h.ip = d.ip; h.via = d.via; h.port = d.port || ''; h.active = d.up !== false;   // cabo sem link = desconectado
-				// mesma leitura do coletor (ainda não mudou): não conta de novo, senão aparece 0 e depois o dobro
+				h.name = d.name; h.ip = d.ip; h.via = d.via; h.port = d.port || ''; h.active = d.up !== false;   // wired without link = disconnected
+				// same reading from the collector (not changed yet): not counted again, otherwise it shows 0 and then double
 				if (h.last && d.ts !== undefined && d.ts === h.last.ts) return;
-				if (h.last) {                       // velocidade = variação dos bytes / tempo (nunca negativa)
-					// tempo real da leitura do roteador (ts), mais preciso que o relógio do navegador
+				if (h.last) {                       // speed = change in bytes / time (never negative)
+					// real time of the router reading (ts), more precise than the browser clock
 						var dt = (d.ts !== undefined && h.last.ts !== undefined) ? (d.ts - h.last.ts) : (now - h.last.t) / 1000;
 					h.down.push(Math.max(0, d.rx - h.last.rx) / dt);
 					h.up.push(Math.max(0, d.tx - h.last.tx) / dt);
@@ -701,7 +701,7 @@
 			bwInject();
 		}).catch(function () { bwBusy = false; }).then(function () { bwBusy = false; });
 	}
-	// Consumo dos dispositivos Wi-Fi: uma coluna nova na tabela "Estações associadas" (casada pelo MAC)
+	// Wi-Fi device usage: a new column in the "Associated stations" table (matched by MAC)
 	function bwInject() {
 		var table = document.getElementById('wifi_assoclist_table');
 		if (!table) return;
@@ -710,7 +710,7 @@
 			var th = document.createElement('th');
 			th.className = 'th bw-th';
 			th.textContent = 'Consumo';
-			head.appendChild(th); head.appendChild(document.createElement('th')); head.appendChild(document.createElement('th'));   // antes da coluna de ações
+			head.appendChild(th); head.appendChild(document.createElement('th')); head.appendChild(document.createElement('th'));   // before the actions column
 		}
 		Array.prototype.forEach.call(table.querySelectorAll('tr'), function (tr) {
 			if (tr === head || !tr.children[1]) return;
@@ -720,24 +720,24 @@
 			if (!td) {
 				td = document.createElement('td');
 				td.className = 'td bw-td';
-				var act = tr.querySelector('.cbi-button');    // antes da célula do botão (Desconectar)
+				var act = tr.querySelector('.cbi-button');    // before the button cell (Disconnect)
 				tr.insertBefore(td, act ? act.closest('td') : tr.lastElementChild);
 			}
 			var d = bwAvg(h.down), u = bwAvg(h.up);
 			var wk = 'wt|' + (tr.children[1].textContent || '').trim().toLowerCase();
 				var html = '<div class="bw-mini">' + bwSpan('bw-down', wk + '|d', d) + bwSpan('bw-up', wk + '|u', u) + '</div>' +
 				bwSpark(h.down, h.up).replace('class="bw-svg"', 'class="bw-svg bw-mini-svg"');
-			// escreve só quando mudou: senão a própria escrita dispara o observador e vira um laço
+			// writes only when it changed: otherwise the write itself triggers the observer and creates a loop
 			if (td._bwHtml !== html) { td._bwHtml = html; td.innerHTML = html; }
 		});
 	}
 	function bandwidthify() {
 		var mc = document.getElementById('maincontent');
 		var page = document.body.getAttribute('data-page') || '';
-		// Status: só monta a seção de dispositivos depois que a LuCI parar de montar a página (ou após 6 s)
+		// Status: builds the devices section only after LuCI stops building the page (or after 6 s)
 		if (page === 'admin-status-overview' && Date.now() - pageStart < 6000 && (Date.now() - quietAt < 1500 || document.querySelectorAll('#maincontent .cbi-section').length < 2)) { setTimeout(bandwidthify, 500); return; }
 		if (!mc) return;
-		if (page === 'admin-network-wireless') {       // página Wi-Fi: só a coluna e a leitura (sem cartão próprio)
+		if (page === 'admin-network-wireless') {       // Wi-Fi page: only the column and the reading (no card of its own)
 			bwInject();
 			if (!bwTimer && document.getElementById('wifi_assoclist_table')) { bwPoll(); bwTimer = setInterval(bwPoll, 1000); }
 			devRender();
@@ -756,14 +756,14 @@
 		mc.insertBefore(sec, mc.querySelector('footer'));
 		if (!bwTimer) { bwPoll(); bwTimer = setInterval(bwPoll, 1000); }
 	}
-	// ---- Dispositivos Wi-Fi em cards (substituem a tabela "Estações associadas" na página Wi-Fi) ----
-	var devSort = 'name';        // ordenação das abas da lista Wi-Fi
-	var devSortC = 'name';       // ordenação das abas da lista de cabeados (independente)
+	// ---- Wi-Fi devices as cards (they replace the "Associated stations" table on the Wi-Fi page) ----
+	var devSort = 'name';        // sort of the Wi-Fi list tabs
+	var devSortC = 'name';       // sort of the wired list tabs (independent)
 	var devFlipped = {};
-	// gira o card de dispositivo 180° por passo (contínuo, como os demais cards)
-	// o giro fica guardado em devTurn (e no atributo --t do card), assim a atualização da página não o desfaz
+	// turns the device card 180° per step (continuous, like the other cards)
+	// the turn is kept in devTurn (and in the card's --t attribute), so a page refresh does not undo it
 	var devTurn = {};
-	// os cards voltam ao padrão ao trocar de página (não são guardados entre páginas)
+	// cards go back to the default when the page changes (they are not kept between pages)
 	document.addEventListener('click', function (e) {
 		if (e.target.closest && e.target.closest('header a, nav a, .main-left a, .desktop-nav a, .nav a, #tabmenu a, ul.cbi-tabmenu a')) { devTurn = {}; devFlipped = {}; boxTurn = {}; }
 	}, true);
@@ -774,17 +774,17 @@
 		card.setAttribute('data-turn', t);
 		card.setAttribute('data-lastdir', dir);
 		card.style.setProperty('--t', t);
-	}         // mac -> card virado?
-	// comparadores de cada aba (chave = data-sort)
+	}         // mac -> card flipped?
+	// comparators for each tab (key = data-sort)
 	var devCmp = {
 		name: function (a, b) { return (a.name || '').localeCompare(b.name || ''); },
 		ip: function (a, b) { return ipNum(a.ip) - ipNum(b.ip); },
 		mac: function (a, b) { return a.mac.localeCompare(b.mac); },
 		net: function (a, b) { return (a.net || '').localeCompare(b.net || ''); },
-		signal: function (a, b) { return b.signalNum - a.signalNum; },                       // mais forte primeiro
-		rate: function (a, b) { return rateNum(b.rate) - rateNum(a.rate); },                // maior taxa RX primeiro
+		signal: function (a, b) { return b.signalNum - a.signalNum; },                       // strongest first
+		rate: function (a, b) { return rateNum(b.rate) - rateNum(a.rate); },                // highest RX rate first
 		usage: function (a, b) { return (b.down + b.up) - (a.down + a.up) || (a.name || '').localeCompare(b.name || ''); },
-		total: function (a, b) { return (b.rx + b.tx) - (a.rx + a.tx); },                   // maior total primeiro
+		total: function (a, b) { return (b.rx + b.tx) - (a.rx + a.tx); },                   // largest total first
 		type: function (a, b) { return a.type.localeCompare(b.type) || (a.name || '').localeCompare(b.name || ''); }
 	};
 	function ipNum(ip) { return (ip || '').split('.').reduce(function (acc, p) { return acc * 256 + (parseInt(p, 10) || 0); }, 0); }
@@ -796,14 +796,14 @@
 		other: '<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M9.5 8.5a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .9-1 1.7"/><path d="M12 14.5h.01"/>'
 	};
 	var devTypeLabel = { phone: 'Celular', tv: 'TV', computer: 'Computador', other: 'Desconhecido' };
-	// Tipo pelo nome do dispositivo (DHCP). Heurística: pode errar.
+	// Type from the device name (DHCP). Heuristic: may be wrong.
 	function devType(name) {
 		if (/iphone|android|redmi|galaxy|xiaomi|moto|pixel|phone|celular|sm-/i.test(name)) return 'phone';
 		if (/\btv\b|roku|chromecast|firetv|bravia/i.test(name)) return 'tv';
 		if (/desktop|laptop|notebook|\bpc\b|macbook|imac/i.test(name)) return 'computer';
 		return 'other';
 	}
-	// linhas da tabela original, por MAC (dados de sinal, taxa, rede e o botão Desconectar)
+	// rows of the original table, by MAC (signal, rate, network and the Disconnect button)
 	function devRows() {
 		var t = document.getElementById('wifi_assoclist_table'), map = {};
 		if (!t) return map;
@@ -845,7 +845,7 @@
 		devLoadOui();
 		if (!document.documentElement.dataset.devWired) { document.documentElement.dataset.devWired = '1'; devWire(); }
 		t.classList.add('dev-hidden');
-		var h3 = t.previousElementSibling;   // título da seção: "Estações associadas" -> "Dispositivos WiFi"
+		var h3 = t.previousElementSibling;   // section title: "Associated stations" -> "WiFi devices"
 		if (h3 && h3.tagName === 'H3' && /Estações associadas|Associated Stations|Estaciones asociadas/.test(h3.textContent)) h3.textContent = L('Dispositivos WiFi');
 		var wrap = t.parentElement.querySelector(':scope > .dev-wrap');
 		if (!wrap) {
@@ -879,16 +879,16 @@
 			return (a.name || '').localeCompare(b.name || '');
 		});
 		var html = items.map(function (it) { return devCardHtml(it, !!devFlipped[it.mac]); }).join('');
-		if (grid._html !== html && (grid._html == null || !grid.matches(':hover'))) { grid._html = html; grid.innerHTML = html; }   // só quando mudou e sem o mouse sobre a lista (evita o card tremer)
+		if (grid._html !== html && (grid._html == null || !grid.matches(':hover'))) { grid._html = html; grid.innerHTML = html; }   // only when it changed and with the mouse not over the list (avoids the card jittering)
 		devRenderWired();
 	}
-	// eventos das abas, do botão Desconectar e do virar do card (um único ouvinte)
+	// events for the tabs, the Disconnect button and the card flip (a single listener)
 	function devWire() {
 		document.addEventListener('click', function (e) {
 			var li = e.target.closest('#maincontent .dev-sort li[data-sort]');
 			if (li) {
 				e.preventDefault();
-				if (li.closest('.bw-section')) devSortC = li.getAttribute('data-sort');   // cabeados
+				if (li.closest('.bw-section')) devSortC = li.getAttribute('data-sort');   // wired
 				else devSort = li.getAttribute('data-sort');                              // Wi-Fi
 				Array.prototype.forEach.call(li.parentElement.children, function (l) { l.className = (l === li) ? 'cbi-tab' : 'cbi-tab-disabled'; });
 				var g = document.querySelector('#maincontent .dev-grid');
@@ -908,12 +908,12 @@
 			if (card) {
 				var m = card.getAttribute('data-mac');
 				var hovered = card.hasAttribute('data-hover');
-				devFlipped[m] = !devFlipped[m];   // clique trava/destrava
-				if (!hovered) devSpin(card, sideDir(card, e));   // mesmo giro dos outros cards
+				devFlipped[m] = !devFlipped[m];   // click locks/unlocks
+				if (!hovered) devSpin(card, sideDir(card, e));   // same turn as the other cards
 			}
 		}, true);
 	}
-	// Fabricante pelo prefixo do MAC (lista IEEE, carregada uma vez do roteador)
+	// Vendor from the MAC prefix (IEEE list, loaded once from the router)
 	var ouiMap = null, ouiLoading = false;
 	function devLoadOui() {
 		if (ouiMap || ouiLoading) return;
@@ -930,13 +930,13 @@
 	function devVendor(mac) {
 		if (!ouiMap) return '…';
 		var p = mac.replace(/:/g, '').slice(0, 6).toUpperCase();
-		if (ouiMap[p]) return ouiMap[p];                                  // lista local (IEEE)
-		if (parseInt(mac.slice(0, 2), 16) & 2) return L('MAC aleatório (privado)');   // bit "localmente administrado"
-		if (ouiOnline[p]) return ouiOnline[p];                            // resultado de servidor alternativo
+		if (ouiMap[p]) return ouiMap[p];                                  // local list (IEEE)
+		if (parseInt(mac.slice(0, 2), 16) & 2) return L('MAC aleatório (privado)');   // "locally administered" bit
+		if (ouiOnline[p]) return ouiOnline[p];                            // result from an alternative server
 		devOnlineLookup(p);
 		return L('Consultando…');
 	}
-	// Fallback: prefixos que a lista local não tem vão para /cgi-bin/aurora-oui (que consulta servidores alternativos)
+	// Fallback: prefixes missing from the local list go to /cgi-bin/aurora-oui (which queries alternative servers)
 	var ouiOnline = {}, ouiPending = {};
 	function devOnlineLookup(p) {
 		if (ouiPending[p]) return;
@@ -948,12 +948,12 @@
 			devRender();
 		}).catch(function () { ouiOnline[p] = 'Desconhecido'; });
 	}
-	// Dispositivos cabeados (seção da Visão geral): mesmos cards, sem sinal/taxa (não existem em cabo)
+	// Wired devices (section on the Devices page): same cards, without signal/rate (they do not exist on cable)
 	function devRenderWired() {
 		var page = document.body.getAttribute('data-page') || '';
 		var grid = document.querySelector('#maincontent .bw-section .dev-grid');
 		if (page !== 'admin-status-overview' || !grid) return;
-		// ordenação: as abas de sinal e taxa não se aplicam a cabo
+		// sort: the signal and rate tabs do not apply to cable
 		var key = (devSortC === 'signal' || devSortC === 'rate' || devSortC === 'net') ? 'name' : devSortC;
 		var items = Object.keys(bwHist).filter(function (m) { return bwHist[m].via === 'lan'; }).map(function (m) {
 			var h = bwHist[m];
@@ -968,13 +968,13 @@
 		items.sort(devCmp[key]);
 		var html = items.map(function (it) { return devCardHtml(it, !!devFlipped[it.mac]); }).join('');
 		if (grid._html !== html && (grid._html == null || !grid.matches(':hover'))) { grid._html = html; grid.innerHTML = html; }
-		// destaca a aba escolhida também na lista de cabeados
+		// highlights the chosen tab on the wired list too
 		document.querySelectorAll('#maincontent .bw-section .dev-sort li[data-sort]').forEach(function (l) {
 			var c = l.getAttribute('data-sort') === devSortC ? 'cbi-tab' : 'cbi-tab-disabled';
 			if (l.className !== c) l.className = c;
 		});
 	}
-	// memória dos cartões virados: fica na sessão da aba, então sobrevive à atualização da página
+	// memory of flipped cards: kept in the tab session, so it survives a page refresh
 	function flipFaceGet(k) { try { return +(sessionStorage.getItem('aurora-face') ? JSON.parse(sessionStorage.getItem('aurora-face'))[k] : 0) || 0; } catch (e) { return 0; } }
 	function flipFaceSet(k, v) { try { var o = JSON.parse(sessionStorage.getItem('aurora-face') || '{}'); o[k] = v; sessionStorage.setItem('aurora-face', JSON.stringify(o)); } catch (e) {} }
 	function flipGet(k) {
@@ -987,7 +987,7 @@
 			sessionStorage.setItem('aurora-flip', JSON.stringify(o));
 		} catch (e) { /* sem armazenamento: só não lembra */ }
 	}
-	// Status das portas: "sem link" passa a ser "Desconectado" (só troca o texto, sem mexer na estrutura)
+	// Port status: "no link" becomes "Disconnected" (only changes the text, leaves the structure alone)
 	function portLabels() {
 		var walker = document.createTreeWalker(document.querySelector('#maincontent') || document.body, NodeFilter.SHOW_TEXT);
 		var n;
@@ -995,7 +995,7 @@
 			if (/^\s*(sem link|no link)\s*$/i.test(n.nodeValue)) n.nodeValue = n.nodeValue.replace(/sem link|no link/i, L('Desconectado'));
 		}
 	}
-	// Botões de texto do Wi-Fi (Reiniciar, Procurar, Adicionar...) viram botões de ícone; a ação original é mantida
+	// Wi-Fi text buttons (Restart, Search, Add...) become icon buttons; the original action is kept
 	function iconifyWifiButtons() {
 		var names = {
 			'Reiniciar': ['reconnect', 'refresh'], 'Procurar': ['ico-search', 'search'], 'Adicionar': ['ico-add', 'plus'],
@@ -1013,7 +1013,7 @@
 			b.textContent = '';
 		});
 	}
-	// Faixa de zona do firewall: LAN em azul, WAN em roxo
+	// Firewall zone strip: LAN in blue, WAN in purple
 	function zoneColors() {
 		document.querySelectorAll('#maincontent .zonebadge').forEach(function (z) {
 			var card = z.closest('.ifacebox'), head = card && card.querySelector('.ifacebox-head');
@@ -1021,7 +1021,7 @@
 			if (z.style.getPropertyValue('background-color') !== c) z.style.setProperty('background-color', c, 'important');
 		});
 	}
-	// Cartão Sistema: imagem do roteador à esquerda (centralizada) e a tabela de informações à direita
+	// System card: router image on the left (centered) and the info table on the right
 	function sysCard() {
 		var t = Array.prototype.filter.call(document.querySelectorAll('#maincontent .cbi-title'), function (e) { return /^\s*(Sistema|System)/.test(e.textContent); })[0];
 		var sec = t && t.closest('.cbi-section');
@@ -1033,11 +1033,11 @@
 		var img = document.createElement('img');
 		img.className = 'sys-img';
 		img.src = '/luci-static/aurora/images/modelo.png';
-		img.onerror = function () { img.onerror = null; img.src = '/luci-static/aurora/images/modelo.svg'; };   // imagem do modelo (PNG ou genérica SVG)
+		img.onerror = function () { img.onerror = null; img.src = '/luci-static/aurora/images/modelo.svg'; };   // model image (PNG or generic SVG)
 		img.alt = '';
 		tbl.parentElement.insertBefore(img, tbl);
 	}
-	// "Sair" sai do menu de cima e vira um botão de ícone no canto da barra (ao lado da busca)
+	// "Logout" leaves the top menu and becomes an icon button in the corner of the bar (next to search)
 	function sairToolbar() {
 		document.querySelectorAll('a.menu[href$="/admin/logout"]').forEach(function (a) {
 			var li = a.closest('li');
@@ -1052,15 +1052,15 @@
 		b.setAttribute('aria-label', 'Sair');
 		cmdk.parentElement.insertBefore(b, cmdk.nextSibling);
 	}
-	// Textos do tema em inglês (quando o LuCI está em inglês): o texto em português é a chave
+	// Theme texts in English (when LuCI is in English): the Portuguese text is the key
 	var EN = { 'Nome': 'Name', 'IP': 'IP', 'MAC': 'MAC', 'Rede': 'Network', 'Sinal': 'Signal', 'Taxas': 'Rates', 'Consumo': 'Usage',
 		'Total': 'Total', 'Tipo': 'Type', 'Fabricante': 'Vendor', 'Desconectar': 'Disconnect', 'Desconectado': 'Disconnected',
 		'Desconhecido': 'Unknown', 'Celular': 'Phone', 'Computador': 'Computer', 'TV': 'TV', 'Outro': 'Other', 'Cabo': 'Cable',
 		'Dispositivos WiFi': 'Wi-Fi devices', 'Dispositivos Cabeados': 'Wired devices', 'Sair': 'Logout',
 		'MAC aleatório (privado)': 'Random MAC (private)', 'Consultando…': 'Looking up…' };
-	// português: textos originais; qualquer outro idioma: inglês (fallback para todos os idiomas)
+	// Portuguese: original texts; any other language: English (fallback for all languages)
 	function isPt() { return /lang_pt/.test(document.body.className); }
-	// Traduções por idioma (chave = texto em português). Idioma sem tradução usa o inglês.
+	// Translations per language (key = Portuguese text). A language without a translation uses English.
 	var TR = {
 		es: { 'Nome': 'Nombre', 'Rede': 'Red', 'Sinal': 'Señal', 'Taxas': 'Tasas', 'Consumo': 'Consumo', 'Total': 'Total', 'Tipo': 'Tipo', 'Fabricante': 'Fabricante', 'Desconectar': 'Desconectar', 'Desconectado': 'Desconectado', 'Desconhecido': 'Desconocido', 'Celular': 'Teléfono', 'Computador': 'Computadora', 'Outro': 'Otro', 'Cabo': 'Cable', 'Dispositivos WiFi': 'Dispositivos Wi-Fi', 'Dispositivos Cabeados': 'Dispositivos con cable', 'Sair': 'Salir', 'MAC aleatório (privado)': 'MAC aleatoria (privada)', 'Consultando…': 'Consultando…' },
 		fr: { 'Nome': 'Nom', 'Rede': 'Réseau', 'Sinal': 'Signal', 'Taxas': 'Débits', 'Consumo': 'Utilisation', 'Total': 'Total', 'Tipo': 'Type', 'Fabricante': 'Fabricant', 'Desconectar': 'Déconnecter', 'Desconectado': 'Déconnecté', 'Desconhecido': 'Inconnu', 'Celular': 'Téléphone', 'Computador': 'Ordinateur', 'Outro': 'Autre', 'Cabo': 'Câble', 'Dispositivos WiFi': 'Appareils Wi-Fi', 'Dispositivos Cabeados': 'Appareils filaires', 'Sair': 'Déconnexion', 'MAC aleatório (privado)': 'Adresse MAC aléatoire', 'Consultando…': 'Recherche…' },
@@ -1074,11 +1074,11 @@
 	};
 	function langOf() { var m = document.body.className.match(/lang_([a-z]{2})/i); return m ? m[1].toLowerCase() : 'en'; }
 	function L(s) { var g = langOf(); if (g === 'pt') return s; if (TR[g] && TR[g][s]) return TR[g][s]; return EN[s] || s; }
-	// Pares "Rótulo: valor" lidos da estrutura do tooltip (cada valor fica em <strong>): funciona em qualquer idioma
+	// "Label: value" pairs read from the tooltip structure (each value is in <strong>): works in any language
 	function tipMap(box, txt) {
 		var m = {}, pairs = [];
 		box.querySelectorAll('.cbi-tooltip').forEach(function (tip) {
-			var c = tip.cloneNode(true);   // marca cada valor em negrito com \u0001 ... \u0002
+			var c = tip.cloneNode(true);   // marks each value in bold with \u0001 ... \u0002
 			c.querySelectorAll('strong').forEach(function (s) { s.textContent = '\u0001' + s.textContent.trim() + '\u0002'; });
 			c.textContent.split('\u0001').slice(1).forEach(function (part) {
 				var i = part.indexOf('\u0002');
@@ -1111,17 +1111,17 @@
 	}
 	var deb;
 	function schedule() { clearTimeout(deb); deb = setTimeout(function () { sync(); tabsify(); hintify(); flipify(); equalize(); sairToolbar(); }, 120); }
-	var devLastY = 0;            // última posição de rolagem do usuário
-	var quietAt = 0, pageStart = Date.now();   // último momento em que a LuCI mudou a página (para esperar ela terminar)
+	var devLastY = 0;            // the user's last scroll position
+	var quietAt = 0, pageStart = Date.now();   // last time LuCI changed the page (to wait for it to finish)
 	var mo = new MutationObserver(schedule);
 	function start() {
 		var top = document.getElementById('topmenu');
 		var main = document.getElementById('maincontent');
 		if (top) mo.observe(top, { childList: true, subtree: true });
-		// subtree: o widget de portas e as atualizacoes automaticas ficam fundo no conteudo
+		// subtree: the port widget and automatic updates live deep in the content
 		if (main) mo.observe(main, { childList: true, subtree: true });
-		// abas são convertidas logo após cada troca de página (antes de pintar), sem o atraso do schedule
-		// se a atualização do LuCI empurrar a página para cima, volta para a posição em que o usuário estava
+		// tabs are converted right after each page change (before painting), without the schedule delay
+		// if a LuCI update pushes the page up, it goes back to where the user was
 		if (main) new MutationObserver(function () {
 			quietAt = Date.now();
 			if (Math.abs(window.scrollY - devLastY) > 40) window.scrollTo(0, devLastY);
@@ -1138,7 +1138,7 @@
 	else document.addEventListener('DOMContentLoaded', start);
 })();
 
-// Roda já e de novo sempre que o conteúdo muda (sem o atraso de um intervalo fixo)
+// Runs now, and again whenever the content changes (without a fixed-interval delay)
 function keepFitted(fn) {
 	var pending = false;
 	var run = function () { pending = false; fn(); };
@@ -1147,7 +1147,7 @@ function keepFitted(fn) {
 	var root = document.querySelector('#maincontent') || document.body;
 	new MutationObserver(schedule).observe(root, { childList: true, subtree: true, characterData: true });
 }
-// Verso dos cards de dispositivos: o texto diminui até caber inteiro no card (sem rolagem)
+// Back of the device cards: the text shrinks until it fits the card (no scrolling)
 (function fitDeviceBacks() {
 	function fit() {
 		document.querySelectorAll('#maincontent .dev-card .dev-back, #maincontent .ifacebox[data-flip] .flip-back').forEach(function (el) {
@@ -1159,24 +1159,24 @@ function keepFitted(fn) {
 			}
 		});
 	}
-	keepFitted(fit);   // ajusta logo que aparece e sempre que a página atualiza os dados
+	keepFitted(fit);   // adjusts as soon as it appears and whenever the page updates the data
 })();
 
-// Cards de dispositivos: o texto "Access Point" (da LuCI) aparece como "AP"
+// Device cards: the "Access Point" text (from LuCI) is shown as "AP"
 (function shortenApLabel() {
 	function fix() {
 		var walker = document.createTreeWalker(document.querySelector('#maincontent') || document.body, NodeFilter.SHOW_TEXT);
 		var n;
 		while ((n = walker.nextNode())) {
 			if (n.nodeValue.indexOf('Access Point') !== -1) n.nodeValue = n.nodeValue.replace(/Access Point/g, 'AP');
-			// taxas: entradas coladas (ex.: "20 MHz65 Mbit/s") ganham separador
+			// rates: joined entries (e.g. "20 MHz65 Mbit/s") get a separator
 			if (/(MHz|Mbit\/s)\d/.test(n.nodeValue)) n.nodeValue = n.nodeValue.replace(/(MHz|Mbit\/s)(?=\d)/g, '$1, ');
 		}
 	}
 	keepFitted(fix);
 })();
 
-// Título "Wi-Fi devices": mostra quantos dispositivos estão conectados ao Wi-Fi
+// "Wi-Fi devices" title: shows how many devices are connected to Wi-Fi
 (function countWifiDevices() {
 	function fix() {
 		document.querySelectorAll('#maincontent *').forEach(function (h) {
@@ -1193,15 +1193,15 @@ function keepFitted(fn) {
 	keepFitted(fix);
 })();
 
-// Nome do dispositivo nos cards: diminui a fonte até caber em uma linha (ex.: android-a8b2a225bbbe5bb3)
+// Device name on the cards: shrinks the font until it fits on one line (e.g. android-a8b2a225bbbe5bb3)
 (function fitDeviceNames() {
 	function fit() {
 		document.querySelectorAll('#maincontent .dev-card .dev-top b').forEach(function (b) {
 			b.style.whiteSpace = 'nowrap';
 			b.style.fontSize = '';
-			// espaço disponível = largura do cabeçalho menos o tipo do dispositivo
+			// available space = header width minus the device type
 			var par = b.parentElement, sp = par.querySelector('span');
-			// largura útil da face (sem o preenchimento) menos o tipo do dispositivo
+			// usable width of the face (without padding) minus the device type
 			var face = b.closest('.dev-front, .dev-back') || par;
 			var fcs = getComputedStyle(face);
 			var useful = face.clientWidth - parseFloat(fcs.paddingLeft) - parseFloat(fcs.paddingRight);
@@ -1215,10 +1215,10 @@ function keepFitted(fn) {
 		});
 	}
 	keepFitted(fit);
-	window.addEventListener('resize', fit);   // refaz quando a janela muda de tamanho
+	window.addEventListener('resize', fit);   // redoes it when the window changes size
 })();
 
-// Status > Overview: a porta WAN aparece antes das LAN (WAN, LAN2, LAN3, LAN4)
+// Status > Overview: the WAN port appears before the LANs (WAN, LAN2, LAN3, LAN4)
 (function wanFirst() {
 	function order() {
 		if ((document.body.getAttribute('data-page') || '') !== 'admin-status-overview') return;
@@ -1226,13 +1226,13 @@ function keepFitted(fn) {
 		var nameOf = function (c) { var h = c.querySelector('.ifacebox-head'); return h ? h.textContent.trim().split('\n')[0].trim() : ''; };
 		var wan = cards.filter(function (c) { return nameOf(c) === 'wan'; })[0];
 		if (!wan || !cards.length || cards[0] === wan) return;
-		// os cards ficam na mesma linha: move só o card da WAN para o começo
+		// the cards stay in the same row: only the WAN card is moved to the start
 		if (wan.parentElement === cards[0].parentElement) wan.parentElement.insertBefore(wan, cards[0]);
 	}
 	keepFitted(order);
 })();
 
-// Dispositivos: a seção só aparece quando a lista estiver pronta (ou após 2 s, se não houver dados)
+// Devices: the section appears only when the list is ready (or after 2 s, if there is no data)
 (function showDevicesTogether() {
 	var t0 = Date.now();
 	function check() {
@@ -1244,7 +1244,7 @@ function keepFitted(fn) {
 	setTimeout(check, 2100);
 })();
 
-// Rodapé "Powered by ..." aparece junto com o resto da página (depois que os dispositivos carregam)
+// The "Powered by ..." footer appears together with the rest of the page (after the devices load)
 (function footerTogether() {
 	var t0 = Date.now();
 	function check() {
@@ -1262,7 +1262,7 @@ function keepFitted(fn) {
 	setTimeout(check, 2100);
 })();
 
-// Diagnóstico (só quando ativado no navegador: localStorage.setItem('aurora-debug','1')): mostra no console os tempos de carregamento
+// Diagnostics (only when enabled in the browser: localStorage.setItem('aurora-debug','1')): logs the loading times to the console
 (function debugTimeline() {
 	var on = false;
 	try { on = localStorage.getItem('aurora-debug') === '1'; } catch (e) {}
