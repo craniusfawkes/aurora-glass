@@ -989,3 +989,19 @@ body[data-bg] #maincontent .dev-card .dev-port { font-size: .8rem; opacity: .85;
 [data-darkmode="true"] body[data-bg] #maincontent .ico-btn[data-ico="search"],
 [data-darkmode="true"] body[data-bg] #maincontent .ico-btn[data-ico="plus"],
 [data-darkmode="true"] body[data-bg] #maincontent .ico-btn[data-ico="pencil"] { background: #16181d !important; border-color: #2d8cff !important; color: #2d8cff !important; box-shadow: 0 0 10px rgba(45, 140, 255, .35) !important; }
+
+/* Repo Public Keys: the key boxes and the "add key" box share one column and one size.
+   The column starts where the KEY header starts (after the name column) and ends before the Delete column. */
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table textarea.cbi-input-textarea { width: 100%; box-sizing: border-box; height: 138px; resize: vertical; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-node:has(> textarea.cbi-input-text) { padding: 0 104px 0 243px; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-text { width: 100%; box-sizing: border-box; height: 138px; min-height: 138px; resize: vertical; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-node:has(> textarea.cbi-input-text) .cbi-button { float: right; }
+/* the add-key box fills the same column as the key boxes (LuCI sets a fixed width on it, so this one is !important) */
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-value:has(> .cbi-section-node textarea.cbi-input-text),
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-node:has(> textarea.cbi-input-text) > output,
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-node:has(> textarea.cbi-input-text) { width: 100% !important; max-width: 100% !important; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-text { width: 100% !important; max-width: none !important; }
+/* the add-key row is a block at full width, so its box can line up with the key column */
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-value:has(textarea.cbi-input-text) { display: block !important; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-value:has(textarea.cbi-input-text) > output,
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-value:has(textarea.cbi-input-text) > .cbi-section-node { display: block !important; width: 100% !important; max-width: 100% !important; }
