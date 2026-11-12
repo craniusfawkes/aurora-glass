@@ -292,7 +292,7 @@ body[data-bg] #maincontent .dev-icon { width: 64px; height: 64px; align-self: ce
 body[data-bg] #maincontent .dev-card.bw-off .dev-icon { color: #e5484d; filter: drop-shadow(0 0 3px rgba(229, 72, 77, .9)) drop-shadow(0 0 8px rgba(229, 72, 77, .6)); }
 /* linhas duplas: traço externo grosso e translúcido + traço interno fino e nítido */
 /* efeito neon: halo colorido + núcleo branco bem fino */
-body[data-bg] #maincontent .dev-icon .dl-out { stroke-width: 1.6; stroke: #2d8cff; opacity: .7; }
+body[data-bg] #maincontent .dev-icon .dl-out { stroke-width: .5; stroke: #2d8cff; opacity: .7; }
 body[data-bg] #maincontent .dev-icon .dl-in { stroke-width: .6; stroke: #e8f4ff; }
 body[data-bg] #maincontent .dev-card.bw-off .dev-icon .dl-out { stroke: #e5484d; }
 body[data-bg] #maincontent .dev-card.bw-off .dev-icon .dl-in { stroke: #ffd6d8; }
@@ -782,7 +782,7 @@ body[data-bg] #maincontent .ib-member-common { column-span: all; margin: 0 0 10p
 /* Interfaces: prisma horizontal. Faces em volta do eixo vertical: gráfico (frente), um membro por face e o verso.
    N faces = lados do prisma; o JS posiciona cada face (rotateY + translateZ) e gira o container a cada clique. */
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism { perspective: 700px; width: 100% !important; max-width: 400px !important; }
-body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism .flip-inner { position: relative; display: block; height: 288px !important; transform-style: preserve-3d; transition: transform .9s ease; }
+body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism .flip-inner { position: relative; display: block; height: 288px !important; transform-style: preserve-3d; transition: transform .9s linear; }
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism .flip-inner > div { position: absolute; top: 0; left: 0; width: 100%; height: 288px !important; box-sizing: border-box; overflow-y: auto; backface-visibility: hidden; -webkit-backface-visibility: hidden; column-count: 1 !important; }
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism .flip-mem { border-radius: 12px; border: 1.5px solid var(--flip-edge, #2d8cff); box-shadow: 0 0 6px var(--flip-edge, #2d8cff), inset 0 0 5px var(--flip-edge, #2d8cff); background: #16181d; padding: 12px 14px; }
 :root:not([data-darkmode="true"]) body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism .flip-mem { background: #ffffff; }
@@ -859,3 +859,124 @@ body[data-bg] #maincontent .dev-card .dev-inner { transition: transform .9s ease
 body[data-page="admin-network-wireless"][data-bg] #maincontent .cbi-section-table .cbi-section-actions { text-align: center !important; vertical-align: middle; }
 body[data-page="admin-network-wireless"][data-bg] #maincontent .cbi-section-table .cbi-section-actions > div { display: flex !important; justify-content: center; align-items: center; gap: 12px; flex-wrap: wrap; }
 body[data-page="admin-network-wireless"][data-bg] #maincontent .cbi-section-table .cbi-section-actions .ico-btn { width: 40px; height: 40px; margin: 0; }
+/* Avisos do LuCI (ex.: "No password set"): mesmo estilo de vidro azul dos cards */
+body[data-bg] .alert-message { background: rgba(22, 24, 29, .85); color: #e7edf5; border: 1.5px solid var(--flip-edge, #2d8cff); border-radius: 12px; box-shadow: 0 0 6px var(--flip-edge, #2d8cff), inset 0 0 5px var(--flip-edge, #2d8cff); padding: 10px 14px; }
+:root:not([data-darkmode="true"]) body[data-bg] .alert-message { background: rgba(255, 255, 255, .92); color: #1b1e25; }
+/* Avisos do LuCI: título e texto sempre legíveis (cor explícita, não herdada do tema) */
+body[data-bg] .alert-message h4, body[data-bg] .alert-message p { color: inherit !important; }
+body[data-bg] .alert-message { color: #e7edf5 !important; }
+:root:not([data-darkmode="true"]) body[data-bg] .alert-message { color: #1b1e25 !important; }
+/* Avisos do LuCI: caixa em vidro azul, com título e texto legíveis nos dois temas */
+body[data-bg] .alert-message { background: rgba(22, 24, 29, .72) !important; border: 1px solid rgba(45, 140, 255, .55) !important; border-radius: 14px !important; box-shadow: 0 0 10px rgba(45, 140, 255, .25) !important; padding: 14px 18px !important; backdrop-filter: blur(6px); }
+body[data-bg] .alert-message h4 { color: #2d8cff !important; font-size: 1rem !important; font-weight: 600 !important; margin: 0 0 6px !important; }
+body[data-bg] .alert-message p { color: #e7edf5 !important; font-size: .9rem !important; opacity: .9; margin: 0 0 10px !important; }
+:root:not([data-darkmode="true"]) body[data-bg] .alert-message h4 { color: #1d6fd1 !important; }
+:root:not([data-darkmode="true"]) body[data-bg] .alert-message p { color: #1b1e25 !important; }
+/* Avisos do LuCI: mesma borda e sombra dos demais blocos (vidro) */
+body[data-bg] .alert-message { border: 1px solid var(--aero-edge-dark) !important; border-radius: 10px !important; box-shadow: inset 0 0 0 1px var(--aero-edge-light), 0 0 0 1px rgba(255, 255, 255, .08), var(--aero-shadow) !important; }
+/* Avisos do LuCI: fundo opaco e texto com contraste nos dois temas */
+body[data-bg] .alert-message { background: #16181d !important; color: #e7edf5 !important; }
+body[data-bg] .alert-message * { color: inherit !important; }
+body[data-bg] .alert-message h4 { color: #6fb3ff !important; }
+:root:not([data-darkmode="true"]) body[data-bg] .alert-message { background: #f4f7fb !important; color: #1b1e25 !important; }
+:root:not([data-darkmode="true"]) body[data-bg] .alert-message h4 { color: #1d6fd1 !important; }
+/* Ícones dos dispositivos no modo claro: cores da linha e do brilho invertidas em relação ao escuro */
+:root:not([data-darkmode="true"]) body[data-bg] #maincontent .dev-icon { filter: drop-shadow(0 0 3px rgba(232, 244, 255, .9)) drop-shadow(0 0 8px rgba(232, 244, 255, .6)); }
+:root:not([data-darkmode="true"]) body[data-bg] #maincontent .dev-icon .dl-out { stroke: #e8f4ff; }
+:root:not([data-darkmode="true"]) body[data-bg] #maincontent .dev-icon .dl-in { stroke: #2d8cff; }
+/* Ícones dos dispositivos no modo claro: brilho azul visível sobre fundo claro */
+:root:not([data-darkmode="true"]) body[data-bg] #maincontent .dev-icon { filter: drop-shadow(0 0 3px rgba(45, 140, 255, .9)) drop-shadow(0 0 8px rgba(45, 140, 255, .6)); }
+:root:not([data-darkmode="true"]) body[data-bg] #maincontent .dev-icon { filter: drop-shadow(0 0 2px rgba(45, 140, 255, .5)) drop-shadow(0 0 5px rgba(45, 140, 255, .3)); }
+:root:not([data-darkmode="true"]) body[data-bg] #maincontent .dev-icon { filter: drop-shadow(0 0 1px rgba(45, 140, 255, .35)) drop-shadow(0 0 3px rgba(45, 140, 255, .18)); }
+/* Contornos dos cards: brilho externo mais suave (inset mantido) */
+body[data-bg] #maincontent .ifacebox[data-flip] .flip-back { box-shadow: 0 0 3px var(--flip-edge, #9aa3ad), inset 0 0 5px var(--flip-edge, #9aa3ad) !important; }
+body[data-bg] #maincontent .dev-back { box-shadow: 0 0 3px var(--dev-edge, #2d8cff), inset 0 0 5px var(--dev-edge, #2d8cff) !important; }
+body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism .flip-mem { box-shadow: 0 0 3px var(--flip-edge, #2d8cff), inset 0 0 5px var(--flip-edge, #2d8cff) !important; }
+/* Todos os cards: brilho externo mais suave */
+body[data-bg] #maincontent .dev-front, body[data-bg] #maincontent .ifacebox[data-flip] .flip-front, body[data-bg] .alert-message { box-shadow: 0 0 3px var(--flip-edge, #2d8cff), inset 0 0 5px var(--flip-edge, #2d8cff) !important; }
+body[data-bg] #maincontent .dev-front { box-shadow: 0 0 3px var(--dev-edge, #2d8cff), inset 0 0 5px var(--dev-edge, #2d8cff) !important; }
+/* Todos os cards: brilho externo bem suave (ajuste final) */
+body[data-bg] #maincontent .ifacebox[data-flip], body[data-bg] #maincontent .dev-card, body[data-bg] #maincontent .dev-front, body[data-bg] #maincontent .dev-back, body[data-bg] #maincontent .ifacebox[data-flip] .flip-front, body[data-bg] #maincontent .ifacebox[data-flip] .flip-back, body[data-bg] #maincontent .ifacebox.prism .flip-mem, body[data-bg] .alert-message { box-shadow: 0 0 1px rgba(45, 140, 255, .35), inset 0 0 3px rgba(45, 140, 255, .35) !important; }
+/* Cantos arredondados mantidos nos cards (exceto prisma, que tem cantos retos) */
+body[data-bg] #maincontent .ifacebox[data-flip]:not(.prism), body[data-bg] #maincontent .dev-card, body[data-bg] #maincontent .dev-front, body[data-bg] #maincontent .dev-back, body[data-bg] #maincontent .ifacebox[data-flip]:not(.prism) .flip-front, body[data-bg] #maincontent .ifacebox[data-flip]:not(.prism) .flip-back, body[data-bg] .alert-message { border-radius: 14px !important; }
+/* Cards de dispositivos: menores, e texto do verso um pouco menor */
+body[data-bg] #maincontent .dev-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)) !important; }
+body[data-bg] #maincontent .dev-card { min-height: 200px !important; }
+body[data-bg] #maincontent .dev-back { font-size: .8rem !important; }
+body[data-bg] #maincontent .dev-back .dev-line { font-size: inherit; }
+/* Cards de dispositivos: ainda menores (largura, altura e ícone) */
+body[data-bg] #maincontent .dev-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important; }
+body[data-bg] #maincontent .dev-card { min-height: 170px !important; }
+body[data-bg] #maincontent .dev-icon { width: 48px !important; height: 48px !important; }
+/* Cards de dispositivos: quadrados, com fonte do verso menor */
+body[data-bg] #maincontent .dev-card { min-height: 0 !important; aspect-ratio: 1 / 1; }
+body[data-bg] #maincontent .dev-back { font-size: .7rem; }
+/* Cards de dispositivos: tamanho fixo e quadrado; o conteúdo do verso rola dentro do card, sem invadir a linha de baixo */
+body[data-bg] #maincontent .dev-card { aspect-ratio: 1 / 1 !important; height: auto; min-height: 0 !important; }
+body[data-bg] #maincontent .dev-card .dev-inner { position: relative !important; height: 100%; }
+body[data-bg] #maincontent .dev-card .dev-front, body[data-bg] #maincontent .dev-card .dev-back { position: absolute !important; inset: 0; overflow: auto; }
+/* Verso dos cards de dispositivos: sem rolagem (o texto é ajustado pelo script) */
+body[data-bg] #maincontent .dev-card .dev-back { overflow: hidden !important; }
+/* Cards de dispositivos: um pouco maiores para o texto caber, sempre quadrados */
+body[data-bg] #maincontent .dev-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)) !important; }
+/* Cards de dispositivos: linhas mais juntas e cards um pouco menores (sempre quadrados) */
+body[data-bg] #maincontent .dev-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important; }
+body[data-bg] #maincontent .dev-back { line-height: 1.2 !important; }
+body[data-bg] #maincontent .dev-back .dev-line, body[data-bg] #maincontent .dev-back .dev-top { margin: 0 !important; padding: 0 !important; line-height: 1.2 !important; }
+body[data-bg] #maincontent .dev-back > * + * { margin-top: 2px !important; }
+/* Cards de dispositivos: o giro vem da variável --t (não se perde ao atualizar a página) */
+body[data-bg] #maincontent .dev-card .dev-inner { transform: rotateY(calc(var(--t, 0) * -180deg)) !important; transition: transform .9s ease; }
+/* Nome do dispositivo: bloco que ocupa o espaço disponível (para o ajuste de fonte medir certo) */
+body[data-bg] #maincontent .dev-card .dev-top b { display: block; flex: 1 1 auto; min-width: 0; }
+/* Cards: sem barra de rolagem (o conteúdo fica dentro do card) */
+body[data-bg] #maincontent .dev-card .dev-front, body[data-bg] #maincontent .dev-card .dev-back, body[data-bg] #maincontent .ifacebox[data-flip] .flip-front, body[data-bg] #maincontent .ifacebox[data-flip] .flip-back, body[data-bg] #maincontent .ifacebox.prism .flip-mem, body[data-bg] #maincontent .ifacebox.prism .flip-inner > div { overflow: hidden !important; }
+/* Cards: texto sempre inteiro, sem rolagem (margens menores no verso) */
+body[data-bg] #maincontent .dev-card .dev-back, body[data-bg] #maincontent .ifacebox[data-flip] .flip-back { padding: 8px 10px !important; line-height: 1.15 !important; }
+/* Prisma: sem borda nem brilho no contêiner (só as faces têm contorno) */
+body[data-bg] #maincontent .ifacebox.prism { box-shadow: none !important; border: 0 !important; background: transparent !important; outline: 0 !important; }
+/* Prisma: borda azul com a mesma espessura dos cards */
+body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism .flip-inner > div { border: 1.5px solid var(--flip-edge, #2d8cff) !important; }
+/* Prisma: brilho igual ao dos cards */
+body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism .flip-inner > div { box-shadow: 0 0 1px rgba(45, 140, 255, .35), inset 0 0 3px rgba(45, 140, 255, .35) !important; }
+/* Prisma: bordas laterais de cada face somam a espessura de uma só linha no encontro entre as faces */
+body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism .flip-inner > div { border-width: 1.5px 0.75px !important; }
+/* Prisma: laterais mais finas para o encontro entre as faces não engrossar */
+body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism .flip-inner > div { border-width: 1.5px 0.4px !important; }
+/* Prisma: encontros entre as faces com a espessura das demais bordas */
+body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism .flip-inner > div { border-width: 1.5px 0.25px !important; }
+/* Prisma: contorno único em SVG (sem bordas separadas nas faces) */
+body[data-bg] #maincontent .ifacebox.prism .flip-inner > div { border: 0 !important; box-shadow: none !important; }
+body[data-bg] #maincontent .ifacebox.prism svg.prism-outline { position: absolute; left: 0; top: 0; pointer-events: none; overflow: visible; filter: drop-shadow(0 0 1px rgba(45, 140, 255, .35)) drop-shadow(0 0 3px rgba(45, 140, 255, .18)); }
+body[data-bg] #maincontent .ifacebox.prism svg.prism-outline path { fill: none; stroke: var(--flip-edge, #2d8cff); stroke-width: 1.5; stroke-linejoin: round; }
+/* Prisma: só o contorno SVG aparece (as faces não têm borda nem brilho próprios) */
+body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism .flip-inner > div, body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism .flip-inner > div.flip-mem { border: 0 !important; box-shadow: none !important; }
+/* Prisma: a parte de trás das faces não aparece durante o giro */
+body[data-bg] #maincontent .ifacebox.prism .flip-inner > div { backface-visibility: hidden !important; -webkit-backface-visibility: hidden !important; }
+/* Prisma: volta às bordas por face (contorno SVG desativado: causava desalinhamento durante o giro) */
+body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism svg.prism-outline { display: none !important; }
+body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism .flip-inner > div { border: 1.5px solid var(--flip-edge, #2d8cff) !important; border-width: 1.5px 0.25px !important; box-shadow: 0 0 1px rgba(45, 140, 255, .35), inset 0 0 3px rgba(45, 140, 255, .35) !important; }
+/* Prisma: sem contorno; o volume vem só das sombras das faces */
+body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism .flip-inner > div { border: 0 !important; box-shadow: 0 0 14px rgba(0, 0, 0, .55) !important; }
+:root:not([data-darkmode="true"]) body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism .flip-inner > div { box-shadow: 0 0 14px rgba(0, 0, 0, .18) !important; }
+/* Cards: sem contorno; a definição vem só das sombras (mesma lógica do prisma) */
+body[data-bg] #maincontent .ifacebox[data-flip]:not(.prism) .flip-front, body[data-bg] #maincontent .ifacebox[data-flip]:not(.prism) .flip-back, body[data-bg] #maincontent .dev-card .dev-front, body[data-bg] #maincontent .dev-card .dev-back { border: 0 !important; box-shadow: 0 0 14px rgba(0, 0, 0, .55) !important; }
+:root:not([data-darkmode="true"]) body[data-bg] #maincontent .ifacebox[data-flip]:not(.prism) .flip-front, :root:not([data-darkmode="true"]) body[data-bg] #maincontent .ifacebox[data-flip]:not(.prism) .flip-back, :root:not([data-darkmode="true"]) body[data-bg] #maincontent .dev-card .dev-front, :root:not([data-darkmode="true"]) body[data-bg] #maincontent .dev-card .dev-back { box-shadow: 0 0 14px rgba(0, 0, 0, .18) !important; }
+/* Cards: sem contorno nem brilho por trás (só as faces têm sombra) */
+body[data-bg] #maincontent .ifacebox[data-flip], body[data-bg] #maincontent .dev-card { border: 0 !important; box-shadow: none !important; outline: 0 !important; background: transparent !important; }
+/* Cards de frente e verso: mesma velocidade em todas as páginas (inclusive portas no Status) */
+body[data-bg] #maincontent .ifacebox[data-flip]:not(.prism) .flip-inner { transition: transform .9s ease !important; }
+/* Nome e tipo do dispositivo: o tipo nunca é cortado (o nome diminui para caber) */
+body[data-bg] #maincontent .dev-card .dev-top span { flex: 0 0 auto !important; white-space: nowrap !important; margin-left: 6px; }
+/* Tipo do dispositivo sempre na extremidade direita do card */
+body[data-bg] #maincontent .dev-card .dev-top { display: flex !important; justify-content: space-between; align-items: baseline; gap: 6px; }
+body[data-bg] #maincontent .dev-card .dev-top span { margin-left: auto !important; text-align: right; }
+/* Verso do card: tipo do dispositivo alinhado à direita */
+body[data-bg] #maincontent .dev-card .dev-back .dev-top span { text-align: right !important; }
+/* Verso do card: tipo do dispositivo flutuando à direita */
+body[data-bg] #maincontent .dev-card .dev-back .dev-top { display: block !important; }
+body[data-bg] #maincontent .dev-card .dev-back .dev-top span { float: right !important; margin: 0 0 0 6px !important; }
+/* Verso do card: nome e tipo na mesma linha, tipo à direita */
+body[data-bg] #maincontent .dev-card .dev-back .dev-top { display: flex !important; justify-content: space-between !important; align-items: baseline !important; gap: 6px; }
+body[data-bg] #maincontent .dev-card .dev-back .dev-top span { float: none !important; margin: 0 0 0 auto !important; text-align: right !important; white-space: nowrap !important; }
+/* Verso do card: a linha do nome e do tipo ocupa toda a largura (tipo encostado na direita, dentro do padding) */
+body[data-bg] #maincontent .dev-card .dev-back .dev-top { width: 100% !important; align-self: stretch !important; box-sizing: border-box; }

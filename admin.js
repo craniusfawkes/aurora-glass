@@ -102,13 +102,52 @@
 	var PRISM_TILT = -13;   // inclinação (graus) do prisma para ver a base
 	function sideDir(el, e) { var r = el.getBoundingClientRect(); return (e.clientX - r.left) / r.width < 0.33 ? 1 : -1; }
 	// gira o card de frente/verso em 180° por passo (contínuo: não volta para trás por conta própria)
+	var boxTurn = {};   // giro dos cards na página atual (guardado na memória; zera ao trocar de página)
 	function flipSpin(box, dir) {
 		var t = (+box.getAttribute('data-turn') || 0) + dir;
+		boxTurn[box.getAttribute('data-flipkey')] = t;
 		box.setAttribute('data-turn', t);
 		box.setAttribute('data-lastdir', dir);
 		box.querySelector('.flip-inner').style.transform = 'rotateY(' + (-t * 180) + 'deg)';
 	}
 	function sideOf(el, e) { var r = el.getBoundingClientRect(); return (e.clientX - r.left) < r.width / 2 ? 'L' : 'R'; }
+	// contorno do prisma desenhado em SVG (uma linha só): calcula a silhueta de cada face visível no giro atual
+	function drawPrismOutline(box, t, n, r, dx, dy, vs) {
+		var inner = box.querySelector('.flip-inner');
+		var svg = box.querySelector('svg.prism-outline');
+		if (!svg) {
+			svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+			svg.setAttribute('class', 'prism-outline');
+			box.appendChild(svg);
+		}
+		var faces = [].slice.call(inner.querySelectorAll(':scope > div:not(.prism-cap)'));
+		var P = 700, step = 360 / n, rad = Math.PI / 180;
+		var cx = inner.offsetWidth / 2, cy = 144;   // centro do cartão (origem da perspectiva)
+		var tilt = PRISM_TILT * rad, spin = -t * step * rad;
+		var rotX = function (v) { var c = Math.cos(tilt), s = Math.sin(tilt); return [v[0], v[1] * c - v[2] * s, v[1] * s + v[2] * c]; };
+		var rotY = function (v, a) { var c = Math.cos(a), s = Math.sin(a); return [v[0] * c + v[2] * s, v[1], -v[0] * s + v[2] * c]; };
+		var d = '', k = 0;
+		faces.forEach(function (f, i) {
+			var a = i * step * rad;
+			var n0 = rotX(rotY(rotY([0, 0, 1], a), spin));   // direção da face após a rotação do prisma
+			if (n0[2] <= 0) return;                          // face de trás: não aparece
+			var w = parseFloat(f.style.width) || 0, pts = [[-w / 2, -144], [w / 2, -144], [w / 2, 144], [-w / 2, 144]];
+			var seg = pts.map(function (p) {
+				var q = rotY([p[0], p[1], r], a);            // face no seu lugar
+				q = rotY(q, spin); q = rotX(q);              // giro do prisma e inclinação
+				q[2] -= r; q[1] *= vs;                       // mesma transformação do CSS
+				var f2 = P / (P - q[2]);
+				return [cx + (q[0] + dx) * f2, cy + (q[1] + dy) * f2];
+			});
+			d += 'M' + seg.map(function (p) { return p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join(' L') + ' Z ';
+		});
+		svg.style.left = inner.offsetLeft + 'px';   // alinha o SVG com o mesmo quadro do cartão (sem a margem interna)
+		svg.style.top = inner.offsetTop + 'px';
+		svg.setAttribute('width', inner.offsetWidth);
+		svg.setAttribute('height', 288);
+		svg.setAttribute('viewBox', '0 0 ' + inner.offsetWidth + ' 288');
+		svg.innerHTML = '<path d="' + d + '"></path>';
+	}
 	function prismSet(box, inner, t, n, r) {
 		// t = número de giros acumulado (pode passar de N): a rotação segue sempre no mesmo sentido
 		var k = ((t % n) + n) % n;
@@ -123,6 +162,21 @@
 		var dy = box._prismDy ? box._prismDy[k] : 0, vs = box._prismV ? box._prismV[k] : 1;   // alinha topo e base com o cartão   // centraliza o prisma neste giro
 		inner.style.transform = 'translateX(' + dx.toFixed(1) + 'px) translateY(' + dy.toFixed(1) + 'px) scaleY(' + vs.toFixed(3) + ') translateZ(-' + r + 'px) rotateX(' + PRISM_TILT + 'deg) rotateY(' + (-t * 360 / n) + 'deg)';
 		if (first) { void inner.offsetWidth; inner.style.transition = ''; }   // libera a animação depois de montar
+		// o contorno gira junto com as faces (mesma duração da animação do CSS)
+		var fromT = (box._outT !== undefined) ? box._outT : t;
+		var fromDx = (box._outDx !== undefined) ? box._outDx : dx, fromDy = (box._outDy !== undefined) ? box._outDy : dy, fromV = (box._outV !== undefined) ? box._outV : vs;
+		box._outT = t; box._outDx = dx; box._outDy = dy; box._outV = vs;
+		if (box._outRaf) cancelAnimationFrame(box._outRaf);
+		if (first || fromT === t) { drawPrismOutline(box, t, n, r, dx, dy, vs); }
+		else {
+			var t0 = performance.now();
+			var stepOut = function (now) {
+				var p = Math.min(1, (now - t0) / 900), e = p;   // linear: igual à transição do CSS do prisma (giro, deslocamento e escala)
+				drawPrismOutline(box, fromT + (t - fromT) * e, n, r, fromDx + (dx - fromDx) * e, fromDy + (dy - fromDy) * e, fromV + (vs - fromV) * e);
+				if (p < 1) box._outRaf = requestAnimationFrame(stepOut);
+			};
+			box._outRaf = requestAnimationFrame(stepOut);
+		}
 	}
 	// encolhe o prisma até que, em todos os giros, as faces fiquem a no máximo 10px de cada borda do cartão
 	function prismFit(box, inner, faces, geo, n, step, r) {
@@ -322,7 +376,7 @@
 				if (redeFace) faces.push(redeFace);
 				// N faces (lados do prisma); lado = 320px, então o raio até o centro de cada face = 160 / tan(180° / N)
 				// raio limitado (prisma não cresce demais); a face fica estreita para o anel fechar com N lados
-				let N = faces.length, R = Math.min(150, Math.round(160 / Math.tan(Math.PI / N))), W = Math.round(2 * R * Math.tan(Math.PI / N)), STEP = 360 / N;
+				let N = faces.length, R = Math.min(150, 160 / Math.tan(Math.PI / N)), W = 2 * R * Math.tan(Math.PI / N), STEP = 360 / N;
 				let FW = W;   // a frente tem a mesma largura das outras faces
 				let capTop = null, capBot = null;   // tampas (criadas depois, em setas)
 				let geo = function (s) {
@@ -371,7 +425,7 @@
 					if (parts) {
 						let S = prismFit(box, inner, faces, geo, N, STEP, R);
 						geo(S);
-						prismSet(box, inner, flipFaceGet(location.pathname + '|' + name) % N, N, Math.round(R * S));
+						prismSet(box, inner, 0, N, R * S);
 					}
 					// o cartão muda de largura (celular, zoom): refaz o encaixe e a centralização do prisma
 					if (prismMode) setTimeout(function () { box.classList.add('prism-ready'); }, 1500);   // segurança: mostra mesmo se a medição falhar
@@ -380,11 +434,11 @@
 							let cur = +box.getAttribute('data-face') || 0;
 							let sc = prismFit(box, inner, faces, geo, N, STEP, R);
 							geo(sc);
-							prismSet(box, inner, cur, N, Math.round(R * sc));
+							prismSet(box, inner, cur, N, R * sc);
 							setTimeout(function () { prismSpace(box); box.classList.add('prism-ready'); }, 700);   // espera a animação do giro terminar; só então mostra o cartão
 						}).observe(box);
 					}
-				else { var t0 = flipGet(location.pathname + '|' + name) ? 1 : 0; box.setAttribute('data-turn', t0); if (t0) box.setAttribute('data-latched', '1'); box.querySelector('.flip-inner').style.transform = 'rotateY(' + (-t0 * 180) + 'deg)'; }   // volta virado se estava virado
+				else { var t0 = (boxTurn[name] !== undefined) ? boxTurn[name] : 0; box.setAttribute('data-turn', t0); if (t0) box.setAttribute('data-latched', '1'); box.querySelector('.flip-inner').style.transform = 'rotateY(' + (-t0 * 180) + 'deg)'; }   // volta virado se estava virado
 			// borda verde quando o dispositivo está conectado
 			// azul = conectado; vermelho = desconectado (porta "sem link" ou dispositivo/rede sem conexão)
 				// Estado do link em QUALQUER idioma: o LuCI traduz os rotulos com a funcao global _()
@@ -473,6 +527,9 @@
 		if (!d && big.length && big[0].nextElementSibling && big[0].nextElementSibling.tagName === 'P' && !big[0].nextElementSibling.querySelector('.cbi-section')) {
 			d = big[0].nextElementSibling;
 		}
+		// avisos do LuCI (ex.: "No password set!") não são descrição da página: não mexe neles
+		if (d && d.closest('.alert-message')) return;
+		if (big.length && big[0].closest('.alert-message')) return;
 		// 2) título do cartão: o h3 que já existe, ou um novo com o nome da página no menu (ex.: "Administração")
 		var h = sec.querySelector(':scope > h3');
 		// só cria título se o cartão ainda não tem barra de título (ex.: Visão geral já tem "Sistema", "Memória"...)
@@ -702,12 +759,19 @@
 	var devSortC = 'name';       // ordenação das abas da lista de cabeados (independente)
 	var devFlipped = {};
 	// gira o card de dispositivo 180° por passo (contínuo, como os demais cards)
+	// o giro fica guardado em devTurn (e no atributo --t do card), assim a atualização da página não o desfaz
+	var devTurn = {};
+	// os cards voltam ao padrão ao trocar de página (não são guardados entre páginas)
+	document.addEventListener('click', function (e) {
+		if (e.target.closest && e.target.closest('header a, nav a, .main-left a, .desktop-nav a, .nav a, #tabmenu a, ul.cbi-tabmenu a')) { devTurn = {}; devFlipped = {}; boxTurn = {}; }
+	}, true);
 	function devSpin(card, dir) {
-		var base = card.hasAttribute('data-turn') ? +card.getAttribute('data-turn') : (card.classList.contains('flipped') ? 1 : 0);
-		var t = base + dir;
+		var m = card.getAttribute('data-mac');
+		var t = (devTurn[m] || 0) + dir;
+		devTurn[m] = t;
 		card.setAttribute('data-turn', t);
 		card.setAttribute('data-lastdir', dir);
-		card.querySelector('.dev-inner').style.transform = 'rotateY(' + (-t * 180) + 'deg)';
+		card.style.setProperty('--t', t);
 	}         // mac -> card virado?
 	// comparadores de cada aba (chave = data-sort)
 	var devCmp = {
@@ -750,7 +814,9 @@
 	}
 	function devCardHtml(it, flipped) {
 		var sp = bwSpark(it.hist.down, it.hist.up).replace('class="bw-svg"', 'class="bw-svg dev-spark"');
-		return '<div class="dev-card' + (it.active ? '' : ' bw-off') + ((flipped || flipGet('dev|' + it.mac)) ? ' flipped' : '') + '" data-mac="' + it.mac + '">' +
+		var fl = !!flipped;
+		var t0 = (devTurn[it.mac] !== undefined) ? devTurn[it.mac] : (fl ? 1 : 0);
+		return '<div class="dev-card' + (it.active ? '' : ' bw-off') + (fl ? ' flipped' : '') + '" data-mac="' + it.mac + '" style="--t:' + t0 + '">' +
 			'<div class="dev-inner">' +
 			'<div class="dev-front">' +
 				'<div class="dev-top"><b>' + esc(it.name) + '</b><span>' + L(devTypeLabel[it.type]) + '</span></div>' +
@@ -840,7 +906,6 @@
 				var m = card.getAttribute('data-mac');
 				var hovered = card.hasAttribute('data-hover');
 				devFlipped[m] = !devFlipped[m];   // clique trava/destrava
-				flipSet('dev|' + m, !!devFlipped[m]);
 				if (!hovered) devSpin(card, sideDir(card, e));   // mesmo giro dos outros cards
 			}
 		}, true);
@@ -1064,4 +1129,84 @@
 	window.addEventListener('scroll', function () { devLastY = window.scrollY; }, { passive: true });
 	if (document.readyState !== 'loading') start();
 	else document.addEventListener('DOMContentLoaded', start);
+})();
+
+// Roda já e de novo sempre que o conteúdo muda (sem o atraso de um intervalo fixo)
+function keepFitted(fn) {
+	var pending = false;
+	var run = function () { pending = false; fn(); };
+	var schedule = function () { if (!pending) { pending = true; requestAnimationFrame(run); } };
+	run();
+	var root = document.querySelector('#maincontent') || document.body;
+	new MutationObserver(schedule).observe(root, { childList: true, subtree: true, characterData: true });
+}
+// Verso dos cards de dispositivos: o texto diminui até caber inteiro no card (sem rolagem)
+(function fitDeviceBacks() {
+	function fit() {
+		document.querySelectorAll('#maincontent .dev-card .dev-back, #maincontent .ifacebox[data-flip] .flip-back').forEach(function (el) {
+			el.style.fontSize = '';
+			var fs = parseFloat(getComputedStyle(el).fontSize);
+			while (el.scrollHeight > el.clientHeight + 1 && fs > 5) {
+				fs -= 0.5;
+				el.style.fontSize = fs + 'px';
+			}
+		});
+	}
+	keepFitted(fit);   // ajusta logo que aparece e sempre que a página atualiza os dados
+})();
+
+// Cards de dispositivos: o texto "Access Point" (da LuCI) aparece como "AP"
+(function shortenApLabel() {
+	function fix() {
+		var walker = document.createTreeWalker(document.querySelector('#maincontent') || document.body, NodeFilter.SHOW_TEXT);
+		var n;
+		while ((n = walker.nextNode())) {
+			if (n.nodeValue.indexOf('Access Point') !== -1) n.nodeValue = n.nodeValue.replace(/Access Point/g, 'AP');
+			// taxas: entradas coladas (ex.: "20 MHz65 Mbit/s") ganham separador
+			if (/(MHz|Mbit\/s)\d/.test(n.nodeValue)) n.nodeValue = n.nodeValue.replace(/(MHz|Mbit\/s)(?=\d)/g, '$1, ');
+		}
+	}
+	keepFitted(fix);
+})();
+
+// Título "Wi-Fi devices": mostra quantos dispositivos estão conectados ao Wi-Fi
+(function countWifiDevices() {
+	function fix() {
+		document.querySelectorAll('#maincontent *').forEach(function (h) {
+			if (h.children.length || !/^Wi-Fi devices/.test((h.textContent || '').trim())) return;
+			if (!h.dataset.orig) h.dataset.orig = h.textContent.trim();
+			var section = h.closest('.dev-wrap, .cbi-section, section') || h.parentElement;
+			var n = [].filter.call(section.querySelectorAll('.dev-card'), function (c) {
+				return /phy\d+-ap\d+|Access Point|\bAP\b/.test(c.textContent);
+			}).length;
+			var txt = h.dataset.orig + ' (' + n + ')';
+			if (h.textContent !== txt) h.textContent = txt;
+		});
+	}
+	keepFitted(fix);
+})();
+
+// Nome do dispositivo nos cards: diminui a fonte até caber em uma linha (ex.: android-a8b2a225bbbe5bb3)
+(function fitDeviceNames() {
+	function fit() {
+		document.querySelectorAll('#maincontent .dev-card .dev-top b').forEach(function (b) {
+			b.style.whiteSpace = 'nowrap';
+			b.style.fontSize = '';
+			// espaço disponível = largura do cabeçalho menos o tipo do dispositivo
+			var par = b.parentElement, sp = par.querySelector('span');
+			// largura útil da face (sem o preenchimento) menos o tipo do dispositivo
+			var face = b.closest('.dev-front, .dev-back') || par;
+			var fcs = getComputedStyle(face);
+			var useful = face.clientWidth - parseFloat(fcs.paddingLeft) - parseFloat(fcs.paddingRight);
+			var avail = useful - (sp ? sp.offsetWidth + 6 : 0) - 2;
+			b.style.maxWidth = avail + 'px';
+			var fs = parseFloat(getComputedStyle(b).fontSize);
+			while (b.scrollWidth > avail && fs > 5) {
+				fs -= 0.5;
+				b.style.fontSize = fs + 'px';
+			}
+		});
+	}
+	keepFitted(fit);
+	window.addEventListener('resize', fit);   // refaz quando a janela muda de tamanho
 })();
