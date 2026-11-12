@@ -1057,7 +1057,7 @@ body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi
 
 /* Repo Public Keys: the 3 key lines (BEGIN, data, END). The data line is long, so the key text is a little smaller.
    It scrolls sideways only when the window is too narrow for it. */
-body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table textarea.cbi-input-textarea { font-size: 12px !important; line-height: 1.6; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table textarea.cbi-input-textarea { line-height: 1.6; }
 
 /* Repo Public Keys, narrow windows: the table and its cells never grow past the card.
    The key line scrolls inside its own box instead of pushing the whole page sideways. */
@@ -1069,3 +1069,15 @@ body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section
 body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-value,
 body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-value > output { min-width: 0 !important; max-width: 100% !important; }
 body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea { min-width: 0 !important; max-width: 100% !important; }
+
+/* Repo Public Keys: the key text scales with the width of its box (container query units),
+   so the 124-character data line always fits, at any window size. Floor of 7px keeps it readable. */
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row > td.cbi-value-field,
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-node:has(> textarea.cbi-input-text) { container-type: inline-size; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-textarea,
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-text { font-size: clamp(7px, calc((100cqw - 26px) / 70), 14px) !important; }
+
+/* Repo Public Keys: the only scrollbar is vertical. The key font scales with the box width so the 124-character
+   data line fits (0.55em per character); only on very narrow windows, at the minimum size, does a line wrap. */
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-textarea,
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-text { overflow-x: hidden !important; overflow-y: auto !important; white-space: pre-wrap !important; word-break: break-all !important; font-size: clamp(6px, calc((100cqw - 26px) / 69), 14px) !important; }
