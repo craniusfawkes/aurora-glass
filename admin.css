@@ -1029,3 +1029,12 @@ body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section
 body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row > td.cbi-section-actions > div { width: 100% !important; justify-content: flex-end !important; }
 body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row > td:first-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row > td::before { content: none !important; display: none !important; }
+
+/* Repo Public Keys: the key text wraps inside its box (no horizontal scrolling); only vertical scrolling when it overflows.
+   The boxes fill the full width of the page on narrow screens (see the media query above). */
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-textarea,
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-text { white-space: pre-wrap !important; word-break: break-all; overflow-x: hidden !important; overflow-y: auto !important; }
+@media (max-width: 700px) {
+	body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-textarea,
+	body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-text { width: 100% !important; }
+}
