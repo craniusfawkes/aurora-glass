@@ -1,24 +1,24 @@
-/* Estilo "Aero Glass" (Windows 7) para as páginas internas do tema Aurora.
-   O Aurora carrega patches/admin.css em todas as páginas /admin/*.
-   Ideia: cada cartão é uma "janela": moldura de vidro incolor e meio transparente com reflexo,
-   e o conteúdo fica num painel claro por dentro (como a área útil das janelas do Aero). */
+/* "Aero Glass" style (Windows 7) for the inner pages of the Aurora theme.
+   Aurora loads patches/admin.css on every /admin/* page.
+   Idea: each card is a "window": a colorless, semi-transparent glass frame with a reflection,
+   and the content sits on a light panel inside (like the usable area of Aero windows). */
 
 body[data-bg] {
-	/* MODO CLARO: vidro translúcido sobre o fundo branco (deixa ver as animações azuis) */
+	/* LIGHT MODE: translucent glass over the white background (lets the blue animations show through) */
 	--aero-tint-top: rgba(255, 255, 255, .46);
 	--aero-tint-bottom: rgba(255, 255, 255, .36);
 	--aero-edge-dark: rgba(0, 0, 0, .18);        /* contorno externo suave */
 	--aero-edge-light: rgba(255, 255, 255, .85); /* fio de luz interno */
 	--aero-shadow: 0 10px 26px rgba(0, 0, 0, .16); /* sombra da janela, discreta */
-	--aero-title: #0f1a24;                       /* título escuro sobre o vidro claro */
+	--aero-title: #0f1a24;                       /* dark title over the light glass */
 	--aero-title-shadow: 0 1px 0 rgba(255, 255, 255, .7);
-	--aero-header-fg: #0f1a24;                    /* cabeçalho e menu: texto/ícones escuros */
+	--aero-header-fg: #0f1a24;                    /* header and menu: dark text/icons */
 	--aero-header-shadow: 0 1px 0 rgba(255, 255, 255, .5);
-	--aero-client: rgba(255, 255, 255, .55);     /* painel de conteúdo */
+	--aero-client: rgba(255, 255, 255, .55);     /* content panel */
 	--aero-client-text: #121a22;
 }
 [data-darkmode="true"] body[data-bg] {
-	/* MODO ESCURO: fundo preto, efeitos claros e janelas de vidro fumê (escuro translúcido) */
+	/* DARK MODE: black background, light effects and smoked-glass windows (translucent dark) */
 	--aero-tint-top: rgba(28, 32, 42, .46);
 	--aero-tint-bottom: rgba(13, 15, 21, .58);
 	--aero-edge-dark: rgba(0, 0, 0, .62);
@@ -32,16 +32,16 @@ body[data-bg] {
 	--aero-client-text: #e6eef7;
 }
 
-/* Fundo por modo: o claro (branco + animações azuis) vem do token; no escuro troca para o navy */
+/* Background per mode: light (white + blue animations) comes from the token; dark switches to navy */
 [data-darkmode="true"] body[data-bg] .page-bg {
 	--page-bg: url("/luci-static/aurora/images/bg-tech-dark.svg?v=7") !important;
 	--page-bg-lqip: url("/luci-static/aurora/images/bg-tech-dark.svg?v=7") !important;
 }
 
-/* Conteúdo sem fundo próprio: as "janelas" flutuam sobre o fundo animado */
+/* Content without its own background: the "windows" float over the animated background */
 body[data-bg] #maincontent { background: transparent !important; padding: 10px !important; box-sizing: border-box; }
 
-/* ---- Moldura de vidro: cartões, cabeçalho, menu lateral e janelas modais ---- */
+/* ---- Glass frame: cards, header, side menu and modal windows ---- */
 body[data-bg] #maincontent .cbi-section,
 body[data-bg] .modal,
 body[data-bg] header,
@@ -74,7 +74,7 @@ body[data-bg] .sidebar-panel-inner::before {
 		linear-gradient(172deg, rgba(255,255,255,.42) 0%, rgba(255,255,255,.10) 34px, rgba(255,255,255,0) 35px);
 }
 
-/* Título da janela: texto branco com brilho, como na barra do Aero */
+/* Window title: white text with a glow, like the Aero title bar */
 body[data-bg] #maincontent .cbi-section > .cbi-title h3,
 body[data-bg] #maincontent .cbi-section > h3,
 body[data-bg] #maincontent .cbi-section > legend,
@@ -88,7 +88,7 @@ body[data-bg] #maincontent .cbi-section > .cbi-section-descr {
 }
 
 
-/* Seções aninhadas não viram outra janela */
+/* Nested sections do not become another window */
 body[data-bg] #maincontent .cbi-section .cbi-section {
 	background: transparent !important;
 	-webkit-backdrop-filter: none;
@@ -99,7 +99,7 @@ body[data-bg] #maincontent .cbi-section .cbi-section {
 }
 body[data-bg] #maincontent .cbi-section .cbi-section::before { display: none; }
 
-/* Cabeçalho e menu lateral: ícones e textos em branco sobre o vidro */
+/* Header and side menu: white icons and text over the glass */
 body[data-bg] header,
 body[data-bg] header a,
 body[data-bg] header button,
@@ -108,25 +108,25 @@ body[data-bg] .sidebar-panel-inner a {
 	text-shadow: var(--aero-header-shadow);
 }
 
-/* Ícones do cabeçalho (menu, atualizar, busca) acompanham o texto do cabeçalho */
+/* Header icons (menu, refresh, search) follow the header text */
 body[data-bg] header svg { color: var(--aero-header-fg) !important; }
 body[data-bg] header .navigation-toggle-line { stroke: var(--aero-header-fg) !important; }
 
-/* Modo escuro: textos mais claros em todo o conteúdo */
+/* Dark mode: lighter text across the whole content */
 [data-darkmode="true"] body[data-bg] {
 	--text: #f1f5fa;
 	--text-muted: #c9d3de;
 	--text-subtle: #aab7c5;
 }
 
-/* ---- Menus com o mesmo vidro: menu do celular, mega-menu, dropdowns e listas de seleção ---- */
+/* ---- Menus with the same glass: mobile menu, mega-menu, dropdowns and select lists ---- */
 body[data-bg] {
 	--mega-menu-bg: color-mix(in srgb, var(--bg) 92%, transparent);
 	--glass-gloss: linear-gradient(172deg, rgba(255,255,255,.20) 0%, rgba(255,255,255,.05) 120px, rgba(255,255,255,0) 121px);
 }
 [data-darkmode="true"] body[data-bg] { --mega-menu-bg: color-mix(in srgb, var(--bg) 92%, transparent); }
 
-/* O desfoque do cabeçalho vai para o ::before; assim os menus dentro dele também conseguem desfocar o fundo */
+/* The header blur moves to ::before, so the menus inside it can also blur the background */
 body[data-bg] header { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
 body[data-bg] header::before {
 	-webkit-backdrop-filter: blur(9px) saturate(70%);
@@ -151,13 +151,13 @@ body[data-bg] header .nav > li .desktop-nav .desktop-nav-list,
 body[data-bg] .cbi-dropdown > ul.dropdown {
 	background-color: color-mix(in srgb, var(--surface-overlay) 92%, transparent) !important;
 }
-/* Rodapé do menu do celular (sair / tema) também translúcido */
+/* Mobile menu footer (logout / theme) is translucent too */
 body[data-bg] .mobile-menu-overlay .theme-switcher { background-color: color-mix(in srgb, var(--surface) 92%, transparent); }
-/* Menu do celular: fundo quase opaco (o upstream usa 50% e o conteúdo aparecia por trás). Claro e escuro. */
+/* Mobile menu: almost opaque background (upstream uses 50% and the content showed through). Light and dark. */
 :root:not([data-darkmode="true"]) body[data-bg] .mobile-menu-overlay { background-color: rgba(246, 249, 253, .92) !important; }
 :root[data-darkmode="true"] body[data-bg] .mobile-menu-overlay { background-color: rgba(13, 15, 20, .92) !important; }
 
-/* ---- Paleta só azul / branco / preto: troca os destaques verdes do Aurora ---- */
+/* ---- Blue / white / black palette only: replaces the green highlights of Aurora ---- */
 body[data-bg] {
 	--success: #0b5394;
 	--success-surface: #dcecff;
@@ -175,7 +175,7 @@ body[data-bg] {
 	--success-surface: #12263d;
 }
 
-/* Modo claro com o menu do celular aberto: o fundo atrás do cabeçalho fica claro, então texto e ícones voltam a ser escuros */
+/* Light mode with the mobile menu open: the background behind the header is light, so text and icons go dark again */
 html:not([data-darkmode="true"]) body[data-bg]:has(.mobile-menu-open) header,
 html:not([data-darkmode="true"]) body[data-bg]:has(.mobile-menu-open) header :is(a, button, svg) {
 	color: var(--text) !important;
@@ -184,8 +184,8 @@ html:not([data-darkmode="true"]) body[data-bg]:has(.mobile-menu-open) header :is
 }
 html:not([data-darkmode="true"]) body[data-bg]:has(.mobile-menu-open) header .navigation-toggle-line { stroke: var(--text) !important; }
 
-/* ---- Sem "janelas dentro de janelas": o conteúdo fica direto no vidro da seção ---- */
-/* Caixas internas do LuCI (rádios Wi-Fi, interfaces, SSIDs) viram blocos lisos, sem fundo nem moldura */
+/* ---- No "windows inside windows": the content sits directly on the section glass ---- */
+/* LuCI inner boxes (Wi-Fi radios, interfaces, SSIDs) become flat blocks, without background or frame */
 body[data-bg] #maincontent .ifacebox,
 body[data-bg] #maincontent .ifacebox-head,
 body[data-bg] #maincontent .ifacebadge {
@@ -194,7 +194,7 @@ body[data-bg] #maincontent .ifacebadge {
 	box-shadow: none !important;
 	border-radius: 0 !important;
 }
-/* Título de cada bloco (ex.: radio0): só texto em destaque com uma linha fina embaixo */
+/* Title of each block (e.g. radio0): just highlighted text with a thin line underneath */
 body[data-bg] #maincontent .ifacebox-head {
 	color: var(--brand) !important;
 	font-size: 1rem;
@@ -202,7 +202,7 @@ body[data-bg] #maincontent .ifacebox-head {
 }
 body[data-bg] #maincontent .ifacebox-head * { color: inherit !important; }
 
-/* Separação discreta: só uma linha fina ao redor de cada bloco, sem fundo */
+/* Subtle separation: just a thin line around each block, no background */
 body[data-bg] #maincontent .ifacebox,
 body[data-bg] #maincontent .ifacebadge {
 	border: 1px solid color-mix(in srgb, var(--text) 20%, transparent) !important;
@@ -212,35 +212,35 @@ body[data-bg] #maincontent .ifacebadge {
 /* Logo do menu lateral: foto do AX3000T sem fundo colorido */
 body[data-bg] .sidebar-logo { object-fit: contain; }
 
-/* ---- Navegação: categoria aberta aparece marcada no menu de cima, não como título ---- */
-/* Tira o grande "Status/Sistema/Rede" acima do conteúdo (fica redundante com o menu) */
+/* ---- Navigation: the open category is marked in the top menu, not shown as a title ---- */
+/* Removes the large "Status/System/Network" above the content (redundant with the menu) */
 body[data-bg] #maincontent > h2,
 body[data-bg] #maincontent .cbi-map > h2 { display: none; }
 
-/* título da seção com dica: um "i" indica que há explicação; ao passar o mouse, a dica aparece (admin.js move o texto para cá) */
-/* barra de abas com altura FIXA e igual em todas as páginas (a rolagem horizontal fica invisível, sem aumentar a barra) */
+/* section title with a hint: an "i" marks that there is an explanation; hovering shows the hint (admin.js moves the text here) */
+/* tab bar with a FIXED height, the same on all pages (horizontal scrolling stays hidden, without making the bar taller) */
 body[data-bg] #maincontent ul.cbi-tabmenu {
 	box-sizing: border-box; width: 100%; height: 52px; min-height: 52px; max-height: 52px;
-	display: flex; align-items: center; gap: 4px; padding: 6px 8px; margin: 6px 0 0;   /* 6px + 8px do topo = 14px, igual ao espaço até o cartão */
+	display: flex; align-items: center; gap: 4px; padding: 6px 8px; margin: 6px 0 0;   /* 6px + 8px from the top = 14px, the same as the space up to the card */
 	overflow-x: auto; overflow-y: hidden; scrollbar-width: none;
 }
 body[data-bg] #maincontent ul.cbi-tabmenu::-webkit-scrollbar { display: none; }
-/* painéis de abas inativos somem por completo (o estilo de cartão deixava 16px de borda/preenchimento escondidos) */
+/* inactive tab panels disappear completely (the card style left 16px of border/padding hidden) */
 body[data-bg] #maincontent [data-tab-title]:not([data-tab-active="true"]),
 body[data-bg] #maincontent div[data-tab]:not([data-tab-active="true"]) { display: none !important; }
-/* barra de abas seguida de cartão no mesmo contêiner (ex.: Roteamento): 14px até o cartão */
+/* tab bar followed by a card in the same container (e.g. Routing): 14px up to the card */
 body[data-bg] #maincontent ul.cbi-tabmenu:not(:last-child) { margin-bottom: 14px; }
 body[data-bg] #maincontent ul.cbi-tabmenu > li { flex: 0 0 auto; margin: 0; display: flex; align-items: center; }
 /* todos os itens da barra com a mesma altura (ativo e inativo) */
 body[data-bg] #maincontent ul.cbi-tabmenu > li > a { box-sizing: border-box; height: 36px !important; display: inline-flex !important; align-items: center; padding: 0 14px !important; }
-/* distância padrão entre a barra de abas e o primeiro cartão */
-/* contêiner das abas: sem margens próprias (a de 32px vinha daqui); o espaço até o cartão é sempre 14px */
+/* default distance between the tab bar and the first card */
+/* tab container: no margins of its own (the 32px came from here); the space up to the card is always 14px */
 body[data-bg] #maincontent div:has(> ul.cbi-tabmenu):not(.cbi-section) { margin: 0 !important; padding: 0 0 14px !important; }
 body[data-bg] #maincontent ul.cbi-tabmenu + * { margin-top: 0 !important; }
 body[data-bg] #maincontent div:has(> ul.cbi-tabmenu) ~ * > .cbi-section,
 body[data-bg] #maincontent div:has(> ul.cbi-tabmenu) ~ .cbi-section:first-child { margin-top: 0 !important; }
 
-/* abas (cbi-tabmenu): a aberta é um "botão" escuro em qualquer largura, sem sublinhado (padrão das outras páginas) */
+/* tabs (cbi-tabmenu): the open one is a dark "button" at any width, without underline (same as the other pages) */
 body[data-bg] #maincontent .cbi-tabmenu li.cbi-tab { border-bottom: 0 !important; box-shadow: none !important; }
 body[data-bg] #maincontent .cbi-tabmenu li.cbi-tab::after { display: none !important; }
 body[data-bg] #maincontent .cbi-tabmenu li.cbi-tab > a {
@@ -249,10 +249,10 @@ body[data-bg] #maincontent .cbi-tabmenu li.cbi-tab > a {
 }
 [data-darkmode="true"] body[data-bg] #maincontent .cbi-tabmenu li.cbi-tab > a { background: #f1f5f9 !important; color: #0f1a24 !important; }
 
-/* ao trocar de aba/página, o conteúdo antigo some na hora (o LuCI deixaria ele aparecendo a 60% até o novo carregar) */
+/* when switching tab/page, the old content disappears right away (LuCI would leave it at 60% until the new one loads) */
 body[data-bg] #maincontent #view.view-leaving { visibility: hidden !important; }
 
-/* consumo por dispositivo (Visão geral): cartões iguais, com velocidade atual e histórico */
+/* traffic per device (Overview): identical cards, with current speed and history */
 body[data-bg] #maincontent .bw-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
 body[data-bg] #maincontent .bw-card { border-radius: 12px; padding: 12px 14px; background: rgba(255, 255, 255, .55); border: 1px solid rgba(15, 26, 36, .12); }
 [data-darkmode="true"] body[data-bg] #maincontent .bw-card { background: rgba(255, 255, 255, .06); border-color: rgba(255, 255, 255, .14); }
@@ -269,13 +269,13 @@ body[data-bg] #maincontent .bw-svg .ln-down { stroke: #2d8cff; }
 body[data-bg] #maincontent .bw-svg .ln-up { stroke: #8a96a3; }
 body[data-bg] #maincontent .bw-tot { font-size: .78rem; opacity: .75; margin-top: 4px; }
 
-/* dispositivos Wi-Fi em cards: frente (ícone, gráfico) e verso (detalhes); altura e largura iguais */
+/* Wi-Fi devices as cards: front (icon, chart) and back (details); same height and width */
 body[data-bg] #maincontent #wifi_assoclist_table.dev-hidden { display: none !important; }
 body[data-bg] #maincontent .dev-wrap { margin-top: 8px; }
 body[data-bg] #maincontent .dev-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); grid-auto-rows: 1fr; gap: 12px; }
 body[data-bg] #maincontent .dev-card { perspective: 1200px; min-height: 240px; }
 body[data-bg] #maincontent .dev-inner { display: grid; grid-template: 1fr / 1fr; transform-style: preserve-3d; transition: transform .6s cubic-bezier(.2, .7, .2, 1); height: 100%; }
-/* vira só com clique (sem hover: a atualização do LuCI recria os cards e o hover faria o card oscilar) */
+/* flips only on click (no hover: the LuCI refresh recreates the cards and hover would make them wobble) */
 body[data-bg] #maincontent .dev-card.flipped .dev-inner { transform: rotateY(180deg); }
 body[data-bg] #maincontent .dev-front,
 body[data-bg] #maincontent .dev-back { grid-area: 1 / 1; backface-visibility: hidden; -webkit-backface-visibility: hidden; box-sizing: border-box; border-radius: 14px; border: 1.5px solid var(--dev-edge, #2d8cff); box-shadow: 0 0 6px var(--dev-edge, #2d8cff), inset 0 0 5px var(--dev-edge, #2d8cff); padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
@@ -287,11 +287,11 @@ body[data-bg] #maincontent .dev-card.bw-off .dev-back { --dev-edge: #9aa3ad; }
 body[data-bg] #maincontent .dev-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
 body[data-bg] #maincontent .dev-top b { font-size: 1rem; }
 body[data-bg] #maincontent .dev-top span { font-size: .78rem; opacity: .7; }
-/* ícone do tipo de dispositivo: desenho em linhas finas com brilho; vermelho quando está offline */
+/* device type icon: thin-line drawing with a glow; red when offline */
 body[data-bg] #maincontent .dev-icon { width: 64px; height: 64px; align-self: center; color: #2d8cff; filter: drop-shadow(0 0 3px rgba(45, 140, 255, .9)) drop-shadow(0 0 8px rgba(45, 140, 255, .6)); }
 body[data-bg] #maincontent .dev-card.bw-off .dev-icon { color: #e5484d; filter: drop-shadow(0 0 3px rgba(229, 72, 77, .9)) drop-shadow(0 0 8px rgba(229, 72, 77, .6)); }
-/* linhas duplas: traço externo grosso e translúcido + traço interno fino e nítido */
-/* efeito neon: halo colorido + núcleo branco bem fino */
+/* double lines: thick translucent outer stroke + thin sharp inner stroke */
+/* neon effect: colored halo + very thin white core */
 body[data-bg] #maincontent .dev-icon .dl-out { stroke-width: .5; stroke: #2d8cff; opacity: .7; }
 body[data-bg] #maincontent .dev-icon .dl-in { stroke-width: .6; stroke: #e8f4ff; }
 body[data-bg] #maincontent .dev-card.bw-off .dev-icon .dl-out { stroke: #e5484d; }
@@ -302,7 +302,7 @@ body[data-bg] #maincontent .dev-line { font-size: .85rem; }
 body[data-bg] #maincontent .dev-line b { font-weight: 700; color: #ffffff; }
 body[data-bg] #maincontent .dev-disc { align-self: center; margin: 0 auto 4px; border-color: #e5484d; color: #e5484d; box-shadow: 0 0 10px rgba(229, 72, 77, .35); }
 
-/* consumo dentro da tabela de estações Wi-Fi */
+/* traffic inside the Wi-Fi stations table */
 body[data-bg] #maincontent #wifi_assoclist_table .bw-td { min-width: 150px; padding-top: 4px; padding-bottom: 4px; vertical-align: middle; }
 body[data-bg] #maincontent #wifi_assoclist_table tr > td { vertical-align: middle; }
 body[data-bg] #maincontent .bw-mini { display: flex; flex-direction: column; font-size: .76rem; font-weight: 600; line-height: 1.3; }
@@ -310,10 +310,10 @@ body[data-bg] #maincontent .bw-mini .bw-down { color: #2d8cff; }
 body[data-bg] #maincontent .bw-mini .bw-up { color: #7a8794; }
 body[data-bg] #maincontent .bw-mini-svg { width: 120px; height: 28px; }
 
-/* página Interfaces: sem a moldura de vidro que envolvia os cards (os cards continuam com a sua) */
+/* Interfaces page: without the glass frame around the cards (the cards keep their own) */
 body[data-bg] #maincontent .cbi-section-table:has(tr.iface-flip-row) { border: 0 !important; background: transparent !important; box-shadow: none !important; }
 
-/* barras de memória/armazenamento: trilho fino escuro e barra azul neon com brilho */
+/* memory/storage bars: thin dark track and a glowing neon blue bar */
 body[data-bg] #maincontent .cbi-progressbar { height: 14px !important; box-sizing: border-box; padding: 2px; border-radius: 999px; background: rgba(10, 20, 40, .55) !important; border: 1.5px solid #3ba6ff; box-shadow: 0 0 6px rgba(59, 166, 255, .7), inset 0 0 6px rgba(59, 166, 255, .35); overflow: hidden; }
 body[data-bg] #maincontent .cbi-progressbar > div { height: 100%; border-radius: 999px; background: linear-gradient(90deg, #2d8cff, #5a7cff 50%, #6c5cff) !important; box-shadow: 0 0 8px #6c5cff, 0 0 14px #2d8cff; }
 
@@ -322,11 +322,11 @@ body[data-bg] .cbi-tooltip,
 body[data-bg] #maincontent .page-hint { background: #0d0f14 !important; color: #e6f2ff !important; border: 1px solid #2d8cff !important; border-radius: 8px !important; box-shadow: 0 0 8px rgba(45, 140, 255, .6), 0 0 18px rgba(45, 140, 255, .25) !important; text-shadow: none !important; }
 body[data-bg] .cbi-tooltip strong, body[data-bg] .cbi-tooltip b { color: #9fd4ff !important; }
 
-/* portas desconectadas: o card inteiro fica translúcido (aparência apagada) */
+/* disconnected ports: the whole card is translucent (faded look) */
 body[data-bg] #maincontent .ifacebox[data-flip].ifc-disconnected { opacity: .5; filter: grayscale(1); }
-/* verso das portas/interfaces: conteúdo começa sempre do topo, para o título ficar alinhado entre os cards */
+/* port/interface back: content always starts at the top, so the title lines up across the cards */
 body[data-bg] #maincontent .ifacebox[data-flip] .flip-back { justify-content: flex-start !important; padding-top: 16px !important; }
-/* verso dos cards no tema claro: mesma cor da frente (branco, texto escuro); o escuro é só do modo escuro */
+/* card back in the light theme: same color as the front (white, dark text); the dark color is only for dark mode */
 :root:not([data-darkmode="true"]) body[data-bg] #maincontent .ifacebox[data-flip] .flip-back { background: #ffffff; color: #16181d; }
 :root:not([data-darkmode="true"]) body[data-bg] #maincontent .ifacebox[data-flip] .flip-back .ib-back-title { color: #0b6fd6; }
 :root:not([data-darkmode="true"]) body[data-bg] #maincontent .ifacebox[data-flip] .flip-back .ib-back-line b { color: #16181d; }
@@ -334,16 +334,16 @@ body[data-bg] #maincontent .ifacebox[data-flip] .flip-back { justify-content: fl
 :root:not([data-darkmode="true"]) body[data-bg] #maincontent .dev-back .dev-line b { color: #16181d; }
 :root:not([data-darkmode="true"]) body[data-bg] #maincontent .dev-back .dev-top b { color: #0b6fd6; }
 
-/* quadros de conexão (IPv4/IPv6, Wi-Fi): mesma largura e mesma altura, em grade */
+/* connection frames (IPv4/IPv6, Wi-Fi): same width and same height, in a grid */
 body[data-bg] #maincontent .network-status-table { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; align-items: stretch; }
 body[data-bg] #maincontent .network-status-table > .ifacebox { width: auto !important; max-width: none !important; align-self: stretch; box-sizing: border-box; }
 
-/* cartão Sistema: roteador à esquerda, centralizado; tabela à direita */
+/* System card: router on the left, centered; table on the right */
 body[data-bg] #maincontent .sys-body { display: flex; align-items: center; gap: 28px; }
 body[data-bg] #maincontent .sys-img { flex: 0 0 200px; width: 200px; height: auto; align-self: center; object-fit: contain; }
 body[data-bg] #maincontent .sys-body > table { flex: 1 1 auto; width: auto !important; }
 
-/* botões da barra superior no mesmo estilo: busca e Sair (Sair fica no canto direito) */
+/* top bar buttons in the same style: search and logout (logout stays in the right corner) */
 body[data-bg] .cmdk-trigger { box-sizing: border-box; width: 40px; height: 40px; min-width: 40px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: #16181d; border: 1px solid #2d8cff; color: #2d8cff; box-shadow: 0 0 10px rgba(45, 140, 255, .35); padding: 0; margin: 0 4px; }
 :root:not([data-darkmode="true"]) body[data-bg] .cmdk-trigger { background: #ffffff; }
 body[data-bg] header .header-content { display: flex; align-items: center; }
@@ -351,7 +351,7 @@ body[data-bg] header .header-content > .brand { flex: 1 1 auto; min-width: 0; }
 body[data-bg] header .header-content > .cmdk-trigger { order: 7; }
 body[data-bg] header .header-content > .logout-btn { order: 9; margin-left: 4px; }
 body[data-bg] header .header-content > .pull-right { order: 8; }
-/* indicador de atualização (ícone de atualizar): mesmo estilo circular, continua clicável */
+/* refresh indicator (refresh icon): same circular style, still clickable */
 body[data-bg] header .header-content > #indicators { box-sizing: border-box; width: 40px; height: 40px; min-width: 40px; border-radius: 50%; display: flex !important; align-items: center; justify-content: center; background: #16181d; border: 1px solid #2d8cff; box-shadow: 0 0 10px rgba(45, 140, 255, .35); margin: 0 4px; }
 :root:not([data-darkmode="true"]) body[data-bg] header .header-content > #indicators { background: #ffffff; }
 body[data-bg] header #indicators { position: relative; }
@@ -360,11 +360,11 @@ body[data-bg] header #indicators span { position: absolute; inset: 0; width: 100
 body[data-bg] header #indicators span::before { display: none !important; }
 body[data-bg] header #indicators span::before { width: 18px !important; height: 18px !important; background: #2d8cff !important; -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center; }
 
-/* janelas de configuração (modal) no tema claro: painel quase opaco e sobreposição clara (não escura) */
+/* configuration windows (modal) in the light theme: almost opaque panel and a light overlay (not dark) */
 :root:not([data-darkmode="true"]) body[data-bg] .modal { background: rgba(246, 249, 253, .96) !important; }
 :root:not([data-darkmode="true"]) body[data-bg] #modal_overlay, :root:not([data-darkmode="true"]) body[data-bg] .modal-overlay { background: rgba(214, 224, 236, .6) !important; }
 
-/* janelas de configuração (modal): abas quebram linha, campos e textos legíveis nos dois temas */
+/* configuration windows (modal): tabs wrap, fields and texts readable in both themes */
 body[data-bg] .modal .cbi-tabmenu { height: auto !important; min-height: 52px; flex-wrap: wrap; overflow: visible !important; }
 body[data-bg] .modal .cbi-tabmenu li > a { white-space: nowrap; }
 body[data-bg] .modal .cbi-value-title, body[data-bg] .modal label { color: #121a22 !important; text-shadow: none !important; }
@@ -378,7 +378,7 @@ body[data-bg] .modal input:disabled, body[data-bg] .modal select:disabled, body[
 	background: #1b1f27 !important; color: #e6eef7 !important; border: 1px solid rgba(255, 255, 255, .25) !important; }
 [data-darkmode="true"] body[data-bg] .modal input:disabled, [data-darkmode="true"] body[data-bg] .modal select:disabled { background: #232832 !important; color: #c9d3de !important; }
 
-/* botão Sair no canto da barra (mesmo estilo dos botões de ícone) */
+/* logout button in the corner of the bar (same style as the icon buttons) */
 body[data-bg] .logout-btn { box-sizing: border-box; position: relative; width: 40px; height: 40px; min-width: 40px; max-width: 40px; flex: 0 0 40px; padding: 0; margin: 0 4px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0; background: #16181d !important; border: 1px solid #e5484d; color: #e5484d; box-shadow: 0 0 10px rgba(229, 72, 77, .35); transition: transform .15s ease, box-shadow .15s ease; }
 body[data-bg] .logout-btn:hover { transform: translateY(-1px); }
 body[data-bg] .logout-btn::before { content: ""; display: inline-block; width: 18px; height: 18px; background: currentColor; -webkit-mask: var(--ico) center / contain no-repeat; mask: var(--ico) center / contain no-repeat; --ico: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4'/%3E%3Cpath d='M16 17l5-5-5-5'/%3E%3Cpath d='M21 12H9'/%3E%3C/svg%3E"); }
@@ -387,12 +387,12 @@ body[data-bg] .logout-btn::before { content: ""; display: inline-block; width: 1
 body[data-bg] .logout-btn[data-tip]::after { content: attr(data-tip); position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%) translateY(4px); white-space: nowrap; background: #0d0f14; color: #e6f2ff; border: 1px solid #2d8cff; border-radius: 8px; padding: 4px 10px; font-size: 12px; font-weight: 600; box-shadow: 0 0 8px rgba(45, 140, 255, .6); opacity: 0; pointer-events: none; transition: opacity .15s ease, transform .15s ease; z-index: 50; }
 body[data-bg] .logout-btn[data-tip]:hover::after { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-/* dica dos botões de ícone: caixa escura com borda neon (no lugar da dica nativa do navegador) */
+/* icon button hint: dark box with a neon border (instead of the browser native tooltip) */
 body[data-bg] #maincontent .ico-btn[data-tip] { position: relative; }
 body[data-bg] #maincontent .ico-btn[data-tip]::after { content: attr(data-tip); position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%) translateY(4px); white-space: nowrap; background: #0d0f14; color: #e6f2ff; border: 1px solid #2d8cff; border-radius: 8px; padding: 4px 10px; font-size: 12px; font-weight: 600; box-shadow: 0 0 8px rgba(45, 140, 255, .6), 0 0 18px rgba(45, 140, 255, .25); opacity: 0; pointer-events: none; transition: opacity .15s ease, transform .15s ease; z-index: 50; }
 body[data-bg] #maincontent .ico-btn[data-tip]:hover::after { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-/* botões de ícone do Wi-Fi (mesmo estilo dos das interfaces) */
+/* Wi-Fi icon buttons (same style as the interface ones) */
 body[data-bg] #maincontent .ico-btn { box-sizing: border-box; width: 40px; height: 40px; min-width: 40px; max-width: 40px; flex: 0 0 40px; padding: 0; margin: 0 4px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0; background: #16181d !important; border: 1px solid #c9d3de; color: #c9d3de; box-shadow: 0 0 10px rgba(201, 211, 222, .18); transition: transform .15s ease, box-shadow .15s ease; }
 body[data-bg] #maincontent .ico-btn:hover { transform: translateY(-1px); }
 body[data-bg] #maincontent .ico-btn::before { content: ""; display: inline-block; width: 18px; height: 18px; background: currentColor; -webkit-mask: var(--ico) center / contain no-repeat; mask: var(--ico) center / contain no-repeat; }
@@ -407,17 +407,17 @@ body[data-bg] #maincontent .ico-btn[data-ico="plus"] { --ico: url("data:image/sv
 :root:not([data-darkmode="true"]) body[data-bg] #maincontent .ico-btn { background: #ffffff !important; }
 [data-darkmode="true"] body[data-bg] #maincontent .ico-btn { background: #16181d !important; }
 
-/* botões de ícone no tema claro: fundo branco, anel e ícone coloridos (o escuro é só do modo escuro) */
+/* icon buttons in the light theme: white background, colored ring and icon (the dark color is only for dark mode) */
 :root:not([data-darkmode="true"]) body[data-bg] #maincontent tr.iface-flip-row > td.cbi-section-table-cell .cbi-button { background: #ffffff !important; }
 :root:not([data-darkmode="true"]) body[data-bg] #maincontent tr.iface-flip-row > td.cbi-section-table-cell .cbi-button.down { color: #5a6b7d !important; border-color: #5a6b7d !important; }
 
-/* título de página sem seção (ex.: "Administração"): fica no topo do card, na faixa de vidro, como "Configurações" */
+/* page title without a section (e.g. "Administration"): sits at the top of the card, in the glass strip, like "Settings" */
 body[data-bg] #maincontent .cbi-section > h3.page-title {
 	margin: 0 0 8px; padding: 4px 6px 6px; font-size: 1.15rem; font-weight: 700; line-height: 1.2;
 	color: var(--aero-title); text-shadow: var(--aero-title-shadow);
 	border-bottom: 1px solid rgba(255, 255, 255, .22);
 }
-/* títulos de TODOS os cartões com o mesmo estilo: fonte, linha abaixo e espaço (com ou sem dica) */
+/* titles of ALL cards in the same style: font, line below and spacing (with or without a hint) */
 body[data-bg] #maincontent .cbi-section > h3 {
 	display: inline-block; font-size: 1.1rem; font-weight: 700; margin: 0 0 10px; padding: 0 0 4px;
 	border-bottom: 1px solid rgba(15, 26, 36, .13);
@@ -448,8 +448,8 @@ body[data-bg] #topmenu a.menu.is-current {
 	font-weight: 600;
 }
 
-/* ---- Tooltips (info das portas/interfaces ao passar o cursor): vidro opaco e legível ---- */
-/* Sem isso o balão fica transparente e o texto se mistura com o conteúdo atrás */
+/* ---- Tooltips (port/interface info on hover): opaque, readable glass ---- */
+/* Without this the bubble is transparent and the text mixes with the content behind it */
 body[data-bg] .cbi-tooltip {
 	background: color-mix(in srgb, var(--surface) 94%, transparent) !important;
 	color: var(--text) !important;
@@ -463,8 +463,8 @@ body[data-bg] .cbi-tooltip {
 }
 body[data-bg] .cbi-tooltip * { color: var(--text) !important; }
 
-/* ---- Gráfico + info no hover: gráfico grande na frente; passar o cursor / tocar vira o card ---- */
-/* O container (.ifacebox) fica PARADO; só a camada interna gira -> hover estável, sem tremor. */
+/* ---- Chart + info on hover: large chart on the front; hovering / tapping flips the card ---- */
+/* The container (.ifacebox) stays STILL; only the inner layer turns -> stable hover, no jitter. */
 /* O verso fica em fluxo e define a altura: todo o texto cabe, sem barra de rolagem. */
 body[data-bg] .ifacebox[data-flip] {
 	position: relative;
@@ -475,14 +475,14 @@ body[data-bg] .ifacebox[data-flip] {
 	box-sizing: border-box;
 }
 body[data-bg] .ifacebox[data-flip] .flip-inner {
-	/* grid empilha as duas faces na mesma célula -> o card cresce para a face MAIS ALTA (nada vaza) */
+	/* grid stacks both faces in the same cell -> the card grows to the TALLER face (nothing leaks) */
 	display: grid;
 	grid-template: 1fr / 1fr;
 	transform-style: preserve-3d;
 	transition: transform .6s cubic-bezier(.2, .7, .2, 1);
 	transform: rotateY(0deg);
 	min-height: 120px;
-	width: 100%;                  /* a face ocupa o card inteiro (senão o fundo para antes da borda) */
+	width: 100%;                  /* the face fills the whole card (otherwise the background stops short of the edge) */
 	flex: 1 1 auto;               /* estica na altura do card (igualado pelo JS) */
 }
 body[data-bg] .ifacebox[data-flip] { display: flex; flex-direction: column; }
@@ -491,7 +491,7 @@ body[data-bg] .ifacebox[data-flip] { display: flex; flex-direction: column; }
 body[data-bg] .ifacebox[data-flip].flipped .flip-inner { transform: rotateY(180deg); }
 body[data-bg] .ifacebox[data-flip] .cbi-tooltip { display: none !important; }
 
-/* FRENTE: o gráfico atual, grande e centralizado (overlay, dentro dos limites) */
+/* FRONT: the current chart, large and centered (overlay, within the limits) */
 body[data-bg] .ifacebox[data-flip] .flip-front {
 	grid-area: 1 / 1;
 	-webkit-backface-visibility: hidden;
@@ -504,18 +504,18 @@ body[data-bg] .ifacebox[data-flip] .flip-front {
 	box-sizing: border-box;
 	padding: 12px 10px;
 	min-width: 0;
-	background: #ffffff;           /* fundo sólido: preenche todo o quadro, sem vazar a cor da página */
+	background: #ffffff;           /* solid background: fills the whole frame, without the page color leaking through */
 }
 [data-darkmode="true"] body[data-bg] .ifacebox[data-flip] .flip-front { background: #16181d; }
-/* gráfico + legenda ficam centralizados no espaço abaixo do nome (margens automáticas dividem a sobra) */
+/* chart + legend are centered in the space below the name (automatic margins share the leftover space) */
 body[data-bg] .ifacebox[data-flip] .flip-front .flip-figure,
 body[data-bg] .ifacebox[data-flip] .flip-front .ifacebox-body { margin: 0; flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; align-items: center; }
 body[data-bg] .ifacebox[data-flip] .flip-front .ifacebox-body { max-width: 100%; }
-/* ícone único (wan, portas): bem maior */
+/* single icon (wan, ports): much larger */
 body[data-bg] .ifacebox[data-flip] .flip-front .ifacebox-body img { width: 86px; height: auto; max-width: 100%; }
 body[data-bg] .ifacebox[data-flip] .flip-front .ifacebox-head { font-size: 1rem; }
 
-/* VERSO: em fluxo (define a altura -> sem rolagem); texto quebra para não passar da borda */
+/* BACK: in flow (sets the height -> no scrolling); text wraps so it does not pass the edge */
 body[data-bg] .ifacebox[data-flip] .flip-back {
 	grid-area: 1 / 1;
 	transform: rotateY(180deg);
@@ -545,14 +545,14 @@ body[data-bg] .ifacebox[data-flip] .flip-back .ib-back-status {
 	text-align: center; opacity: .85; margin-bottom: 5px; padding-bottom: 5px;
 	border-bottom: 1px solid rgba(255, 255, 255, .15);
 }
-/* rótulo (nome) normal; valor depois do ":" em negrito e um pouco mais claro */
+/* label (name) normal; value after the ":" in bold and slightly lighter */
 body[data-bg] .ifacebox[data-flip] .flip-back .ib-back-line { font-weight: 400; }
 body[data-bg] .ifacebox[data-flip] .flip-back .ib-back-line b { font-weight: 700; color: #ffffff; }
-/* nome do dispositivo abaixo dos ícones (frente) */
+/* device name below the icons (front) */
 body[data-bg] .ifacebox[data-flip] .flip-front .fig-label {
 	margin-top: 6px; font-size: .82rem; font-weight: 600; text-align: center; color: var(--text-muted, var(--text));
 }
-/* cantos arredondados (acompanhando as janelinhas) e borda verde quando o dispositivo está conectado */
+/* rounded corners (matching the small windows) and a green border when the device is connected */
 /* #maincontent para vencer a regra do tema (que tem #maincontent e !important) */
 /* a moldura fica nas FACES (elas giram junto com o card); azul = conectado, vermelho = desconectado */
 body[data-bg] #maincontent .ifacebox[data-flip] { border: 0 !important; border-radius: 14px !important; }
@@ -564,13 +564,13 @@ body[data-bg] #maincontent .ifacebox[data-flip] .flip-back { border: 1.5px solid
 body[data-bg] #maincontent .ifacebox[data-flip].ifc-connected { --flip-edge: #2d8cff; }
 body[data-bg] #maincontent .ifacebox[data-flip].ifc-disconnected { --flip-edge: #9aa3ad; }
 
-/* grade de portas: cada card tem no mínimo 280px; quando não cabe, o card vai para a linha de baixo (sem ficar espremido) */
+/* port grid: each card is at least 280px; when it does not fit, the card goes to the next row (not squeezed) */
 body[data-bg] #maincontent div:has(> .ifacebox[data-flip]) {
 	display: grid !important;
 	grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
 }
 
-/* MOBILE: um card por linha, gráfico ainda maior */
+/* MOBILE: one card per row, chart even larger */
 @media (max-width: 768px) {
 	body[data-bg] .ifacebox[data-flip] {
 		width: 100% !important; min-width: 0 !important; margin: .45em 0 !important;
@@ -579,16 +579,16 @@ body[data-bg] #maincontent div:has(> .ifacebox[data-flip]) {
 	body[data-bg] .ifacebox[data-flip] .flip-front .ifacebox-body img { width: 104px; height: auto; }
 }
 
-/* CELULAR: os blocos de conteúdo ficavam quase transparentes (o vidro é só um brilho sobre o fundo).
-   Damos a eles uma base sólida de 92%, a mesma opacidade dos menus. */
+/* PHONE: the content blocks were almost transparent (the glass is only a glow over the background).
+   We give them a solid 92% base, the same opacity as the menus. */
 @media (max-width: 768px) {
 	:root:not([data-darkmode="true"]) body[data-bg] #maincontent .cbi-section,
 	:root:not([data-darkmode="true"]) body[data-bg] #maincontent .sys-card { background-color: rgba(246, 249, 253, .80) !important; }
 	:root[data-darkmode="true"] body[data-bg] #maincontent .cbi-section,
 	:root[data-darkmode="true"] body[data-bg] #maincontent .sys-card { background-color: rgba(13, 15, 20, .80) !important; }
 }
-/* PC: mesma base de 80% do celular e sem difusão (blur), para o texto e o fundo ficarem nítidos.
-   O celular mantém o blur, pois a base de 80% já cobre o fundo. */
+/* PC: same 80% base as the phone and no blur, so the text and background stay sharp.
+   The phone keeps the blur, since the 80% base already covers the background. */
 @media (min-width: 769px) {
 	:root:not([data-darkmode="true"]) body[data-bg] #maincontent .cbi-section,
 	:root:not([data-darkmode="true"]) body[data-bg] #maincontent .sys-card { background-color: rgba(246, 249, 253, .80) !important; }
@@ -597,50 +597,50 @@ body[data-bg] #maincontent div:has(> .ifacebox[data-flip]) {
 	body[data-bg] #maincontent .cbi-section { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
 }
 
-/* Frente: gráfico e nome agrupados e centralizados de forma harmônica */
+/* Front: chart and name grouped and centered in a balanced way */
 body[data-bg] .ifacebox[data-flip] .flip-front .ifacebox-head { text-align: center; }
 body[data-bg] .ifacebox[data-flip] .flip-front .ifacebox-body {
 	display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-align: center;
-	max-width: 100%; flex: 1 1 auto;   /* ocupa o espaço abaixo do nome e centraliza o gráfico */
+	max-width: 100%; flex: 1 1 auto;   /* takes the space below the name and centers the chart */
 }
-/* ponte/vários membros: esconde a figura original bagunçada; usa a figura própria (uniforme) */
+/* bridge/several members: hides the messy original figure; uses its own figure (uniform) */
 body[data-bg] .ifacebox[data-flip] .flip-front.front-multi .ifacebox-body { display: none !important; }
 body[data-bg] .ifacebox[data-flip] .flip-front .flip-figure {
 	display: flex; flex-wrap: wrap; justify-content: center; align-content: center; align-items: center;
-	gap: 10px; margin: 0 auto; box-sizing: border-box; flex: 1 1 auto;   /* centraliza a grade no espaço abaixo do nome */
+	gap: 10px; margin: 0 auto; box-sizing: border-box; flex: 1 1 auto;   /* centers the grid in the space below the name */
 }
 body[data-bg] .ifacebox[data-flip] .flip-front .flip-figure img { width: var(--iso, 40px); height: var(--iso, 40px); object-fit: contain; }
 
-/* Interfaces: GRADE de cards lado a lado que quebram linha; cada card com botões abaixo */
+/* Interfaces: GRID of cards side by side that wrap; each card with buttons below */
 body[data-bg] .cbi-section-table:has(tr.iface-flip-row) { display: block; }
 body[data-bg] .cbi-section-table:has(tr.iface-flip-row) > tbody {
 	display: flex; flex-wrap: wrap; gap: 18px; align-items: stretch; justify-content: center;
 }
-/* largura natural (conteúdo) com teto; o JS iguala todos à MAIOR largura e à MAIOR altura */
+/* natural width (content) with a cap; the JS makes all of them match the LARGEST width and LARGEST height */
 body[data-bg] .cbi-section-table tr.iface-flip-row {
 	display: block; flex: 0 0 auto; width: min(320px, 100%); max-width: 100%;
 	border: 0; background: transparent; margin: 0;
 }
 body[data-bg] #maincontent .cbi-section-table tr.iface-flip-row .ifacebox[data-flip] { max-width: 320px !important; }
 body[data-bg] .cbi-section-table tr.iface-flip-row > td { display: block; width: auto; border: 0; padding: 0; }
-/* a célula do card estica para preencher a altura da linha, então o card fica da mesma altura */
+/* the card cell stretches to fill the row height, so the card has the same height */
 body[data-bg] .cbi-section-table tr.iface-flip-row > td:has(.ifacebox[data-flip]) { display: block; }
 body[data-bg] .cbi-section-table tr.iface-flip-row .ifacebox[data-flip] { width: 100%; }
-/* botões centralizados sob o card */
+/* buttons centered under the card */
 body[data-bg] #maincontent .cbi-section-table tr.iface-flip-row > td.cbi-section-table-cell {
 	flex: 0 0 auto; width: 100% !important; min-width: 0 !important; box-sizing: border-box; container-type: inline-size;
 	padding-top: 12px; white-space: normal;
 	display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center;
 }
-/* botões centralizados sob o card: o contêiner interno (div) dos botões também centraliza */
+/* buttons centered under the card: the inner container (div) of the buttons also centers */
 body[data-bg] #maincontent tr.iface-flip-row > td.cbi-section-table-cell > div {
 	display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; width: 100%;
 }
-/* botões dividem a largura do card igualmente (não ultrapassam a borda) */
+/* buttons share the card width equally (they do not pass the edge) */
 body[data-bg] #maincontent .cbi-section-table tr.iface-flip-row > td.cbi-section-table-cell .cbi-button {
 	flex: 1 1 0; min-width: 0; margin: 0; white-space: nowrap; text-align: center;
 }
-/* sem espaço para o texto: troca por ícones (o texto continua no HTML, para leitores de tela/tooltip) */
+/* no room for text: replaced by icons (the text stays in the HTML, for screen readers/tooltip) */
 @container (max-width: 420px) {
 	body[data-bg] #maincontent .cbi-section-table tr.iface-flip-row > td.cbi-section-table-cell .cbi-button {
 		font-size: 0; box-sizing: border-box; flex: 0 0 40px; width: 40px; height: 40px; min-width: 0; max-width: 40px;
@@ -650,12 +650,12 @@ body[data-bg] #maincontent .cbi-section-table tr.iface-flip-row > td.cbi-section
 	}
 	/* reiniciar: anel azul com brilho (mesmo estilo dos demais) */
 		body[data-bg] #maincontent .cbi-section-table tr.iface-flip-row > td.cbi-section-table-cell .cbi-button.reconnect { border-color: #2d8cff; color: #2d8cff; box-shadow: 0 0 10px rgba(45, 140, 255, .3); }
-		/* cores por ação: editar em azul da marca; excluir em vermelho suave; demais neutros */
+		/* colors per action: edit in brand blue; delete in soft red; the rest neutral */
 		body[data-bg] #maincontent .cbi-section-table tr.iface-flip-row > td.cbi-section-table-cell .cbi-button.cbi-button-edit { background: #16181d; border-color: #2d8cff; color: #2d8cff; box-shadow: 0 0 10px rgba(45, 140, 255, .35); }
 		body[data-bg] #maincontent .cbi-section-table tr.iface-flip-row > td.cbi-section-table-cell .cbi-button.cbi-button-remove { background: #16181d; border-color: #e5484d; color: #e5484d; box-shadow: 0 0 10px rgba(229, 72, 77, .35); }
 		body[data-bg] #maincontent .cbi-section-table tr.iface-flip-row > td.cbi-section-table-cell .cbi-button:hover { transform: translateY(-1px); box-shadow: 0 3px 8px rgba(0, 0, 0, .12); }
 		[data-darkmode="true"] body[data-bg] #maincontent .cbi-section-table tr.iface-flip-row > td.cbi-section-table-cell .cbi-button:not(.cbi-button-edit):not(.cbi-button-remove) { background: rgba(255, 255, 255, .08); border-color: rgba(255, 255, 255, .2); color: #e7edf5; }
-		/* ícones SVG (traço de 2px, arredondados) pintados na cor do texto do botão */
+		/* SVG icons (2px rounded strokes) painted in the button text color */
 	body[data-bg] #maincontent .cbi-section-table tr.iface-flip-row > td.cbi-section-table-cell .cbi-button::before {
 		content: ""; display: inline-block; width: 16px; height: 16px; vertical-align: middle;
 		background: currentColor;
@@ -665,11 +665,11 @@ body[data-bg] #maincontent .cbi-section-table tr.iface-flip-row > td.cbi-section
 	body[data-bg] #maincontent .cbi-section-table tr.iface-flip-row > td.cbi-section-table-cell .cbi-button.reconnect {
 		--ico: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 12a9 9 0 1 1-2.64-6.36'/%3E%3Cpath d='M21 4v5h-5'/%3E%3C/svg%3E");
 	}
-	/* parar: botão de energia */
+	/* stop: power button */
 	body[data-bg] #maincontent .cbi-section-table tr.iface-flip-row > td.cbi-section-table-cell .cbi-button.down {
 		--ico: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3v9'/%3E%3Cpath d='M6.3 6.3a8 8 0 1 0 11.4 0'/%3E%3C/svg%3E");
 	}
-	/* editar: lápis */
+	/* edit: pencil */
 	body[data-bg] #maincontent .cbi-section-table tr.iface-flip-row > td.cbi-section-table-cell .cbi-button.cbi-button-edit {
 		--ico: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 20h9'/%3E%3Cpath d='M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z'/%3E%3C/svg%3E");
 	}
@@ -681,7 +681,7 @@ body[data-bg] #maincontent .cbi-section-table tr.iface-flip-row > td.cbi-section
 body[data-bg] .cbi-section-table:has(tr.iface-flip-row) .cbi-section-table-titles { display: none; }
 
 /* ---- Contraste (WCAG AA) revisado nos dois temas ---- */
-/* claro: link/marca e botão principal escurecidos para ≥4,5:1 sobre branco */
+/* light: link/brand and primary button darkened to ≥4.5:1 over white */
 :root:not([data-darkmode="true"]) body[data-bg] { --brand: #00719f; --link: #00719f; --brand-hover: #005f86; }
 :root:not([data-darkmode="true"]) body[data-bg] #maincontent .cbi-button-apply { background-color: #00719f !important; border-color: #00719f !important; color: #ffffff !important; }
 /* claro: velocidades de download/upload escurecidas (eram 3,3:1 e 3,7:1) */
@@ -689,19 +689,19 @@ body[data-bg] .cbi-section-table:has(tr.iface-flip-row) .cbi-section-table-title
 :root:not([data-darkmode="true"]) body[data-bg] #maincontent .bw-mini .bw-down { color: #1563c9; }
 :root:not([data-darkmode="true"]) body[data-bg] #maincontent .bw-now .bw-up,
 :root:not([data-darkmode="true"]) body[data-bg] #maincontent .bw-mini .bw-up { color: #556270; }
-/* escuro: botão principal com fundo mais profundo para o texto branco ter ≥4,5:1 */
+/* dark: primary button with a deeper background so the white text has ≥4.5:1 */
 :root[data-darkmode="true"] body[data-bg] #maincontent .cbi-button-apply { background-color: #1f6fd6 !important; border-color: #1f6fd6 !important; color: #ffffff !important; }
-/* escuro: botões de ação (adicionar/salvar) com o mesmo azul profundo do botão principal */
+/* dark: action buttons (add/save) with the same deep blue as the primary button */
 :root[data-darkmode="true"] body[data-bg] #maincontent .cbi-button-add,
 :root[data-darkmode="true"] body[data-bg] #maincontent .cbi-button-save,
 :root[data-darkmode="true"] body[data-bg] #maincontent .cbi-button-positive,
 :root[data-darkmode="true"] body[data-bg] #maincontent .cbi-button-action { background-color: #1f6fd6 !important; border-color: #1f6fd6 !important; color: #ffffff !important; }
 
-/* Chaves SSH: a chave ocupa toda a largura do cartão */
+/* SSH keys: the key takes the full width of the card */
 body[data-bg] #maincontent .cbi-dynlist .item small { display: block; width: 100%; min-width: 0; box-sizing: border-box; }
 body[data-bg] #maincontent .cbi-dynlist .item code { display: block; width: 100%; box-sizing: border-box; word-break: break-all; white-space: normal; }
 
-/* aparelho desconectado: cartão em tons de cinza */
+/* disconnected device: card in grey tones */
 body[data-bg] #maincontent .dev-card.bw-off,
 body[data-bg] #maincontent .bw-card.bw-off { filter: grayscale(1); }
 
@@ -713,11 +713,11 @@ body[data-bg] #maincontent .cbi-dynlist .item small { margin-right: 0; }
 body[data-bg] #maincontent .dev-card.bw-off,
 body[data-bg] #maincontent .bw-card.bw-off { opacity: .5; filter: grayscale(1); }
 
-/* Chaves SSH: a caixa da chave vai até a borda do cartão (o texto mantém respiro dentro dela) */
+/* SSH keys: the key box goes to the card edge (the text keeps some room inside it) */
 body[data-bg] #maincontent .cbi-dynlist .item { padding-left: 0 !important; padding-right: 0 !important; }
 body[data-bg] #maincontent .cbi-dynlist .item small { width: 100% !important; margin: 0; padding: 0 12px; box-sizing: border-box; }
 
-/* Chaves SSH: o bloco de chaves e cada cartão ocupam toda a largura da seção */
+/* SSH keys: the key block and each card take the full width of the section */
 body[data-bg] #maincontent .cbi-section .cbi-dynlist { display: flex; flex-direction: column; width: 100%; max-width: none; }
 body[data-bg] #maincontent .cbi-section .cbi-dynlist .item { width: 100% !important; max-width: none !important; box-sizing: border-box; }
 
@@ -725,42 +725,42 @@ body[data-bg] #maincontent .cbi-section .cbi-dynlist .item { width: 100% !import
 body[data-bg] #maincontent .cbi-dynlist .item small { padding: 0; }
 body[data-bg] #maincontent .cbi-dynlist .item code { padding: 10px; display: block; box-sizing: border-box; }
 body[data-bg] #maincontent .cbi-dynlist .item code { width: 100%; max-width: none; }
-/* Chaves SSH: texto (título e tipo da chave) com 12px da borda; a caixa da chave continua de borda a borda */
+/* SSH keys: text (title and key type) 12px from the edge; the key box stays edge to edge */
 body[data-bg] #maincontent .cbi-dynlist .item { padding-left: 12px !important; padding-right: 12px !important; }
 body[data-bg] #maincontent .cbi-dynlist .item small { width: calc(100% + 24px) !important; margin: 0 -12px; }
-/* Chaves SSH: o rótulo "EdDSA, Curve25519" fica na margem do texto; só a caixa da chave vai de borda a borda */
+/* SSH keys: the "EdDSA, Curve25519" label stays on the text margin; only the key box goes edge to edge */
 body[data-bg] #maincontent .cbi-dynlist .item small { width: 100% !important; margin: 0; padding: 0; }
 body[data-bg] #maincontent .cbi-dynlist .item code { width: calc(100% + 24px) !important; margin: 0 -12px; }
 
-/* Imagem do modelo no cartão Sistema: tamanho fixo mesmo quando o cartão não está em linha (ex.: LuCI diferente) */
+/* Model image in the System card: fixed size even when the card is not in a row (e.g. a different LuCI) */
 body[data-bg] #maincontent .sys-img { display: block; width: 200px !important; max-width: 200px; height: auto; margin: 0 auto; }
 
-/* Cartões de portas e interfaces: mesma largura (ocupam a célula da grade inteira) */
+/* Port and interface cards: same width (they fill the whole grid cell) */
 body[data-bg] #maincontent .ifacebox[data-flip] { width: 100% !important; max-width: none !important; box-sizing: border-box; }
 
-/* Cartões de portas: pelo menos 10px entre eles e até as bordas da grade */
+/* Port cards: at least 10px between them and up to the grid edges */
 body[data-bg] #maincontent div:has(> .ifacebox[data-flip]) { gap: 10px !important; padding: 10px !important; box-sizing: border-box; }
 
-/* Cartões de portas menores: até 240px, centralizados na linha */
+/* Smaller port cards: up to 240px, centered in the row */
 body[data-bg] #maincontent div:has(> .ifacebox[data-flip]) { grid-template-columns: repeat(auto-fill, minmax(200px, 240px)) !important; justify-content: center !important; }
 body[data-bg] #maincontent .ifacebox[data-flip] { max-width: 240px !important; }
 
-/* Título do verso com a mesma cor e tamanho do título da frente */
+/* Back title with the same color and size as the front title */
 body[data-bg] #maincontent .ifacebox[data-flip] .ib-back-title { color: var(--brand) !important; font-size: 16px !important; }
 :root:not([data-darkmode="true"]) body[data-bg] #maincontent .ifacebox[data-flip] .flip-back .ib-back-title { color: var(--brand) !important; }
 
-/* Gráficos do vnstat (imagens PNG com fundo branco): ficam escuros no tema escuro */
+/* vnstat charts (PNG images with white background): dark in the dark theme */
 body[data-page="admin-status-vnstat2"][data-bg] #maincontent img { filter: invert(0.92) hue-rotate(180deg); border-radius: 8px; }
 :root:not([data-darkmode="true"]) body[data-page="admin-status-vnstat2"][data-bg] #maincontent img { filter: none; }
 
 /* Firewall (zonas): a zona de origem fica centralizada na linha da seta */
 body[data-bg] #maincontent .zone-src { align-self: center !important; }
 
-/* Interfaces: ícones dos membros da ponte lado a lado (em grade), sem esticar o cartão */
+/* Interfaces: bridge member icons side by side (in a grid), without stretching the card */
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox[data-flip] .flip-figure { flex: 0 0 auto !important; flex-direction: row !important; flex-wrap: wrap !important; align-content: flex-start !important; justify-content: center !important; gap: 10px !important; }
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox[data-flip] .flip-figure img { width: var(--iso, 40px) !important; height: var(--iso, 40px) !important; }
 
-/* Verso dos cartões com muitas linhas (ex.: ponte com vários membros): rolagem em vez de esticar todos os cartões */
+/* Back of cards with many lines (e.g. bridge with several members): scrolling instead of stretching all the cards */
 body[data-bg] #maincontent .ifacebox[data-flip] .flip-back { max-height: 360px; overflow-y: auto; }
 
 /* Interfaces: verso em duas colunas (menos altura, mais leitura lado a lado) */
@@ -768,7 +768,7 @@ body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox[data-fli
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox[data-flip] .flip-back .ib-back-title,
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox[data-flip] .flip-back .ib-back-status { column-span: all; }
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox[data-flip] .flip-back { max-height: none; overflow: visible; }
-/* Verso em duas colunas: o verso precisa ser bloco (colunas não funcionam em flex) */
+/* Two-column back: the back must be a block (columns do not work in flex) */
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox[data-flip] .flip-back { display: block; }
 
 /* Verso da ponte: cada membro em bloco, com nome em destaque e sem quebrar entre colunas */
@@ -779,22 +779,22 @@ body[data-bg] #maincontent .ib-member-name { font-weight: 700; color: var(--bran
 /* Verso da ponte: dados comuns a todos os membros ficam numa faixa acima das colunas */
 body[data-bg] #maincontent .ib-member-common { column-span: all; margin: 0 0 10px; padding-bottom: 8px; border-bottom: 1px solid color-mix(in srgb, var(--brand) 25%, transparent); }
 
-/* Interfaces: prisma horizontal. Faces em volta do eixo vertical: gráfico (frente), um membro por face e o verso.
+/* Interfaces: horizontal prism. Faces around the vertical axis: chart (front), one member per face, and the back.
    N faces = lados do prisma; o JS posiciona cada face (rotateY + translateZ) e gira o container a cada clique. */
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism { perspective: 700px; width: 100% !important; max-width: 400px !important; }
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism .flip-inner { position: relative; display: block; height: 288px !important; transform-style: preserve-3d; transition: transform .9s linear; }
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism .flip-inner > div { position: absolute; top: 0; left: 0; width: 100%; height: 288px !important; box-sizing: border-box; overflow-y: auto; backface-visibility: hidden; -webkit-backface-visibility: hidden; column-count: 1 !important; }
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism .flip-mem { border-radius: 12px; border: 1.5px solid var(--flip-edge, #2d8cff); box-shadow: 0 0 6px var(--flip-edge, #2d8cff), inset 0 0 5px var(--flip-edge, #2d8cff); background: #16181d; padding: 12px 14px; }
 :root:not([data-darkmode="true"]) body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism .flip-mem { background: #ffffff; }
-/* Interfaces: cartões de 440px (o prisma já está recuado, sem aumentar pela perspectiva) */
+/* Interfaces: 440px cards (the prism is already pulled back, without growing from the perspective) */
 body[data-page="admin-network-network"][data-bg] #maincontent .cbi-section-table tr.iface-flip-row .ifacebox[data-flip] { width: 440px !important; max-width: 440px !important; }
-/* Interfaces: um cartão por linha, centralizado (evita sobreposição dos cartões de 440px) */
+/* Interfaces: one card per row, centered (avoids overlap of the 440px cards) */
 body[data-page="admin-network-network"][data-bg] #maincontent .cbi-section-table:has(tr.iface-flip-row) > tbody { flex-direction: column !important; align-items: center !important; }
 body[data-page="admin-network-network"][data-bg] #maincontent .cbi-section-table tr.iface-flip-row { width: 440px !important; max-width: 100% !important; }
-/* Interfaces: cartões menores (320px e altura fixa de 288px; o conteúdo rola dentro de cada face) */
+/* Interfaces: smaller cards (320px and a fixed height of 288px; the content scrolls inside each face) */
 body[data-page="admin-network-network"][data-bg] #maincontent .cbi-section-table tr.iface-flip-row { width: 320px !important; }
 
-/* Front dos cartões de ponte: pirâmide, uma linha por tipo de membro (o tipo com menos itens fica em cima) */
+/* Front of bridge cards: pyramid, one row per member type (the type with fewer items goes on top) */
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox[data-flip] .flip-figure.flip-pyramid { flex-direction: column !important; flex-wrap: nowrap !important; align-items: center !important; gap: 8px !important; width: auto; }
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox[data-flip] .flip-pyramid .fig-row { display: flex; justify-content: center; align-items: center; gap: 10px; }
 
@@ -807,11 +807,11 @@ body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism, b
 /* Prisma: bordas finas (1px) e brilho mais discreto em todas as faces */
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism .flip-inner > div { border-width: 1px !important; box-shadow: 0 0 3px var(--flip-edge, #2d8cff), inset 0 0 2px var(--flip-edge, #2d8cff) !important; }
 
-/* Prisma: cartão até 400px; em tela estreita ocupa a largura disponível */
+/* Prism: card up to 400px; on a narrow screen it takes the available width */
 body[data-page="admin-network-network"][data-bg] #maincontent .cbi-section-table tr.iface-flip-row:has(.ifacebox.prism) { width: min(400px, 100%) !important; max-width: 100% !important; }
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism { width: min(400px, 100%) !important; max-width: 400px !important; }
 
-/* Prisma: tampas (base e topo) em polígono, faixa de ícone do membro */
+/* Prism: caps (bottom and top) as polygons, member icon strip */
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism .flip-inner > .prism-cap { position: absolute; overflow: visible !important; border: 0 !important; box-shadow: none !important; background: #262d3b; transform: rotateX(90deg); }
 :root:not([data-darkmode="true"]) body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism .flip-inner > .prism-cap { background: #e6ebf2; }
 body[data-bg] #maincontent .ib-member-icon { display: block; width: 48px; height: 48px; object-fit: contain; margin: 0 auto 10px; }
@@ -827,46 +827,46 @@ body[data-bg] #maincontent .ifacebox.prism .flip-mem .ib-mac b { font-size: 9px 
 body[data-bg] #maincontent .ifacebox.prism .flip-mem { padding: 12px 8px !important; }
 body[data-bg] #maincontent .ifacebox.prism .flip-mem .ib-back-line { font-size: 8.5px !important; }
 body[data-bg] #maincontent .ifacebox.prism .flip-mem .ib-mac b { font-size: 8.5px !important; }
-/* Prisma: espaço entre o prisma e os botões abaixo */
+/* Prism: space between the prism and the buttons below */
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism { }
-/* Prisma: altura fixa = altura das faces, e distância uniforme até os botões */
+/* Prism: fixed height = height of the faces, and an even distance to the buttons */
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism { height: 288px !important; min-height: 0 !important; }
-/* Prisma: a linha não centraliza verticalmente o cartão (o espaço embaixo não empurra o prisma ao carregar) */
+/* Prism: the row does not center the card vertically (the space below does not push the prism when loading) */
 body[data-page="admin-network-network"][data-bg] #maincontent .cbi-section-table tr.iface-flip-row > td { vertical-align: top !important; }
-/* Cartões de frente e verso (wan, wan6): mesmo tamanho do prisma da bridge (400 x 288) */
+/* Front and back cards (wan, wan6): same size as the bridge prism (400 x 288) */
 body[data-page="admin-network-network"][data-bg] #maincontent .cbi-section-table tr.iface-flip-row:has(.ifacebox[data-flip]:not(.prism)) { width: min(288px, 100%) !important; max-width: 100% !important; }
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox[data-flip]:not(.prism) { width: min(288px, 100%) !important; max-width: 288px !important; height: 288px !important; min-height: 0 !important; }
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox[data-flip]:not(.prism) .flip-inner, body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox[data-flip]:not(.prism) .flip-inner > div { height: 288px !important; }
 body[data-page="admin-network-network"][data-bg] #maincontent .cbi-section-table tr.iface-flip-row .ifacebox[data-flip]:not(.prism) { width: min(288px, 100%) !important; max-width: 288px !important; }
-/* Interfaces: cards em coluna única (sem colunas dentro do verso) */
+/* Interfaces: cards in a single column (no columns inside the back) */
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox[data-flip] .flip-back { column-count: 1 !important; }
-/* Interfaces: conteúdo dos cards centralizado */
+/* Interfaces: card content centered */
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox[data-flip] .flip-back, body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox[data-flip] .flip-mem { text-align: center; }
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox[data-flip] .flip-back .ib-back-line, body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox[data-flip] .flip-mem .ib-back-line { display: block; text-align: center; }
-/* Interfaces: cards lado a lado quando há espaço; se não couber, vão para a linha de baixo */
+/* Interfaces: cards side by side when there is room; if not, they go to the next row */
 body[data-page="admin-network-network"][data-bg] #maincontent .cbi-section-table:has(tr.iface-flip-row) > tbody { flex-direction: row !important; flex-wrap: wrap !important; justify-content: center !important; align-items: flex-start !important; gap: 24px !important; }
 body[data-page="admin-network-network"][data-bg] #maincontent .cbi-section-table tr.iface-flip-row { width: auto !important; max-width: none !important; flex: 0 0 auto !important; }
-/* Cards de frente e verso: giram para o lado do mouse (esquerda gira para trás) */
+/* Front and back cards: turn toward the side of the mouse (left turns backward) */
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox[data-flip]:not(.prism)[data-side="L"]:hover .flip-inner, body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox[data-flip]:not(.prism)[data-side="L"].flipped .flip-inner { transform: rotateY(-180deg); }
-/* Cards de frente e verso: virada mais lenta; volta rápida quando o cursor sai */
+/* Front and back cards: slower flip; quick return when the cursor leaves */
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox[data-flip]:not(.prism) .flip-inner { transition: transform .9s ease; }
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox[data-flip]:not(.prism).returning .flip-inner { transition: transform .4s ease; }
-/* Interfaces: botões de todos os cartões na mesma linha horizontal (espaço fixo abaixo de cada cartão) */
+/* Interfaces: buttons of all cards on the same horizontal line (fixed space below each card) */
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox[data-flip] { margin-bottom: 16px !important; }
 /* Cards de dispositivos (Wi-Fi e cabo): mesma velocidade dos demais cards */
 body[data-bg] #maincontent .dev-card .dev-inner { transition: transform .9s ease; }
-/* Wireless: botões de ação centralizados e com o mesmo espaçamento em todas as linhas */
+/* Wireless: action buttons centered and with the same spacing on all rows */
 body[data-page="admin-network-wireless"][data-bg] #maincontent .cbi-section-table .cbi-section-actions { text-align: center !important; vertical-align: middle; }
 body[data-page="admin-network-wireless"][data-bg] #maincontent .cbi-section-table .cbi-section-actions > div { display: flex !important; justify-content: center; align-items: center; gap: 12px; flex-wrap: wrap; }
 body[data-page="admin-network-wireless"][data-bg] #maincontent .cbi-section-table .cbi-section-actions .ico-btn { width: 40px; height: 40px; margin: 0; }
 /* Avisos do LuCI (ex.: "No password set"): mesmo estilo de vidro azul dos cards */
 body[data-bg] .alert-message { background: rgba(22, 24, 29, .85); color: #e7edf5; border: 1.5px solid var(--flip-edge, #2d8cff); border-radius: 12px; box-shadow: 0 0 6px var(--flip-edge, #2d8cff), inset 0 0 5px var(--flip-edge, #2d8cff); padding: 10px 14px; }
 :root:not([data-darkmode="true"]) body[data-bg] .alert-message { background: rgba(255, 255, 255, .92); color: #1b1e25; }
-/* Avisos do LuCI: título e texto sempre legíveis (cor explícita, não herdada do tema) */
+/* LuCI warnings: title and text always readable (explicit color, not inherited from the theme) */
 body[data-bg] .alert-message h4, body[data-bg] .alert-message p { color: inherit !important; }
 body[data-bg] .alert-message { color: #e7edf5 !important; }
 :root:not([data-darkmode="true"]) body[data-bg] .alert-message { color: #1b1e25 !important; }
-/* Avisos do LuCI: caixa em vidro azul, com título e texto legíveis nos dois temas */
+/* LuCI warnings: blue glass box, with title and text readable in both themes */
 body[data-bg] .alert-message { background: rgba(22, 24, 29, .72) !important; border: 1px solid rgba(45, 140, 255, .55) !important; border-radius: 14px !important; box-shadow: 0 0 10px rgba(45, 140, 255, .25) !important; padding: 14px 18px !important; backdrop-filter: blur(6px); }
 body[data-bg] .alert-message h4 { color: #2d8cff !important; font-size: 1rem !important; font-weight: 600 !important; margin: 0 0 6px !important; }
 body[data-bg] .alert-message p { color: #e7edf5 !important; font-size: .9rem !important; opacity: .9; margin: 0 0 10px !important; }
@@ -880,11 +880,11 @@ body[data-bg] .alert-message * { color: inherit !important; }
 body[data-bg] .alert-message h4 { color: #6fb3ff !important; }
 :root:not([data-darkmode="true"]) body[data-bg] .alert-message { background: #f4f7fb !important; color: #1b1e25 !important; }
 :root:not([data-darkmode="true"]) body[data-bg] .alert-message h4 { color: #1d6fd1 !important; }
-/* Ícones dos dispositivos no modo claro: cores da linha e do brilho invertidas em relação ao escuro */
+/* Device icons in light mode: line and glow colors inverted relative to dark */
 :root:not([data-darkmode="true"]) body[data-bg] #maincontent .dev-icon { filter: drop-shadow(0 0 3px rgba(232, 244, 255, .9)) drop-shadow(0 0 8px rgba(232, 244, 255, .6)); }
 :root:not([data-darkmode="true"]) body[data-bg] #maincontent .dev-icon .dl-out { stroke: #e8f4ff; }
 :root:not([data-darkmode="true"]) body[data-bg] #maincontent .dev-icon .dl-in { stroke: #2d8cff; }
-/* Ícones dos dispositivos no modo claro: brilho azul visível sobre fundo claro */
+/* Device icons in light mode: blue glow visible over a light background */
 :root:not([data-darkmode="true"]) body[data-bg] #maincontent .dev-icon { filter: drop-shadow(0 0 3px rgba(45, 140, 255, .9)) drop-shadow(0 0 8px rgba(45, 140, 255, .6)); }
 :root:not([data-darkmode="true"]) body[data-bg] #maincontent .dev-icon { filter: drop-shadow(0 0 2px rgba(45, 140, 255, .5)) drop-shadow(0 0 5px rgba(45, 140, 255, .3)); }
 :root:not([data-darkmode="true"]) body[data-bg] #maincontent .dev-icon { filter: drop-shadow(0 0 1px rgba(45, 140, 255, .35)) drop-shadow(0 0 3px rgba(45, 140, 255, .18)); }
@@ -904,18 +904,18 @@ body[data-bg] #maincontent .dev-grid { grid-template-columns: repeat(auto-fill, 
 body[data-bg] #maincontent .dev-card { min-height: 200px !important; }
 body[data-bg] #maincontent .dev-back { font-size: .8rem !important; }
 body[data-bg] #maincontent .dev-back .dev-line { font-size: inherit; }
-/* Cards de dispositivos: ainda menores (largura, altura e ícone) */
+/* Device cards: even smaller (width, height and icon) */
 body[data-bg] #maincontent .dev-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important; }
 body[data-bg] #maincontent .dev-card { min-height: 170px !important; }
 body[data-bg] #maincontent .dev-icon { width: 48px !important; height: 48px !important; }
 /* Cards de dispositivos: quadrados, com fonte do verso menor */
 body[data-bg] #maincontent .dev-card { min-height: 0 !important; aspect-ratio: 1 / 1; }
 body[data-bg] #maincontent .dev-back { font-size: .7rem; }
-/* Cards de dispositivos: tamanho fixo e quadrado; o conteúdo do verso rola dentro do card, sem invadir a linha de baixo */
+/* Device cards: fixed square size; the back content scrolls inside the card, without spilling into the row below */
 body[data-bg] #maincontent .dev-card { aspect-ratio: 1 / 1 !important; height: auto; min-height: 0 !important; }
 body[data-bg] #maincontent .dev-card .dev-inner { position: relative !important; height: 100%; }
 body[data-bg] #maincontent .dev-card .dev-front, body[data-bg] #maincontent .dev-card .dev-back { position: absolute !important; inset: 0; overflow: auto; }
-/* Verso dos cards de dispositivos: sem rolagem (o texto é ajustado pelo script) */
+/* Back of device cards: no scrolling (the text is adjusted by the script) */
 body[data-bg] #maincontent .dev-card .dev-back { overflow: hidden !important; }
 /* Cards de dispositivos: um pouco maiores para o texto caber, sempre quadrados */
 body[data-bg] #maincontent .dev-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)) !important; }
@@ -924,61 +924,160 @@ body[data-bg] #maincontent .dev-grid { grid-template-columns: repeat(auto-fill, 
 body[data-bg] #maincontent .dev-back { line-height: 1.2 !important; }
 body[data-bg] #maincontent .dev-back .dev-line, body[data-bg] #maincontent .dev-back .dev-top { margin: 0 !important; padding: 0 !important; line-height: 1.2 !important; }
 body[data-bg] #maincontent .dev-back > * + * { margin-top: 2px !important; }
-/* Cards de dispositivos: o giro vem da variável --t (não se perde ao atualizar a página) */
+/* Device cards: the turn comes from the --t variable (not lost when the page refreshes) */
 body[data-bg] #maincontent .dev-card .dev-inner { transform: rotateY(calc(var(--t, 0) * -180deg)) !important; transition: transform .9s ease; }
-/* Nome do dispositivo: bloco que ocupa o espaço disponível (para o ajuste de fonte medir certo) */
+/* Device name: block that takes the available space (so the font fitting measures correctly) */
 body[data-bg] #maincontent .dev-card .dev-top b { display: block; flex: 1 1 auto; min-width: 0; }
-/* Cards: sem barra de rolagem (o conteúdo fica dentro do card) */
+/* Cards: no scrollbar (the content stays inside the card) */
 body[data-bg] #maincontent .dev-card .dev-front, body[data-bg] #maincontent .dev-card .dev-back, body[data-bg] #maincontent .ifacebox[data-flip] .flip-front, body[data-bg] #maincontent .ifacebox[data-flip] .flip-back, body[data-bg] #maincontent .ifacebox.prism .flip-mem, body[data-bg] #maincontent .ifacebox.prism .flip-inner > div { overflow: hidden !important; }
 /* Cards: texto sempre inteiro, sem rolagem (margens menores no verso) */
 body[data-bg] #maincontent .dev-card .dev-back, body[data-bg] #maincontent .ifacebox[data-flip] .flip-back { padding: 8px 10px !important; line-height: 1.15 !important; }
-/* Prisma: sem borda nem brilho no contêiner (só as faces têm contorno) */
+/* Prism: no border or glow on the container (only the faces have an outline) */
 body[data-bg] #maincontent .ifacebox.prism { box-shadow: none !important; border: 0 !important; background: transparent !important; outline: 0 !important; }
 /* Prisma: borda azul com a mesma espessura dos cards */
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism .flip-inner > div { border: 1.5px solid var(--flip-edge, #2d8cff) !important; }
 /* Prisma: brilho igual ao dos cards */
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism .flip-inner > div { box-shadow: 0 0 1px rgba(45, 140, 255, .35), inset 0 0 3px rgba(45, 140, 255, .35) !important; }
-/* Prisma: bordas laterais de cada face somam a espessura de uma só linha no encontro entre as faces */
+/* Prism: the side edges of each face add up to the thickness of a single line where the faces meet */
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism .flip-inner > div { border-width: 1.5px 0.75px !important; }
-/* Prisma: laterais mais finas para o encontro entre as faces não engrossar */
+/* Prism: thinner sides so the joint between faces does not get thicker */
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism .flip-inner > div { border-width: 1.5px 0.4px !important; }
 /* Prisma: encontros entre as faces com a espessura das demais bordas */
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism .flip-inner > div { border-width: 1.5px 0.25px !important; }
-/* Prisma: contorno único em SVG (sem bordas separadas nas faces) */
+/* Prism: single SVG outline (no separate borders on the faces) */
 body[data-bg] #maincontent .ifacebox.prism .flip-inner > div { border: 0 !important; box-shadow: none !important; }
 body[data-bg] #maincontent .ifacebox.prism svg.prism-outline { position: absolute; left: 0; top: 0; pointer-events: none; overflow: visible; filter: drop-shadow(0 0 1px rgba(45, 140, 255, .35)) drop-shadow(0 0 3px rgba(45, 140, 255, .18)); }
 body[data-bg] #maincontent .ifacebox.prism svg.prism-outline path { fill: none; stroke: var(--flip-edge, #2d8cff); stroke-width: 1.5; stroke-linejoin: round; }
-/* Prisma: só o contorno SVG aparece (as faces não têm borda nem brilho próprios) */
+/* Prism: only the SVG outline shows (the faces have no border or glow of their own) */
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism .flip-inner > div, body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism .flip-inner > div.flip-mem { border: 0 !important; box-shadow: none !important; }
-/* Prisma: a parte de trás das faces não aparece durante o giro */
+/* Prism: the back of the faces does not show during the turn */
 body[data-bg] #maincontent .ifacebox.prism .flip-inner > div { backface-visibility: hidden !important; -webkit-backface-visibility: hidden !important; }
-/* Prisma: volta às bordas por face (contorno SVG desativado: causava desalinhamento durante o giro) */
+/* Prism: back to per-face borders (SVG outline disabled: it caused misalignment during the turn) */
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism svg.prism-outline { display: none !important; }
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism .flip-inner > div { border: 1.5px solid var(--flip-edge, #2d8cff) !important; border-width: 1.5px 0.25px !important; box-shadow: 0 0 1px rgba(45, 140, 255, .35), inset 0 0 3px rgba(45, 140, 255, .35) !important; }
-/* Prisma: sem contorno; o volume vem só das sombras das faces */
+/* Prism: no outline; the volume comes only from the face shadows */
 body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism .flip-inner > div { border: 0 !important; box-shadow: 0 0 14px rgba(0, 0, 0, .55) !important; }
 :root:not([data-darkmode="true"]) body[data-page="admin-network-network"][data-bg] #maincontent .ifacebox.prism .flip-inner > div { box-shadow: 0 0 14px rgba(0, 0, 0, .18) !important; }
-/* Cards: sem contorno; a definição vem só das sombras (mesma lógica do prisma) */
+/* Cards: no outline; the definition comes only from the shadows (same logic as the prism) */
 body[data-bg] #maincontent .ifacebox[data-flip]:not(.prism) .flip-front, body[data-bg] #maincontent .ifacebox[data-flip]:not(.prism) .flip-back, body[data-bg] #maincontent .dev-card .dev-front, body[data-bg] #maincontent .dev-card .dev-back { border: 0 !important; box-shadow: 0 0 14px rgba(0, 0, 0, .55) !important; }
 :root:not([data-darkmode="true"]) body[data-bg] #maincontent .ifacebox[data-flip]:not(.prism) .flip-front, :root:not([data-darkmode="true"]) body[data-bg] #maincontent .ifacebox[data-flip]:not(.prism) .flip-back, :root:not([data-darkmode="true"]) body[data-bg] #maincontent .dev-card .dev-front, :root:not([data-darkmode="true"]) body[data-bg] #maincontent .dev-card .dev-back { box-shadow: 0 0 14px rgba(0, 0, 0, .18) !important; }
-/* Cards: sem contorno nem brilho por trás (só as faces têm sombra) */
+/* Cards: no outline or glow behind (only the faces have a shadow) */
 body[data-bg] #maincontent .ifacebox[data-flip], body[data-bg] #maincontent .dev-card { border: 0 !important; box-shadow: none !important; outline: 0 !important; background: transparent !important; }
-/* Cards de frente e verso: mesma velocidade em todas as páginas (inclusive portas no Status) */
+/* Front and back cards: same speed on all pages (including ports on Status) */
 body[data-bg] #maincontent .ifacebox[data-flip]:not(.prism) .flip-inner { transition: transform .9s ease !important; }
-/* Nome e tipo do dispositivo: o tipo nunca é cortado (o nome diminui para caber) */
+/* Device name and type: the type is never cut off (the name shrinks to fit) */
 body[data-bg] #maincontent .dev-card .dev-top span { flex: 0 0 auto !important; white-space: nowrap !important; margin-left: 6px; }
 /* Tipo do dispositivo sempre na extremidade direita do card */
 body[data-bg] #maincontent .dev-card .dev-top { display: flex !important; justify-content: space-between; align-items: baseline; gap: 6px; }
 body[data-bg] #maincontent .dev-card .dev-top span { margin-left: auto !important; text-align: right; }
-/* Verso do card: tipo do dispositivo alinhado à direita */
+/* Card back: device type aligned to the right */
 body[data-bg] #maincontent .dev-card .dev-back .dev-top span { text-align: right !important; }
-/* Verso do card: tipo do dispositivo flutuando à direita */
+/* Card back: device type floating to the right */
 body[data-bg] #maincontent .dev-card .dev-back .dev-top { display: block !important; }
 body[data-bg] #maincontent .dev-card .dev-back .dev-top span { float: right !important; margin: 0 0 0 6px !important; }
-/* Verso do card: nome e tipo na mesma linha, tipo à direita */
+/* Card back: name and type on the same line, type on the right */
 body[data-bg] #maincontent .dev-card .dev-back .dev-top { display: flex !important; justify-content: space-between !important; align-items: baseline !important; gap: 6px; }
 body[data-bg] #maincontent .dev-card .dev-back .dev-top span { float: none !important; margin: 0 0 0 auto !important; text-align: right !important; white-space: nowrap !important; }
 /* Verso do card: a linha do nome e do tipo ocupa toda a largura (tipo encostado na direita, dentro do padding) */
 body[data-bg] #maincontent .dev-card .dev-back .dev-top { width: 100% !important; align-self: stretch !important; box-sizing: border-box; }
-/* Cabo: porta física mostrada no card (frente) */
+/* Wired: physical port shown on the card (front) */
 body[data-bg] #maincontent .dev-card .dev-port { font-size: .8rem; opacity: .85; margin: 2px 0 4px; }
+
+/* Wi-Fi icon buttons, DARK theme only: outlined circles like the power and remove buttons.
+   Targets the icon (data-ico, set by the theme), not LuCI's classes, which differ between versions.
+   The light theme keeps its solid blue buttons. */
+[data-darkmode="true"] body[data-bg] #maincontent .ico-btn[data-ico="search"],
+[data-darkmode="true"] body[data-bg] #maincontent .ico-btn[data-ico="plus"],
+[data-darkmode="true"] body[data-bg] #maincontent .ico-btn[data-ico="pencil"] { background: #16181d !important; border-color: #2d8cff !important; color: #2d8cff !important; box-shadow: 0 0 10px rgba(45, 140, 255, .35) !important; }
+
+/* Repo Public Keys: the key boxes and the "add key" box share one column and one size.
+   The column starts where the KEY header starts (after the name column) and ends before the Delete column. */
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table textarea.cbi-input-textarea { width: 100%; box-sizing: border-box; height: 138px; resize: vertical; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-node:has(> textarea.cbi-input-text) { padding: 0 104px 0 243px; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-text { width: 100%; box-sizing: border-box; height: 138px; min-height: 138px; resize: vertical; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-node:has(> textarea.cbi-input-text) .cbi-button { float: right; }
+/* the add-key box fills the same column as the key boxes (LuCI sets a fixed width on it, so this one is !important) */
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-value:has(> .cbi-section-node textarea.cbi-input-text),
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-node:has(> textarea.cbi-input-text) > output,
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-node:has(> textarea.cbi-input-text) { width: 100% !important; max-width: 100% !important; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-text { width: 100% !important; max-width: none !important; }
+/* the add-key row is a block at full width, so its box can line up with the key column */
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-value:has(textarea.cbi-input-text) { display: block !important; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-value:has(textarea.cbi-input-text) > output,
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-value:has(textarea.cbi-input-text) > .cbi-section-node { display: block !important; width: 100% !important; max-width: 100% !important; }
+
+/* Repo Public Keys: each key stacks as name -> key box -> Delete (bottom right), on the same column as the add-key box.
+   The column header (NAME / KEY) is hidden, because the name now sits above its box. */
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-titles { display: none !important; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row { display: flex !important; flex-wrap: wrap; padding: 14px 104px 14px 243px !important; gap: 8px 0; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row > td { flex: 0 0 100% !important; max-width: 100% !important; width: 100% !important; padding: 0 !important; border: 0 !important; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row > td.cbi-value-field { padding: 0 !important; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row > td:first-child { font-weight: 600; font-size: 14px; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row > td.cbi-section-actions { display: flex !important; justify-content: flex-end; }
+
+/* Repo Public Keys on narrow screens: the key column uses the full width (no 243px indent),
+   and the Delete button keeps its own size instead of stretching. */
+@media (max-width: 700px) {
+	body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row { padding: 14px 12px !important; }
+	body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-node:has(> textarea.cbi-input-text) { padding: 0 !important; }
+	body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row > td.cbi-section-actions .cbi-button { flex: 0 0 auto !important; width: auto !important; }
+}
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row > td.cbi-section-actions .cbi-button { flex: 0 0 auto; width: auto; }
+
+/* Repo Public Keys: the Delete button sits at the right edge, and each name stays on one line.
+   On narrow screens LuCI adds "Name" / "Key" labels above each cell; the header is hidden here, so they are removed. */
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row > td.cbi-section-actions > div { width: 100% !important; justify-content: flex-end !important; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row > td:first-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row > td::before { content: none !important; display: none !important; }
+
+/* Repo Public Keys: the key text wraps inside its box (no horizontal scrolling); only vertical scrolling when it overflows.
+   The boxes fill the full width of the page on narrow screens (see the media query above). */
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-textarea,
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-text { white-space: pre-wrap !important; word-break: break-all; overflow-x: hidden !important; overflow-y: auto !important; }
+@media (max-width: 700px) {
+	body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-textarea,
+	body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-text { width: 100% !important; }
+}
+
+/* Repo Public Keys, all screen sizes: the name, the key box and the add-key box use the full width of the card
+   (same left and right edges), so the boxes fit the window. The Delete button stays at the right. */
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row { padding: 14px 16px !important; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-node:has(> textarea.cbi-input-text) { padding: 0 16px !important; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table textarea.cbi-input-textarea,
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-text { width: 100% !important; max-width: 100% !important; }
+
+/* Repo Public Keys: a key line is never broken while the box is wide enough (white-space: pre).
+   Only on narrow screens, where the line does not fit, does the text wrap inside the box. */
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-textarea,
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-text { white-space: pre !important; word-break: normal !important; overflow-wrap: normal !important; overflow-x: auto !important; overflow-y: auto !important; }
+@media (max-width: 700px) {
+	body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-textarea,
+	body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-text { white-space: pre-wrap !important; word-break: break-all !important; overflow-x: hidden !important; }
+}
+
+/* Repo Public Keys: the 3 key lines (BEGIN, data, END). The data line is long, so the key text is a little smaller.
+   It scrolls sideways only when the window is too narrow for it. */
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table textarea.cbi-input-textarea { line-height: 1.6; }
+
+/* Repo Public Keys, narrow windows: the table and its cells never grow past the card.
+   The key line scrolls inside its own box instead of pushing the whole page sideways. */
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table { display: block !important; width: 100% !important; max-width: 100% !important; min-width: 0 !important; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table thead,
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table tbody { display: block !important; width: 100% !important; min-width: 0 !important; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row > td,
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-node,
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-value,
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-value > output { min-width: 0 !important; max-width: 100% !important; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea { min-width: 0 !important; max-width: 100% !important; }
+
+/* Repo Public Keys: the key text scales with the width of its box (container query units),
+   so the 124-character data line always fits, at any window size. Floor of 7px keeps it readable. */
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row > td.cbi-value-field,
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-node:has(> textarea.cbi-input-text) { container-type: inline-size; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-textarea,
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-text { font-size: clamp(7px, calc((100cqw - 26px) / 70), 14px) !important; }
+
+/* Repo Public Keys: the only scrollbar is vertical. The key font scales with the box width so the 124-character
+   data line fits (0.55em per character); only on very narrow windows, at the minimum size, does a line wrap. */
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-textarea,
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-text { overflow-x: hidden !important; overflow-y: auto !important; white-space: pre-wrap !important; word-break: break-all !important; font-size: clamp(6px, calc((100cqw - 26px) / 69), 14px) !important; }

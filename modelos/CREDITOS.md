@@ -1,3 +1,3 @@
-# Créditos das imagens de modelos
+# Model image credits
 
-Nenhuma imagem de terceiros incluída ainda.
+No third-party images included yet.

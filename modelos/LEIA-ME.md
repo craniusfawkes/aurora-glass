@@ -1,9 +1,9 @@
-# Imagens por modelo de roteador
+# Images per router model
 
-Coloque aqui uma foto por modelo, com o nome do ID do modelo do OpenWrt:
+Put one photo per model here, named with the OpenWrt model ID:
 
     xiaomi_mi-router-ax3000t.png
 
-- O ID vem da lista de dispositivos do OpenWrt (`devices.json`, campo `id`).
-- Use **somente imagens das quais você tem direito de uso** e registre a licença e o autor no arquivo `CREDITOS.md`.
-- Se não houver foto para o modelo, o tema usa a imagem genérica (`assets/roteador-generico.svg`).
+- The ID comes from the OpenWrt device list (`devices.json`, field `id`).
+- Use **only images you have the right to use**, and record the license and author in `CREDITOS.md`.
+- If there is no photo for the model, the theme uses the generic image (`assets/roteador-generico.svg`).
