@@ -1058,3 +1058,14 @@ body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi
 /* Repo Public Keys: the 3 key lines (BEGIN, data, END). The data line is long, so the key text is a little smaller.
    It scrolls sideways only when the window is too narrow for it. */
 body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table textarea.cbi-input-textarea { font-size: 12px !important; line-height: 1.6; }
+
+/* Repo Public Keys, narrow windows: the table and its cells never grow past the card.
+   The key line scrolls inside its own box instead of pushing the whole page sideways. */
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table { display: block !important; width: 100% !important; max-width: 100% !important; min-width: 0 !important; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table thead,
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table tbody { display: block !important; width: 100% !important; min-width: 0 !important; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row > td,
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-node,
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-value,
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-value > output { min-width: 0 !important; max-width: 100% !important; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea { min-width: 0 !important; max-width: 100% !important; }
