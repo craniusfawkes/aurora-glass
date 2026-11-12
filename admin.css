@@ -980,9 +980,5 @@ body[data-bg] #maincontent .dev-card .dev-back .dev-top { display: flex !importa
 body[data-bg] #maincontent .dev-card .dev-back .dev-top span { float: none !important; margin: 0 0 0 auto !important; text-align: right !important; white-space: nowrap !important; }
 /* Verso do card: a linha do nome e do tipo ocupa toda a largura (tipo encostado na direita, dentro do padding) */
 body[data-bg] #maincontent .dev-card .dev-back .dev-top { width: 100% !important; align-self: stretch !important; box-sizing: border-box; }
-/* Dispositivos: a seção inteira aparece junta, quando a lista estiver pronta */
-body[data-bg] #maincontent .cbi-section:has(.dev-wrap:not(.ready)) { visibility: hidden; }
-/* Rodapé só aparece junto com o resto da página */
-.pb-hide { visibility: hidden !important; }
 /* Cabo: porta física mostrada no card (frente) */
 body[data-bg] #maincontent .dev-card .dev-port { font-size: .8rem; opacity: .85; margin: 2px 0 4px; }
