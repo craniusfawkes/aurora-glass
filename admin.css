@@ -1023,3 +1023,9 @@ body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section
 	body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row > td.cbi-section-actions .cbi-button { flex: 0 0 auto !important; width: auto !important; }
 }
 body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row > td.cbi-section-actions .cbi-button { flex: 0 0 auto; width: auto; }
+
+/* Repo Public Keys: the Delete button sits at the right edge, and each name stays on one line.
+   On narrow screens LuCI adds "Name" / "Key" labels above each cell; the header is hidden here, so they are removed. */
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row > td.cbi-section-actions > div { width: 100% !important; justify-content: flex-end !important; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row > td:first-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row > td::before { content: none !important; display: none !important; }
