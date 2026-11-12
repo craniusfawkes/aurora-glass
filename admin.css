@@ -1014,3 +1014,12 @@ body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section
 body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row > td.cbi-value-field { padding: 0 !important; }
 body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row > td:first-child { font-weight: 600; font-size: 14px; }
 body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row > td.cbi-section-actions { display: flex !important; justify-content: flex-end; }
+
+/* Repo Public Keys on narrow screens: the key column uses the full width (no 243px indent),
+   and the Delete button keeps its own size instead of stretching. */
+@media (max-width: 700px) {
+	body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row { padding: 14px 12px !important; }
+	body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-node:has(> textarea.cbi-input-text) { padding: 0 !important; }
+	body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row > td.cbi-section-actions .cbi-button { flex: 0 0 auto !important; width: auto !important; }
+}
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row > td.cbi-section-actions .cbi-button { flex: 0 0 auto; width: auto; }
