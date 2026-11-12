@@ -87,6 +87,8 @@ if [ -n "$MODEL_ID" ] && [ -f "$D/modelos/$MODEL_ID.png" ]; then
     cp "$D/modelos/$MODEL_ID-favicon.png" "$P/images/favicon-$MODEL_ID.png"
     uci set aurora.theme.favicon_png="favicon-$MODEL_ID.png"
   fi
+  # o navegador prefere o favicon.ico: também troca por este modelo (se houver)
+  [ -f "$D/modelos/$MODEL_ID-favicon.ico" ] && cp "$D/modelos/$MODEL_ID-favicon.ico" "$P/images/favicon.ico"
 fi
 
 # 4c. IEEE vendor list converted to MAC -> vendor
