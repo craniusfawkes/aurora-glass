@@ -104,7 +104,7 @@ END {
     name = (m in lname_dhcp) ? lname_dhcp[m] : (m in cache) ? cache[m] : (m in m6) ? m6[m] : ip
     if (!first) printf ",\n"
     first = 0
-    printf "{\"mac\":\"%s\",\"ip\":\"%s\",\"name\":\"%s\",\"rx\":%s,\"tx\":%s,\"via\":\"%s\",\"up\":%s,\"ts\":%s}", m, ip, name, rx + 0, tx + 0, via, up, ts
+    printf "{\"mac\":\"%s\",\"ip\":\"%s\",\"name\":\"%s\",\"rx\":%s,\"tx\":%s,\"via\":\"%s\",\"port\":\"%s\",\"up\":%s,\"ts\":%s}", m, ip, name, rx + 0, tx + 0, via, (via == "lan" ? p : ""), up, ts
   }
   # porta cabeada sem lease DHCP (ex.: outro roteador ligado no cabo): usa o IP do ARP e o nome do cache
   for (m in pm) {
@@ -114,7 +114,7 @@ END {
     up = (pcar[p] == 1) ? "true" : "false"
     if (!first) printf ",\n"
     first = 0
-    printf "{\"mac\":\"%s\",\"ip\":\"%s\",\"name\":\"%s\",\"rx\":%s,\"tx\":%s,\"via\":\"lan\",\"up\":%s,\"ts\":%s}", m, ip, name, ptx[p] + 0, prx[p] + 0, up, ts
+    printf "{\"mac\":\"%s\",\"ip\":\"%s\",\"name\":\"%s\",\"rx\":%s,\"tx\":%s,\"via\":\"lan\",\"port\":\"%s\",\"up\":%s,\"ts\":%s}", m, ip, name, ptx[p] + 0, prx[p] + 0, p, up, ts
   }
   printf "\n]\n"
 }'

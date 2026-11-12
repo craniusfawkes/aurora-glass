@@ -984,3 +984,5 @@ body[data-bg] #maincontent .dev-card .dev-back .dev-top { width: 100% !important
 body[data-bg] #maincontent .cbi-section:has(.dev-wrap:not(.ready)) { visibility: hidden; }
 /* Rodapé só aparece junto com o resto da página */
 .pb-hide { visibility: hidden !important; }
+/* Cabo: porta física mostrada no card (frente) */
+body[data-bg] #maincontent .dev-card .dev-port { font-size: .8rem; opacity: .85; margin: 2px 0 4px; }

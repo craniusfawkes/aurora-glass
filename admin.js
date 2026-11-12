@@ -684,7 +684,7 @@
 			list.forEach(function (d) {
 				seen[d.mac] = true;
 				var h = bwHist[d.mac] || (bwHist[d.mac] = { down: [], up: [], rx: 0, tx: 0, last: null });
-				h.name = d.name; h.ip = d.ip; h.via = d.via; h.active = d.up !== false;   // cabo sem link = desconectado
+				h.name = d.name; h.ip = d.ip; h.via = d.via; h.port = d.port || ''; h.active = d.up !== false;   // cabo sem link = desconectado
 				// mesma leitura do coletor (ainda não mudou): não conta de novo, senão aparece 0 e depois o dobro
 				if (h.last && d.ts !== undefined && d.ts === h.last.ts) return;
 				if (h.last) {                       // velocidade = variação dos bytes / tempo (nunca negativa)
@@ -820,6 +820,7 @@
 			'<div class="dev-inner">' +
 			'<div class="dev-front">' +
 				'<div class="dev-top"><b>' + esc(it.name) + '</b><span>' + L(devTypeLabel[it.type]) + '</span></div>' +
+				(it.port ? '<div class="dev-port">' + L('Porta') + ': <b>' + esc(it.port.toUpperCase()) + '</b></div>' : '') +
 				'<svg class="dev-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + '<g class="dl-out">' + devIcons[it.type] + '</g><g class="dl-in">' + devIcons[it.type] + '</g></svg>' +
 				(it.btn ? '<button type="button" class="cbi-button ico-btn dev-disc" data-ico="power" data-mac="' + it.mac + '" data-tip="Desconectar"></button>' : '') + '<div class="bw-now">' + bwSpan('bw-down', it.mac + '|d', it.down) + bwSpan('bw-up', it.mac + '|u', it.up) + '</div>' +
 				sp +
@@ -957,7 +958,7 @@
 			return {
 				mac: m, name: h.name, ip: h.ip, type: devType(h.name || ''), hist: h, active: h.active, vendor: devVendor(m),
 				down: bwAvg(h.down), up: bwAvg(h.up), rx: h.rx, tx: h.tx,
-				sig: '—', rate: '—', net: 'Cabo', signalNum: -200, btn: null
+				sig: '—', rate: '—', net: 'Cabo', port: bwHist[m].port || '', signalNum: -200, btn: null
 			};
 		});
 		items.sort(devCmp[key]);
