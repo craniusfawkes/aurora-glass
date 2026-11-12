@@ -120,6 +120,16 @@ echo "$C/bw-loop.sh >/dev/null 2>&1 & # aurora-bw-loop" >> /etc/rc.local
 echo "exit 0" >> /etc/rc.local
 "$C/bw-loop.sh" >/dev/null 2>&1 &
 
+# 4f. Devices page: LuCI view, menu entry (Status > Devices) and access rule
+# LuCI loads views from resources/, the menu from menu.d/ and the permissions from acl.d/
+mkdir -p /www/luci-static/resources/view/aurora /usr/share/luci/menu.d /usr/share/rpcd/acl.d
+cp "$D/luci/view/aurora/devices.js" /www/luci-static/resources/view/aurora/devices.js
+cp "$D/luci/menu.d/luci-app-aurora.json" /usr/share/luci/menu.d/luci-app-aurora.json
+cp "$D/luci/acl.d/luci-app-aurora.json" /usr/share/rpcd/acl.d/luci-app-aurora.json
+# clears LuCI's menu cache and reloads rpcd so the new entry and rule apply without a reboot
+rm -f /tmp/luci-indexcache /tmp/luci-indexcache.* 2>/dev/null || true
+/etc/init.d/rpcd reload 2>/dev/null || true
+
 # 5. Theme configuration
 # creates the file and the theme section if missing (on a clean router, /etc/config/aurora does not exist)
 [ -f /etc/config/aurora ] || touch /etc/config/aurora
@@ -144,7 +154,9 @@ uci commit luci
 
 # 6. Survives system upgrades (sysupgrade)
 for f in "$C" /etc/config/aurora "$P/patches/admin.css" "$P/patches/admin.js" "$H" "$S" \
-         /www/cgi-bin/aurora-bw /www/cgi-bin/aurora-oui "$P/data/oui.tsv"; do
+         /www/cgi-bin/aurora-bw /www/cgi-bin/aurora-oui "$P/data/oui.tsv" \
+         /www/luci-static/resources/view/aurora/devices.js \
+         /usr/share/luci/menu.d/luci-app-aurora.json /usr/share/rpcd/acl.d/luci-app-aurora.json; do
   grep -qxF "$f" /etc/sysupgrade.conf || echo "$f" >> /etc/sysupgrade.conf
 done
 for f in "$P"/images/*.svg "$P"/images/*.png "$P"/images/favicon.ico; do

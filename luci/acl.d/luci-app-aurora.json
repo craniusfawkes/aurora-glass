@@ -1,0 +1,6 @@
+{
+	"luci-app-aurora": {
+		"description": "Grant access to the AuroraGlass devices page",
+		"read": {}
+	}
+}
