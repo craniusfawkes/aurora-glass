@@ -1278,3 +1278,23 @@ function keepFitted(fn) {
 	});
 	window.addEventListener('load', function () { log('página carregada (load)'); });
 })();
+
+// Tables whose rows have an action column (e.g. Repo Public Keys: Delete button) but whose header
+// has no cell for it: adds an empty header cell with the same width, so the header bar reaches the right edge.
+(function alignActionHeaders() {
+	function fix() {
+		document.querySelectorAll('#maincontent .cbi-section-table-titles').forEach(function (head) {
+			var table = head.closest('table, .table'), row = table && table.querySelector('.cbi-section-table-row');   // first data row of the same table (the header may sit in a thead)
+			if (!row) return;
+			var cells = row.children, heads = head.children;
+			if (cells.length <= heads.length) return;   // nothing missing
+			var last = cells[cells.length - 1];
+			if (!last.classList.contains('cbi-section-actions')) return;
+			var spacer = head.querySelector('.aurora-action-spacer');
+			if (!spacer) { spacer = document.createElement('th'); spacer.className = 'th cbi-section-table-cell aurora-action-spacer'; head.appendChild(spacer); }
+			spacer.style.width = last.offsetWidth + 'px';   // same width as the action column below
+			spacer.style.flex = '0 0 auto';
+		});
+	}
+	keepFitted(fix);
+})();
