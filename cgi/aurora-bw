@@ -1,0 +1,10 @@
+#!/bin/sh
+# aurora-bw: devolve a última leitura pronta (/tmp/aurora-bw.json), gravada a cada segundo
+# pelo coletor em segundo plano. Se ainda não houver leitura, roda o coletor uma vez.
+
+echo "Content-Type: application/json"
+echo "Cache-Control: no-store"
+echo ""
+
+F=/tmp/aurora-bw.json
+if [ -s "$F" ]; then cat "$F"; else /etc/aurora-custom/bw-collect.sh; fi

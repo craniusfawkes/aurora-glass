@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <!-- Versao CLARA do fundo "tech" do tema Aurora: base branca azulada, brilhos suaves e
+       trilhas de circuito com pulsos de luz azul. Mesmas animacoes leves do fundo escuro. -->
+  <defs>
+    <linearGradient id="base" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset=".55" stop-color="#f7f8fa"/>
+      <stop offset="1" stop-color="#fdfdfe"/>
+    </linearGradient>
+    <!-- Brilhos azuis suaves -->
+    <radialGradient id="g1"><stop offset="0" stop-color="#64748b" stop-opacity=".07"/><stop offset="1" stop-color="#60a5fa" stop-opacity="0"/></radialGradient>
+    <radialGradient id="g2"><stop offset="0" stop-color="#64748b" stop-opacity=".05"/><stop offset="1" stop-color="#22d3ee" stop-opacity="0"/></radialGradient>
+    <radialGradient id="g3"><stop offset="0" stop-color="#64748b" stop-opacity=".06"/><stop offset="1" stop-color="#3b82f6" stop-opacity="0"/></radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#000000" stroke-opacity=".05" stroke-width="1"/>
+    </pattern>
+    <!-- Esmaece a grade nas bordas -->
+    <radialGradient id="fade" cx=".5" cy=".45" r=".7"><stop offset="0" stop-color="#ffffff" stop-opacity=".9"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
+    <mask id="m"><rect width="1600" height="900" fill="url(#fade)"/></mask>
+
+    <!-- Trilhas: cruzam a tela de ponta a ponta -->
+    <path id="t1" d="M0 70H420L470 120H1130L1180 70H1600"/>
+    <path id="t2" d="M1600 300H1340L1280 360H1020L960 300H600L540 360H0"/>
+    <path id="t3" d="M0 640H180L240 580H520L580 640H860L920 700H1600"/>
+    <path id="t4" d="M1600 850H1400L1340 790H900L840 850H0"/>
+    <path id="t5" d="M60 0V300L120 360V900"/>
+    <path id="t6" d="M1540 900V560L1480 500V0"/>
+    <path id="t7" d="M800 0V200L860 260V560L800 620V900"/>
+
+    <style>
+      .blob { transform-box: fill-box; transform-origin: center; animation: drift 28s ease-in-out infinite alternate; }
+      .b2 { animation-duration: 34s; animation-delay: -8s; }
+      .b3 { animation-duration: 40s; animation-delay: -16s; }
+      @keyframes drift {
+        0%   { transform: translate(0, 0) scale(1); }
+        50%  { transform: translate(120px, -60px) scale(1.15); }
+        100% { transform: translate(-80px, 70px) scale(.95); }
+      }
+      .grid { animation: slide 30s linear infinite; }
+      @keyframes slide { to { transform: translate(40px, 40px); } }
+
+      /* Trilha base, discreta (azul) */
+      .trace { fill: none; stroke: #000000; stroke-opacity: .10; stroke-width: 1.1; }
+      /* Pulso fino azul percorrendo a trilha inteira */
+      .glow { display: none; }
+      .core { fill: none; stroke: #111111; stroke-width: 1.2; stroke-linecap: round;
+              stroke-dasharray: 80 2340; animation: run 12s linear infinite;
+              filter: drop-shadow(0 0 2px rgba(0, 0, 0, .55)) drop-shadow(0 0 5px rgba(0, 0, 0, .25)); }
+      .d2 { animation-duration: 15s; animation-delay: -2s; }
+      .d3 { animation-duration: 18s;   animation-delay: -4s; }
+      .d4 { animation-duration: 13s; animation-delay: -1s; }
+      .d5 { animation-duration: 16s;   animation-delay: -3s; }
+      .d6 { animation-duration: 14s;   animation-delay: -5s; }
+      .d7 { animation-duration: 17s; animation-delay: -6s; }
+      @keyframes run { from { stroke-dashoffset: 2420; } to { stroke-dashoffset: 0; } }
+
+      .node { fill: #111111; animation: blink 7s ease-in-out infinite;
+              filter: drop-shadow(0 0 2px rgba(0, 0, 0, .55)) drop-shadow(0 0 5px rgba(0, 0, 0, .25)); }
+      .n2 { animation-delay: -1s; } .n3 { animation-delay: -2s; }
+      @keyframes blink { 0%, 100% { opacity: .25; } 50% { opacity: .85; } }
+      @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+    </style>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#base)"/>
+
+  <ellipse class="blob"    cx="300"  cy="200" rx="520" ry="420" fill="url(#g1)"/>
+  <ellipse class="blob b2" cx="1300" cy="700" rx="560" ry="460" fill="url(#g3)"/>
+  <ellipse class="blob b3" cx="1150" cy="150" rx="420" ry="340" fill="url(#g2)"/>
+
+  <g mask="url(#m)">
+    <rect class="grid" x="-40" y="-40" width="1680" height="980" fill="url(#grid)"/>
+  </g>
+
+  <g class="traces">
+    <use href="#t1" class="trace"/><use href="#t2" class="trace"/><use href="#t3" class="trace"/>
+    <use href="#t4" class="trace"/><use href="#t5" class="trace"/><use href="#t6" class="trace"/><use href="#t7" class="trace"/>
+  </g>
+  <g>
+    <use href="#t1" class="glow"/>    <use href="#t1" class="core"/>
+    <use href="#t2" class="glow d2"/> <use href="#t2" class="core d2"/>
+    <use href="#t3" class="glow d3"/> <use href="#t3" class="core d3"/>
+    <use href="#t4" class="glow d4"/> <use href="#t4" class="core d4"/>
+    <use href="#t5" class="glow d5"/> <use href="#t5" class="core d5"/>
+    <use href="#t6" class="glow d6"/> <use href="#t6" class="core d6"/>
+    <use href="#t7" class="glow d7"/> <use href="#t7" class="core d7"/>
+  </g>
+
+  <g>
+    <circle class="node"    cx="470"  cy="120" r="3.5"/>
+    <circle class="node n2" cx="1180" cy="70"  r="3.5"/>
+    <circle class="node n3" cx="960"  cy="300" r="3.5"/>
+    <circle class="node"    cx="540"  cy="360" r="3.5"/>
+    <circle class="node n2" cx="920"  cy="700" r="3.5"/>
+    <circle class="node n3" cx="240"  cy="580" r="3.5"/>
+    <circle class="node"    cx="1340" cy="790" r="3.5"/>
+    <circle class="node n2" cx="860"  cy="260" r="3.5"/>
+    <circle class="node n3" cx="120"  cy="360" r="3.5"/>
+    <circle class="node"    cx="1480" cy="500" r="3.5"/>
+  </g>
+</svg>

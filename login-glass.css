@@ -1,0 +1,66 @@
+
+/* glass-login: cartão de login Aero Glass. Claro = fundo branco + animações azuis; escuro = navy. */
+
+/* Variáveis locais (admin.css não carrega na tela de login) */
+body[data-bg] {
+	--lg-tint-top: rgba(255,255,255,.46);
+	--lg-tint-bottom: rgba(255,255,255,.36);
+	--lg-edge-dark: rgba(0,0,0,.18);
+	--lg-edge-light: rgba(255,255,255,.85);
+	--lg-shadow: 0 12px 30px rgba(0,0,0,.16);
+	--lg-text: #0f1a24;                       /* rótulos escuros sobre o vidro claro */
+	--lg-text-shadow: 0 1px 0 rgba(255,255,255,.7);
+}
+[data-darkmode="true"] body[data-bg] {
+	--lg-tint-top: rgba(28,32,42,.46);
+	--lg-tint-bottom: rgba(13,15,21,.58);
+	--lg-edge-dark: rgba(0,0,0,.62);
+	--lg-edge-light: rgba(255,255,255,.14);
+	--lg-shadow: 0 16px 40px rgba(0,0,0,.62);
+	--lg-text: #ffffff;
+	--lg-text-shadow: 0 1px 2px rgba(0,0,0,.75), 0 0 10px rgba(0,0,0,.35);
+}
+/* No modo escuro troca o fundo para o preto (o token fica com o fundo claro) */
+[data-darkmode="true"] body[data-bg] .page-bg {
+	--page-bg: url("/luci-static/aurora/images/bg-tech-dark.svg?v=7") !important;
+	--page-bg-lqip: url("/luci-static/aurora/images/bg-tech-dark.svg?v=7") !important;
+}
+
+body[data-bg] .login-card {
+	position: relative;
+	isolation: isolate;
+	background: linear-gradient(180deg, var(--lg-tint-top), var(--lg-tint-bottom)) !important;
+	-webkit-backdrop-filter: blur(9px) saturate(70%) !important;
+	backdrop-filter: blur(9px) saturate(70%) !important;
+	border: 1px solid var(--lg-edge-dark);
+	box-shadow: inset 0 0 0 1px var(--lg-edge-light), 0 0 0 1px rgba(255,255,255,.08), var(--lg-shadow);
+}
+body[data-bg] .login-card::before {
+	content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+	background:
+		linear-gradient(172deg, rgba(255,255,255,.42) 0%, rgba(255,255,255,.10) 40px, rgba(255,255,255,0) 41px);
+}
+body[data-bg] .login-card .login-hostname,
+body[data-bg] .login-card .login-subtitle,
+body[data-bg] .login-card .login-label {
+	color: var(--lg-text);
+	text-shadow: var(--lg-text-shadow);
+}
+body[data-bg] .login-card input {
+	background: rgba(255,255,255,.93);
+	color: #121a22;
+	border: 1px solid rgba(0,0,0,.3);
+}
+/* Logo: só a foto do AX3000T, maior e sem quadro de fundo */
+body[data-bg] .login-logo {
+	background: transparent !important;
+	box-shadow: none !important;
+	width: 64px; height: 64px;
+}
+body[data-bg] .login-logo img { width: 64px; height: 64px; object-fit: contain; filter: drop-shadow(0 2px 6px rgba(0,0,0,.35)); }
+/* Paleta só azul/branco/preto também no login (o modo escuro do Aurora usa verde) */
+[data-darkmode="true"] body {
+	--brand: #3d9cff; --link: #3d9cff; --brand-hover: #2f86e0;
+	--brand-subtle: #0b1a2e; --brand-subtle-hover: #10243d; --focus-ring: #3d9cff99;
+}
+/* fim glass-login */

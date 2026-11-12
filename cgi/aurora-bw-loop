@@ -1,0 +1,10 @@
+#!/bin/sh
+# aurora-bw-loop: mantém /tmp/aurora-bw.json atualizado a cada segundo.
+# Só um processo por vez: se já houver um rodando, este se encerra.
+PIDF=/tmp/aurora-bw-loop.pid
+if [ -f "$PIDF" ] && kill -0 "$(cat "$PIDF")" 2>/dev/null; then exit 0; fi
+echo $$ > "$PIDF"
+while true; do
+  /etc/aurora-custom/bw-collect.sh > /tmp/aurora-bw.tmp 2>/dev/null && mv /tmp/aurora-bw.tmp /tmp/aurora-bw.json
+  sleep 1
+done

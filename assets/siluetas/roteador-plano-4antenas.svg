@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160">
+  <!-- Silhueta neon: roteador plano com quatro antenas (forma geral, desenhada para o aurora-glass) -->
+  <defs>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="2.5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g fill="none" stroke="#2d8cff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)">
+    <rect x="50" y="92" width="140" height="36" rx="10"/>
+    <path d="M70 92 L52 34"/>
+    <path d="M90 92 L84 26"/>
+    <path d="M150 92 L156 26"/>
+    <path d="M170 92 L188 34"/>
+    <circle cx="52" cy="32" r="3"/>
+    <circle cx="84" cy="24" r="3"/>
+    <circle cx="156" cy="24" r="3"/>
+    <circle cx="188" cy="32" r="3"/>
+    <path d="M64 110 H92 M104 110 H116 M128 110 H136" stroke="#7fc4ff" stroke-width="1.6"/>
+    <circle cx="176" cy="110" r="3" fill="#2d8cff"/>
+  </g>
+</svg>

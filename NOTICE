@@ -1,0 +1,11 @@
+aurora-glass
+Copyright 2026 Cranius Fawkes
+
+Este projeto é uma variação, não oficial, do tema Aurora para LuCI (OpenWrt),
+distribuído sob a Apache License 2.0.
+
+Base: luci-theme-aurora, de Aurora Theme Contributors, licenciado sob a
+Apache License 2.0. Projeto original: https://github.com/eamonxg/luci-theme-aurora Os arquivos aqui são complementos (CSS/JS de patch e
+fundos SVG) criados sobre essa base.
+
+Este projeto não tem vínculo com os autores do Aurora original.
