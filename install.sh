@@ -40,6 +40,8 @@ if [ ! -f "$H" ]; then
   cp -r "$UP/root/." /
   sh /etc/uci-defaults/30_luci-theme-aurora 2>/dev/null || true
   rm -rf "$T"
+  # marks that aurora-glass installed Aurora (the uninstaller only removes Aurora when this mark exists)
+  mkdir -p "$C" && touch "$C/upstream-installed"
 fi
 
 # 2. Glass patches and images
