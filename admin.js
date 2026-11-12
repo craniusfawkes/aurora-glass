@@ -1224,3 +1224,15 @@ function keepFitted(fn) {
 	}
 	keepFitted(order);
 })();
+
+// Dispositivos: a seção só aparece quando a lista estiver pronta (ou após 2 s, se não houver dados)
+(function showDevicesTogether() {
+	var t0 = Date.now();
+	function check() {
+		document.querySelectorAll('#maincontent .dev-wrap:not(.ready)').forEach(function (w) {
+			if (w.querySelector('.dev-card') || Date.now() - t0 > 2000) w.classList.add('ready');
+		});
+	}
+	keepFitted(check);
+	setTimeout(check, 2100);
+})();
