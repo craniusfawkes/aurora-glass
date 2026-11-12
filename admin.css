@@ -1038,3 +1038,10 @@ body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi
 	body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-textarea,
 	body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-text { width: 100% !important; }
 }
+
+/* Repo Public Keys, all screen sizes: the name, the key box and the add-key box use the full width of the card
+   (same left and right edges), so the boxes fit the window. The Delete button stays at the right. */
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table-row { padding: 14px 16px !important; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-node:has(> textarea.cbi-input-text) { padding: 0 16px !important; }
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table textarea.cbi-input-textarea,
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-text { width: 100% !important; max-width: 100% !important; }
