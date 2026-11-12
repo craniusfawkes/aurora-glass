@@ -735,7 +735,7 @@
 		var mc = document.getElementById('maincontent');
 		var page = document.body.getAttribute('data-page') || '';
 		// Status: só monta a seção de dispositivos depois que a LuCI parar de montar a página (ou após 6 s)
-		if (page === 'admin-status-overview' && Date.now() - pageStart < 6000 && Date.now() - quietAt < 450) { setTimeout(bandwidthify, 470); return; }
+		if (page === 'admin-status-overview' && Date.now() - pageStart < 6000 && (Date.now() - quietAt < 1500 || document.querySelectorAll('#maincontent .cbi-section').length < 2)) { setTimeout(bandwidthify, 500); return; }
 		if (!mc) return;
 		if (page === 'admin-network-wireless') {       // página Wi-Fi: só a coluna e a leitura (sem cartão próprio)
 			bwInject();
