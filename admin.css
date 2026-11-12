@@ -1054,3 +1054,7 @@ body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi
 	body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-textarea,
 	body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent textarea.cbi-input-text { white-space: pre-wrap !important; word-break: break-all !important; overflow-x: hidden !important; }
 }
+
+/* Repo Public Keys: the 3 key lines (BEGIN, data, END). The data line is long, so the key text is a little smaller.
+   It scrolls sideways only when the window is too narrow for it. */
+body[data-page="admin-system-admin-repokeys"][data-bg] #maincontent .cbi-section-table textarea.cbi-input-textarea { font-size: 12px !important; line-height: 1.6; }

@@ -1298,3 +1298,21 @@ function keepFitted(fn) {
 	}
 	keepFitted(fix);
 })();
+
+// Repo Public Keys: a PEM key is stored with its base64 data split in lines of 64 characters.
+// For display, the data lines are joined back into one line, so the key reads as 3 lines:
+// BEGIN, data, END. The box is read-only here (the key is not edited on this page).
+(function joinRepoKeyLines() {
+	function fix() {
+		if ((document.body.getAttribute('data-page') || '') !== 'admin-system-admin-repokeys') return;
+		document.querySelectorAll('#maincontent .cbi-section-table textarea').forEach(function (ta) {
+			if (ta.dataset.keyJoined) return;   // already joined
+			var lines = ta.value.replace(/\r/g, '').split('\n').filter(function (l) { return l.trim() !== ''; });
+			if (lines.length < 3 || !/BEGIN/.test(lines[0]) || !/END/.test(lines[lines.length - 1])) return;
+			ta.value = [lines[0], lines.slice(1, -1).join(''), lines[lines.length - 1]].join('\n');
+			ta.readOnly = true;
+			ta.dataset.keyJoined = '1';
+		});
+	}
+	keepFitted(fix);
+})();
