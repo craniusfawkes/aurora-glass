@@ -62,8 +62,8 @@ sed -i 's|patches/{{ patch }}\.css?v=1\.4\.0|patches/{{ patch }}.css?v={{ icon_c
 sed -i 's|patches/{{ patch }}\.js?v=1\.4\.0|patches/{{ patch }}.js?v={{ icon_cache_version }}|' "$H"
 sed -i 's|" sizes="any" type="image/svg+xml">|" sizes="any">|' "$H"
 sed -i 's|{{ favicon_ico }}" sizes="32x32"|{{ favicon_ico }}?v={{ icon_cache_version }}" sizes="32x32"|' "$H"
-# 4-name: the theme name shows as Aurora-Glass (the credit to the original Aurora stays on the login screen)
-sed -i 's|content="LuCI Aurora"|content="LuCI Aurora-Glass"|; s|?? '"'"'Aurora'"'"')|?? '"'"'Aurora-Glass'"'"')|' "$H"
+# 4-name: the theme name shows as AuroraGlass (the credit to the original Aurora stays on the login screen)
+sed -i 's|content="LuCI Aurora"|content="LuCI AuroraGlass"|; s|?? '"'"'Aurora'"'"')|?? '"'"'AuroraGlass'"'"')|' "$H"
 
 # 4a. Login: shows the model name (e.g. "Xiaomi Mi Router AX3000T") instead of the hostname
 sed -i "s|striptags(boardinfo?\.hostname ?? '?')|striptags(boardinfo?.model ?? boardinfo?.hostname ?? '?')|" "$S"
@@ -124,8 +124,9 @@ uci -q get aurora.theme.dark_main_bg_scrim >/dev/null || uci set aurora.theme.da
 uci -q get aurora.theme.struct_login_bg_scrim >/dev/null || uci set aurora.theme.struct_login_bg_scrim='12%'
 uci -q get aurora.theme.dark_login_bg_scrim >/dev/null || uci set aurora.theme.dark_login_bg_scrim='22%'
 uci commit aurora
-# theme name in the LuCI theme list: Aurora_Glass (UCI does not accept hyphens; the path stays /luci-static/aurora)
-if uci -q get luci.themes.Aurora >/dev/null; then uci set luci.themes.Aurora_Glass='/luci-static/aurora'; uci -q delete luci.themes.Aurora; fi
+# theme name in the LuCI theme list: AuroraGlass (UCI does not accept hyphens; the path stays /luci-static/aurora)
+uci -q delete luci.themes.Aurora || true
+uci -q get luci.themes.AuroraGlass >/dev/null || uci set luci.themes.AuroraGlass='/luci-static/aurora'
 uci set luci.main.mediaurlbase=/luci-static/aurora
 uci commit luci
 
