@@ -1,6 +1,6 @@
 #!/bin/sh
-# aurora-oui: fabricante de um prefixo MAC (6 hex). Usa a lista local; se não achar, consulta
-# servidores públicos (só o prefixo, nunca o MAC completo) e guarda o resultado para as próximas vezes.
+# aurora-oui: vendor of a MAC prefix (6 hex). Uses the local list; if not found, queries
+# public servers (the prefix only, never the full MAC) and stores the result for next time.
 
 echo "Content-Type: text/plain"
 echo "Cache-Control: no-store"
@@ -10,7 +10,7 @@ CACHE=/etc/aurora-custom/oui-extra.tsv
 p=$(echo "$QUERY_STRING" | sed -n 's/.*p=\([0-9A-Fa-f]\{6\}\).*/\1/p' | tr 'a-f' 'A-F')
 [ -n "$p" ] || { echo "?"; exit 0; }
 
-# 1) já guardado antes (cache local)
+# 1) already stored before (local cache)
 v=$(awk -F'\t' -v p="$p" '$1==p {print $2; exit}' "$CACHE" 2>/dev/null)
 
 # 2) servidores alternativos (com tempo limite)
@@ -18,7 +18,7 @@ if [ -z "$v" ]; then
   d=$(echo "$p" | sed 's/\(..\)/\1-/g; s/-$//')
   v=$(uclient-fetch -q -T 5 -O - "https://api.macvendors.com/$d" 2>/dev/null | head -c 120 | tr -d '\r\n')
   [ -n "$v" ] || v=$(uclient-fetch -q -T 5 -O - "https://api.maclookup.app/v2/macs/$d" 2>/dev/null | sed -n 's/.*"company":"\([^"]*\)".*/\1/p')
-  # guarda só resultados válidos (falhas não ficam gravadas)
+  # store valid results only (failures are not saved)
   [ -n "$v" ] && { mkdir -p /etc/aurora-custom; printf '%s\t%s\n' "$p" "$v" >> "$CACHE"; }
 fi
 

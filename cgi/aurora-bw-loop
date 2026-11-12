@@ -1,6 +1,6 @@
 #!/bin/sh
-# aurora-bw-loop: mantém /tmp/aurora-bw.json atualizado a cada segundo.
-# Só um processo por vez: se já houver um rodando, este se encerra.
+# aurora-bw-loop: keeps /tmp/aurora-bw.json updated every second.
+# Only one process at a time: if one is already running, this one exits.
 PIDF=/tmp/aurora-bw-loop.pid
 if [ -f "$PIDF" ] && kill -0 "$(cat "$PIDF")" 2>/dev/null; then exit 0; fi
 echo $$ > "$PIDF"

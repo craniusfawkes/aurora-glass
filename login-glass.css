@@ -1,14 +1,14 @@
 
-/* glass-login: cartão de login Aero Glass. Claro = fundo branco + animações azuis; escuro = navy. */
+/* glass-login: Aero Glass login card. Light = white background + blue animations; dark = navy. */
 
-/* Variáveis locais (admin.css não carrega na tela de login) */
+/* Local variables (admin.css is not loaded on the login screen) */
 body[data-bg] {
 	--lg-tint-top: rgba(255,255,255,.46);
 	--lg-tint-bottom: rgba(255,255,255,.36);
 	--lg-edge-dark: rgba(0,0,0,.18);
 	--lg-edge-light: rgba(255,255,255,.85);
 	--lg-shadow: 0 12px 30px rgba(0,0,0,.16);
-	--lg-text: #0f1a24;                       /* rótulos escuros sobre o vidro claro */
+	--lg-text: #0f1a24;                       /* dark labels over the light glass */
 	--lg-text-shadow: 0 1px 0 rgba(255,255,255,.7);
 }
 [data-darkmode="true"] body[data-bg] {
@@ -51,14 +51,14 @@ body[data-bg] .login-card input {
 	color: #121a22;
 	border: 1px solid rgba(0,0,0,.3);
 }
-/* Logo: só a foto do AX3000T, maior e sem quadro de fundo */
+/* Logo: only the AX3000T photo, larger and without a background frame */
 body[data-bg] .login-logo {
 	background: transparent !important;
 	box-shadow: none !important;
 	width: 64px; height: 64px;
 }
 body[data-bg] .login-logo img { width: 64px; height: 64px; object-fit: contain; filter: drop-shadow(0 2px 6px rgba(0,0,0,.35)); }
-/* Paleta só azul/branco/preto também no login (o modo escuro do Aurora usa verde) */
+/* Blue/white/black palette on the login too (the Aurora dark mode uses green) */
 [data-darkmode="true"] body {
 	--brand: #3d9cff; --link: #3d9cff; --brand-hover: #2f86e0;
 	--brand-subtle: #0b1a2e; --brand-subtle-hover: #10243d; --focus-ring: #3d9cff99;
