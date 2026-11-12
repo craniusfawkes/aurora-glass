@@ -982,3 +982,20 @@ body[data-bg] #maincontent .dev-card .dev-back .dev-top span { float: none !impo
 body[data-bg] #maincontent .dev-card .dev-back .dev-top { width: 100% !important; align-self: stretch !important; box-sizing: border-box; }
 /* Cabo: porta física mostrada no card (frente) */
 body[data-bg] #maincontent .dev-card .dev-port { font-size: .8rem; opacity: .85; margin: 2px 0 4px; }
+
+/* Wi-Fi icon buttons: one style for all of them (outlined circle).
+   Blue for normal actions, red for delete. The LuCI classes (cbi-button-edit, cbi-button-remove)
+   would otherwise paint their own solid background, so they are reset here. */
+body[data-bg] #maincontent .ico-btn[data-ico="power"] { border-color: #2d8cff; color: #2d8cff; box-shadow: 0 0 10px rgba(45, 140, 255, .35); }
+body[data-bg] #maincontent .ico-btn.cbi-button-edit { background: #16181d !important; border-color: #2d8cff; color: #2d8cff; box-shadow: 0 0 10px rgba(45, 140, 255, .35); }
+body[data-bg] #maincontent .ico-btn.cbi-button-remove { background: #16181d !important; border-color: #e5484d; color: #e5484d; box-shadow: 0 0 10px rgba(229, 72, 77, .35); }
+:root:not([data-darkmode="true"]) body[data-bg] #maincontent .ico-btn.cbi-button-edit,
+:root:not([data-darkmode="true"]) body[data-bg] #maincontent .ico-btn.cbi-button-remove { background: #ffffff !important; }
+/* Wi-Fi icon buttons: LuCI's "action", "add" and "important" classes paint them solid blue.
+   Force the same outlined look as the others (dark: glass fill, light: white fill). */
+body[data-bg] #maincontent .ico-btn.cbi-button-action,
+body[data-bg] #maincontent .ico-btn.cbi-button-add,
+body[data-bg] #maincontent .ico-btn.important { background: #16181d !important; border-color: #2d8cff !important; color: #2d8cff !important; box-shadow: 0 0 10px rgba(45, 140, 255, .35) !important; }
+:root:not([data-darkmode="true"]) body[data-bg] #maincontent .ico-btn.cbi-button-action,
+:root:not([data-darkmode="true"]) body[data-bg] #maincontent .ico-btn.cbi-button-add,
+:root:not([data-darkmode="true"]) body[data-bg] #maincontent .ico-btn.important { background: #ffffff !important; }
