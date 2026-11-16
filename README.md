@@ -10,12 +10,14 @@ Current version: **1.0** (see [VERSION](VERSION)).
 
 - **Theme:** glass style over Aurora, light and dark modes, revised contrast (WCAG AA), tooltips with neon border.
 - **Ports and interfaces:** cards that flip to show details; blue for connected, grey for no link.
+- **Wired devices:** the port where each device is connected (e.g. `LAN2`) is shown on its card, next to the network type.
 - **Traffic per device:** real-time download and upload speed, plus accumulated total.
   - Wi-Fi: exact station counters (`iw`).
   - Wired: counters of the physical port where the device is connected. The port is found automatically from the bridge table, so no setup is needed, even if the device changes port.
 - **Device name:** from DHCP, from a cache of names seen before, or from DHCPv6, in that order.
 - **Vendor:** IEEE list, downloaded during installation.
 - **Login:** shows the router model name and the device image.
+- **Router image:** the login screen, the sidebar logo and the favicon use the photo of your model, when one is provided (see below).
 
 ## Compatibility
 
